@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ElevenLabs TTS App - Animated</title>
+    <title>ElevenLabs TTS App - Animated & Responsive</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -13,11 +13,11 @@
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* Align items to start for scroll on small screens */
             min-height: 100vh;
-            padding: 1rem;
+            padding: 1rem; /* Base padding */
             color: #cbd5e1;
-            overflow-x: hidden; /* Prevent horizontal scrollbar during animations */
+            overflow-x: hidden; 
         }
         .container {
             max-width: 700px;
@@ -31,7 +31,6 @@
             -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(51, 65, 85, 0.7);
             position: relative;
-            /* Page load animation */
             opacity: 0;
             transform: translateY(20px);
             animation: fadeInSlideUp 0.7s ease-out forwards;
@@ -50,8 +49,8 @@
             right: 1.5rem;
             width: 250px;
             z-index: 10;
-            opacity: 0; /* Animation for API section */
-            animation: fadeIn 0.5s ease-out 0.5s forwards; /* Delay animation */
+            opacity: 0; 
+            animation: fadeIn 0.5s ease-out 0.5s forwards;
         }
         .api-key-section .label {
             font-size: 0.8rem;
@@ -82,7 +81,7 @@
             border: 1px solid rgba(71, 85, 105, 0.8);
             border-radius: 0.5rem;
             color: #e2e8f0;
-            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.3s ease, transform 0.2s ease; /* Added transform transition */
+            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.3s ease, transform 0.2s ease;
         }
         .input::placeholder, .textarea::placeholder {
             color: #64748b;
@@ -91,8 +90,8 @@
             outline: none;
             border-color: #2dd4bf;
             background-color: rgba(51, 65, 85, 0.7);
-            box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.3), 0 5px 15px rgba(45, 212, 191, 0.1); /* Enhanced focus shadow */
-            transform: translateY(-1px); /* Slight lift on focus */
+            box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.3), 0 5px 15px rgba(45, 212, 191, 0.1);
+            transform: translateY(-1px);
         }
         .button {
             background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
@@ -102,7 +101,7 @@
             border-radius: 0.5rem;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease; /* Keep this for smooth hover */
+            transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -110,30 +109,29 @@
             align-items: center;
             justify-content: center;
         }
-        .button:hover:not(:disabled) { /* Apply hover only if not disabled */
-            transform: translateY(-3px) scale(1.02); /* Enhanced hover effect */
-            box-shadow: 0 8px 25px rgba(20, 184, 166, 0.3); /* Glow effect with teal color */
-            background: linear-gradient(135deg, #0d9488 0%, #2dd4bf 100%); /* Brighter gradient on hover */
+        .button:hover:not(:disabled) {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(20, 184, 166, 0.3);
+            background: linear-gradient(135deg, #0d9488 0%, #2dd4bf 100%);
         }
         .button:disabled {
             background: rgba(71, 85, 105, 0.5);
             color: rgba(148, 163, 184, 0.7);
             cursor: not-allowed;
-            transform: translateY(0) scale(1); /* Reset transform for disabled */
+            transform: translateY(0) scale(1);
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         .download-button {
             background: linear-gradient(135deg, #581c87 0%, #9333ea 100%);
         }
         .download-button:hover:not(:disabled) {
-             background: linear-gradient(135deg, #7e22ce 0%, #a855f7 100%); /* Brighter purple */
-             box-shadow: 0 8px 25px rgba(147, 51, 234, 0.3); /* Purple glow */
+             background: linear-gradient(135deg, #7e22ce 0%, #a855f7 100%);
+             box-shadow: 0 8px 25px rgba(147, 51, 234, 0.3);
         }
-        .audio-player, .error-message, .download-button.visible { /* Added .download-button.visible for animation */
+        .audio-player, .error-message, .download-button.visible {
             width: 100%;
             margin-top: 1.5rem;
             border-radius: 0.5rem;
-            /* Animation for appearing elements */
             opacity: 0;
             transform: scale(0.95) translateY(10px);
             animation: popIn 0.4s ease-out forwards;
@@ -141,7 +139,7 @@
         .audio-player.hidden, .error-message.hidden, .download-button.hidden {
             opacity: 0;
             transform: scale(0.95) translateY(10px);
-            animation: none; /* Reset animation if hidden again */
+            animation: none;
         }
 
         @keyframes popIn {
@@ -186,25 +184,29 @@
             font-weight: 800;
             color: #f1f5f9;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            margin-top: 3rem;
-            opacity: 0; /* Animation for H1 */
-            animation: fadeIn 0.5s ease-out 0.2s forwards; /* Delay animation */
+            margin-top: 3rem; /* Default margin for larger screens */
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out 0.2s forwards;
+            font-size: 2.25rem; /* Tailwind text-4xl */
         }
         header p {
             color: #94a3b8;
-            opacity: 0; /* Animation for P */
-            animation: fadeIn 0.5s ease-out 0.35s forwards; /* Delay animation */
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out 0.35s forwards;
+            font-size: 1.125rem; /* Tailwind text-lg */
         }
         .form-section {
             margin-top: 1.5rem;
-            opacity: 0; /* Animation for form sections */
+            opacity: 0;
             animation: fadeInSlideUp 0.6s ease-out forwards;
         }
         /* Stagger animation for form sections */
-        .form-section:nth-child(2) { animation-delay: 0.3s; }
-        .form-section:nth-child(3) { animation-delay: 0.4s; }
-        .form-section:nth-child(4) { animation-delay: 0.5s; }
-        #convertBtn { /* Animation for convert button */
+        /* These selectors need to be more specific to avoid conflict with API key section if it were a .form-section */
+        .container > .form-section:nth-of-type(1) { animation-delay: 0.3s; } /* Text to Convert */
+        .container > .form-section:nth-of-type(2) { animation-delay: 0.4s; } /* Select Voice */
+        .container > .form-section:nth-of-type(3) { animation-delay: 0.5s; } /* Select Model */
+        
+        #convertBtn {
              opacity: 0;
              animation: fadeInSlideUp 0.6s ease-out 0.6s forwards;
         }
@@ -213,6 +215,83 @@
         ::-webkit-scrollbar-track { background: rgba(30, 41, 59, 0.5); border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: #2dd4bf; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #14b8a6; }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) { /* md breakpoint */
+            .container {
+                padding: 2rem; /* Reduced padding */
+                margin: 1rem; /* Reduced margin */
+            }
+            h1 {
+                font-size: 1.875rem; /* Tailwind text-3xl */
+                margin-top: 4.5rem; /* Increased margin to avoid overlap with API key section */
+            }
+            header p {
+                font-size: 1rem; /* Tailwind text-base */
+            }
+            .api-key-section {
+                width: auto; /* Allow it to shrink */
+                max-width: 200px; /* Max width for smaller screens */
+                right: 1rem;
+                top: 1rem;
+            }
+            .api-key-section .input {
+                font-size: 0.8rem;
+            }
+            .button {
+                padding: 0.875rem 1.25rem; /* Slightly smaller buttons */
+                font-size: 0.875rem; /* Smaller font size for buttons */
+            }
+            .input, .textarea, .select {
+                padding: 0.875rem; /* Smaller padding for inputs */
+            }
+        }
+
+        @media (max-width: 480px) { /* sm breakpoint */
+            body {
+                padding: 0.5rem; /* Further reduce body padding */
+                align-items: flex-start; /* Ensure content starts from top */
+            }
+            .container {
+                padding: 1.5rem; /* Further reduced padding */
+                margin: 0.5rem;
+                margin-top: 1rem; /* Ensure some space at the top */
+            }
+            h1 {
+                font-size: 1.5rem; /* Tailwind text-2xl */
+                margin-top: 6rem; /* Further increased margin for API key */
+            }
+            header p {
+                font-size: 0.875rem; /* Tailwind text-sm */
+            }
+            .api-key-section {
+                position: relative; /* Stack API key section */
+                width: 100%;
+                max-width: none;
+                top: auto;
+                right: auto;
+                margin-bottom: 1.5rem; /* Space below API key section when stacked */
+                animation: fadeInSlideUp 0.6s ease-out 0.1s forwards; /* Animate it like other form sections */
+            }
+             /* Adjust animation delays for form sections since API key is now part of the flow */
+            .container > header { animation-delay: 0s; }
+            .container > .form-section:nth-of-type(1) { animation-delay: 0.2s; }
+            .container > .form-section:nth-of-type(2) { animation-delay: 0.3s; }
+            .container > .form-section:nth-of-type(3) { animation-delay: 0.4s; }
+            #convertBtn { animation-delay: 0.5s; }
+
+            .form-section {
+                margin-top: 1rem;
+            }
+            .button {
+                padding: 0.75rem 1rem;
+                font-size: 0.8rem;
+            }
+             .label {
+                font-size: 0.85rem;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -311,7 +390,6 @@
                 voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Enter API Key first...</option>';
                 voiceSelect.disabled = true;
                 updateConvertButtonState();
-                // Hide and reset animated elements
                 downloadBtn.classList.add('hidden');
                 downloadBtn.classList.remove('visible');
                 audioPlayer.classList.add('hidden');
@@ -380,10 +458,9 @@
             buttonText.textContent = 'Converting...';
             loadingSpinner.classList.remove('hidden');
             
-            // Reset states for animated elements
             audioPlayer.classList.add('hidden');
             downloadBtn.classList.add('hidden');
-            downloadBtn.classList.remove('visible'); // Ensure 'visible' is removed for re-animation
+            downloadBtn.classList.remove('visible'); 
             errorMessageDiv.classList.add('hidden');
             errorMessageDiv.classList.remove('visible');
 
@@ -416,9 +493,9 @@
                 currentAudioBlobUrl = URL.createObjectURL(audioBlob);
 
                 audioPlayer.src = currentAudioBlobUrl;
-                audioPlayer.classList.remove('hidden'); // JS removes hidden, CSS animation 'popIn' plays
+                audioPlayer.classList.remove('hidden'); 
                 downloadBtn.classList.remove('hidden'); 
-                downloadBtn.classList.add('visible'); // Add 'visible' to trigger its animation
+                downloadBtn.classList.add('visible'); 
 
             } catch (error) {
                 console.error('TTS Error:', error);
@@ -448,14 +525,12 @@
 
         function displayError(message) {
             errorMessageDiv.textContent = message;
-            errorMessageDiv.classList.remove('hidden'); // JS removes hidden
-            errorMessageDiv.classList.add('visible'); // Add 'visible' to trigger animation
+            errorMessageDiv.classList.remove('hidden'); 
+            errorMessageDiv.classList.add('visible'); 
         }
 
         window.addEventListener('load', () => {
             loadApiKey();
-            // Trigger staggered animation for form sections on load
-            // CSS handles this with animation-delay now
         });
 
     </script>
