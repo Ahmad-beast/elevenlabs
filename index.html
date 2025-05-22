@@ -1,132 +1,266 @@
 <!DOCTYPE html>
-<html lang="ur">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ElevenLabs TTS App</title>
+    <title>ElevenLabs TTS App - Animated</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* Tailwind gray-100 */
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+            color: #cbd5e1;
+            overflow-x: hidden; /* Prevent horizontal scrollbar during animations */
         }
         .container {
             max-width: 700px;
+            width: 100%;
             margin: 2rem auto;
-            padding: 2rem;
-            background-color: white;
-            border-radius: 0.75rem; /* Tailwind rounded-xl */
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Tailwind shadow-lg */
+            padding: 2.5rem;
+            background-color: rgba(30, 41, 59, 0.6);
+            border-radius: 1rem; 
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(51, 65, 85, 0.7);
+            position: relative;
+            /* Page load animation */
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInSlideUp 0.7s ease-out forwards;
         }
+
+        @keyframes fadeInSlideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .api-key-section {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 250px;
+            z-index: 10;
+            opacity: 0; /* Animation for API section */
+            animation: fadeIn 0.5s ease-out 0.5s forwards; /* Delay animation */
+        }
+        .api-key-section .label {
+            font-size: 0.8rem;
+            margin-bottom: 0.3rem;
+        }
+        .api-key-section .input {
+            padding: 0.6rem;
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+        
         .label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500; /* Tailwind font-medium */
-            color: #374151; /* Tailwind gray-700 */
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            color: #94a3b8;
+            font-size: 0.9rem;
         }
         .input, .textarea, .select {
             width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #d1d5db; /* Tailwind gray-300 */
-            border-radius: 0.375rem; /* Tailwind rounded-md */
-            box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* Tailwind shadow-sm */
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+            padding: 1rem;
+            background-color: rgba(51, 65, 85, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.8);
+            border-radius: 0.5rem;
+            color: #e2e8f0;
+            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.3s ease, transform 0.2s ease; /* Added transform transition */
+        }
+        .input::placeholder, .textarea::placeholder {
+            color: #64748b;
         }
         .input:focus, .textarea:focus, .select:focus {
             outline: none;
-            border-color: #4f46e5; /* Tailwind indigo-500 */
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3); /* Tailwind ring-indigo-500 */
+            border-color: #2dd4bf;
+            background-color: rgba(51, 65, 85, 0.7);
+            box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.3), 0 5px 15px rgba(45, 212, 191, 0.1); /* Enhanced focus shadow */
+            transform: translateY(-1px); /* Slight lift on focus */
         }
         .button {
-            background-color: #4f46e5; /* Tailwind indigo-600 */
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
             color: white;
-            padding: 0.75rem 1.5rem;
+            padding: 1rem 1.5rem;
             border: none;
-            border-radius: 0.375rem; /* Tailwind rounded-md */
-            font-weight: 600; /* Tailwind font-semibold */
+            border-radius: 0.5rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: background-color 0.15s ease-in-out;
+            transition: all 0.3s ease; /* Keep this for smooth hover */
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .button:hover {
-            background-color: #4338ca; /* Tailwind indigo-700 */
+        .button:hover:not(:disabled) { /* Apply hover only if not disabled */
+            transform: translateY(-3px) scale(1.02); /* Enhanced hover effect */
+            box-shadow: 0 8px 25px rgba(20, 184, 166, 0.3); /* Glow effect with teal color */
+            background: linear-gradient(135deg, #0d9488 0%, #2dd4bf 100%); /* Brighter gradient on hover */
         }
         .button:disabled {
-            background-color: #a5b4fc; /* Tailwind indigo-300 */
+            background: rgba(71, 85, 105, 0.5);
+            color: rgba(148, 163, 184, 0.7);
             cursor: not-allowed;
+            transform: translateY(0) scale(1); /* Reset transform for disabled */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        .audio-player {
+        .download-button {
+            background: linear-gradient(135deg, #581c87 0%, #9333ea 100%);
+        }
+        .download-button:hover:not(:disabled) {
+             background: linear-gradient(135deg, #7e22ce 0%, #a855f7 100%); /* Brighter purple */
+             box-shadow: 0 8px 25px rgba(147, 51, 234, 0.3); /* Purple glow */
+        }
+        .audio-player, .error-message, .download-button.visible { /* Added .download-button.visible for animation */
             width: 100%;
-            margin-top: 1rem;
-            border-radius: 0.375rem;
+            margin-top: 1.5rem;
+            border-radius: 0.5rem;
+            /* Animation for appearing elements */
+            opacity: 0;
+            transform: scale(0.95) translateY(10px);
+            animation: popIn 0.4s ease-out forwards;
+        }
+        .audio-player.hidden, .error-message.hidden, .download-button.hidden {
+            opacity: 0;
+            transform: scale(0.95) translateY(10px);
+            animation: none; /* Reset animation if hidden again */
+        }
+
+        @keyframes popIn {
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+         .audio-player::-webkit-media-controls-panel {
+            background-color: rgba(51, 65, 85, 0.8);
+            border-radius: 0.5rem;
+        }
+        .audio-player::-webkit-media-controls-play-button,
+        .audio-player::-webkit-media-controls-timeline,
+        .audio-player::-webkit-media-controls-current-time-display,
+        .audio-player::-webkit-media-controls-time-remaining-display,
+        .audio-player::-webkit-media-controls-mute-button,
+        .audio-player::-webkit-media-controls-volume-slider {
+            filter: invert(1) sepia(0.1) saturate(0.5) hue-rotate(180deg);
         }
         .error-message {
-            color: #ef4444; /* Tailwind red-500 */
-            background-color: #fee2e2; /* Tailwind red-100 */
-            border: 1px solid #fca5a5; /* Tailwind red-300 */
-            padding: 0.75rem;
-            border-radius: 0.375rem;
-            margin-top: 1rem;
+            color: #f87171;
+            background-color: rgba(127, 29, 29, 0.3);
+            border: 1px solid rgba(220, 38, 38, 0.5);
+            padding: 1rem;
             text-align: center;
+            font-weight: 500;
         }
         .loading-spinner {
-            border: 4px solid #f3f3f3; /* Light grey */
-            border-top: 4px solid #4f46e5; /* Indigo */
+            border: 4px solid rgba(71, 85, 105, 0.3);
+            border-top: 4px solid #2dd4bf;
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             animation: spin 1s linear infinite;
-            margin-right: 8px;
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        h1 {
+            font-weight: 800;
+            color: #f1f5f9;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            margin-top: 3rem;
+            opacity: 0; /* Animation for H1 */
+            animation: fadeIn 0.5s ease-out 0.2s forwards; /* Delay animation */
+        }
+        header p {
+            color: #94a3b8;
+            opacity: 0; /* Animation for P */
+            animation: fadeIn 0.5s ease-out 0.35s forwards; /* Delay animation */
+        }
+        .form-section {
+            margin-top: 1.5rem;
+            opacity: 0; /* Animation for form sections */
+            animation: fadeInSlideUp 0.6s ease-out forwards;
+        }
+        /* Stagger animation for form sections */
+        .form-section:nth-child(2) { animation-delay: 0.3s; }
+        .form-section:nth-child(3) { animation-delay: 0.4s; }
+        .form-section:nth-child(4) { animation-delay: 0.5s; }
+        #convertBtn { /* Animation for convert button */
+             opacity: 0;
+             animation: fadeInSlideUp 0.6s ease-out 0.6s forwards;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(30, 41, 59, 0.5); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #2dd4bf; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #14b8a6; }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="api-key-section">
+            <label for="apiKey" class="label">ElevenLabs API Key:</label>
+            <input type="password" id="apiKey" class="input" placeholder="Paste your API Key here">
+            <p class="text-xs text-slate-500 mt-1">Your API key is saved in local storage.</p>
+        </div>
+
         <header class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800">ElevenLabs Text-to-Speech App</h1>
-            <p class="text-gray-600 mt-1">Apni API key istemal karke text ko audio mein badlein.</p>
+            <h1 class="text-4xl font-extrabold">ElevenLabs TTS App</h1>
+            <p class="text-slate-400 mt-2 text-lg">Convert text to audio using your API key.</p>
         </header>
 
-        <div class="mb-6">
-            <label for="apiKey" class="label">ElevenLabs API Key:</label>
-            <input type="password" id="apiKey" class="input" placeholder=" اپنی API Key yahan paste karein">
-            <p class="text-xs text-gray-500 mt-1">Aapki API key local storage mein save ki jayegi.</p>
+        <div class="form-section mb-6">
+            <label for="textToConvert" class="label">Text to Convert:</label>
+            <textarea id="textToConvert" rows="5" class="textarea" placeholder="Enter your text here..."></textarea>
         </div>
 
-        <div class="mb-6">
-            <label for="textToConvert" class="label">Text jo Audio mein badalna hai:</label>
-            <textarea id="textToConvert" rows="5" class="textarea" placeholder="Yahan apna text likhein..."></textarea>
-        </div>
-
-        <div class="mb-6">
-            <label for="voiceSelect" class="label">Awaz Chunein:</label>
+        <div class="form-section mb-6">
+            <label for="voiceSelect" class="label">Select Voice:</label>
             <select id="voiceSelect" class="select" disabled>
-                <option value="">Pehle API Key daalein...</option>
+                <option value="" style="color: #94a3b8;">Enter API Key first...</option>
             </select>
         </div>
         
-        <div class="mb-6">
-            <label for="modelSelect" class="label">Model Chunein:</label>
+        <div class="form-section mb-6">
+            <label for="modelSelect" class="label">Select Model:</label>
             <select id="modelSelect" class="select">
-                <option value="eleven_multilingual_v2" selected>Eleven Multilingual v2 (Z्यादातर zubanon ke liye behtareen)</option>
+                <option value="eleven_multilingual_v2" selected>Eleven Multilingual v2 (Best for most languages)</option>
                 <option value="eleven_multilingual_v1">Eleven Multilingual v1</option>
-                <option value="eleven_monolingual_v1">Eleven Monolingual v1 (Angrezi ke liye)</option>
-                </select>
+                <option value="eleven_monolingual_v1">Eleven Monolingual v1 (English)</option>
+            </select>
         </div>
 
+        <button id="convertBtn" class="button w-full py-3.5 mb-4" disabled>
+            <span id="buttonText" class="mr-2">Convert to Audio</span>
+            <div id="loadingSpinner" class="loading-spinner hidden"></div>
+        </button>
 
-        <button id="convertBtn" class="button w-full flex items-center justify-center" disabled>
-            <span id="buttonText">Audio Mein Badlein</span>
-            <div id="loadingSpinner" class="loading-spinner hidden ml-2"></div>
+        <button id="downloadBtn" class="button download-button w-full py-3.5 hidden">
+            <i class="fas fa-download mr-2"></i> Download Audio
         </button>
 
         <audio id="audioPlayer" controls class="audio-player hidden mt-6"></audio>
-
-        <div id="errorMessage" class="error-message hidden"></div>
+        
+        <div id="errorMessage" class="error-message hidden mt-4"></div>
     </div>
 
     <script>
@@ -139,171 +273,190 @@
         const buttonText = document.getElementById('buttonText');
         const loadingSpinner = document.getElementById('loadingSpinner');
         const audioPlayer = document.getElementById('audioPlayer');
+        const downloadBtn = document.getElementById('downloadBtn');
         const errorMessageDiv = document.getElementById('errorMessage');
 
         const ELEVENLABS_API_BASE_URL = 'https://api.elevenlabs.io/v1';
+        let currentAudioBlobUrl = null; 
 
-        // API Key ko Local Storage se load karna
         function loadApiKey() {
             const savedKey = localStorage.getItem('elevenLabsApiKey');
             if (savedKey) {
                 apiKeyInput.value = savedKey;
-                fetchVoices(savedKey); // Agar key hai to voices fetch karein
+                fetchVoices(savedKey); 
+                updateConvertButtonState();
+            } else {
+                updateConvertButtonState();
             }
         }
 
-        // API Key ko Local Storage mein save karna
+        function updateConvertButtonState() {
+            if (apiKeyInput.value.trim() && textToConvertInput.value.trim()) {
+                convertBtn.disabled = false;
+            } else {
+                convertBtn.disabled = true;
+            }
+        }
+
+        textToConvertInput.addEventListener('input', updateConvertButtonState);
+        
         apiKeyInput.addEventListener('input', () => {
             const key = apiKeyInput.value.trim();
             if (key) {
                 localStorage.setItem('elevenLabsApiKey', key);
-                fetchVoices(key); // Key enter karne par voices fetch karein
-                convertBtn.disabled = false;
+                fetchVoices(key);
+                updateConvertButtonState();
             } else {
                 localStorage.removeItem('elevenLabsApiKey');
-                voiceSelect.innerHTML = '<option value="">Pehle API Key daalein...</option>';
+                voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Enter API Key first...</option>';
                 voiceSelect.disabled = true;
-                convertBtn.disabled = true;
+                updateConvertButtonState();
+                // Hide and reset animated elements
+                downloadBtn.classList.add('hidden');
+                downloadBtn.classList.remove('visible');
+                audioPlayer.classList.add('hidden');
+                if(currentAudioBlobUrl) URL.revokeObjectURL(currentAudioBlobUrl);
+                currentAudioBlobUrl = null;
             }
         });
 
-        // ElevenLabs se voices fetch karna
         async function fetchVoices(apiKey) {
             if (!apiKey) {
-                voiceSelect.innerHTML = '<option value="">API Key zaroori hai</option>';
+                voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">API Key required</option>';
                 voiceSelect.disabled = true;
                 return;
             }
-
             voiceSelect.disabled = true;
-            voiceSelect.innerHTML = '<option value="">Awazein load ho rahi hain...</option>';
+            voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Loading voices...</option>';
             errorMessageDiv.classList.add('hidden');
+            errorMessageDiv.classList.remove('visible');
+
 
             try {
                 const response = await fetch(`${ELEVENLABS_API_BASE_URL}/voices`, {
-                    headers: {
-                        'xi-api-key': apiKey,
-                        'Content-Type': 'application/json'
-                    }
+                    headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' }
                 });
-
                 if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(`Voices fetch karne mein error (${response.status}): ${errorData.detail?.message || response.statusText}`);
+                    const errorData = await response.json().catch(() => ({ detail: { message: response.statusText } }));
+                    throw new Error(`Error fetching voices (${response.status}): ${errorData.detail?.message || response.statusText}`);
                 }
-
                 const data = await response.json();
                 populateVoiceSelect(data.voices);
                 voiceSelect.disabled = false;
-
             } catch (error) {
-                console.error('Voices fetch error:', error);
-                voiceSelect.innerHTML = '<option value="">Awazein fetch nahi ho sakein</option>';
-                displayError(`Awazein fetch karne mein nakaam: ${error.message}`);
+                console.error('Fetch voices error:', error);
+                voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Failed to fetch voices</option>';
+                displayError(`Failed to load voices: ${error.message}`);
             }
         }
 
-        // Voice selection dropdown ko populate karna
         function populateVoiceSelect(voices) {
-            voiceSelect.innerHTML = ''; // Purane options clear karein
+            voiceSelect.innerHTML = ''; 
             if (voices && voices.length > 0) {
                 voices.forEach(voice => {
                     const option = document.createElement('option');
                     option.value = voice.voice_id;
+                    option.style.color = '#1e293b';
+                    option.style.backgroundColor = '#f1f5f9';
                     option.textContent = `${voice.name} (${voice.labels?.description || 'Default'})`;
                     voiceSelect.appendChild(option);
                 });
             } else {
-                voiceSelect.innerHTML = '<option value="">Koi awaz nahi mili</option>';
+                voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">No voices found</option>';
             }
         }
 
-        // Text ko speech mein convert karna
         convertBtn.addEventListener('click', async () => {
             const apiKey = apiKeyInput.value.trim();
             const text = textToConvertInput.value.trim();
             const voiceId = voiceSelect.value;
             const modelId = modelSelect.value;
 
-            if (!apiKey) {
-                displayError('ElevenLabs API Key zaroori hai.');
-                return;
-            }
-            if (!text) {
-                displayError('Kuch text likhein jisko audio mein badalna hai.');
-                return;
-            }
-            if (!voiceId) {
-                displayError('Ek awaz chunein.');
-                return;
-            }
+            if (!apiKey) { displayError('ElevenLabs API Key is required.'); return; }
+            if (!text) { displayError('Please enter text to convert.'); return; }
+            if (!voiceId) { displayError('Please select a voice.'); return; }
 
-            // UI ko update karna (loading state)
             convertBtn.disabled = true;
-            buttonText.textContent = 'Badal raha hai...';
+            buttonText.textContent = 'Converting...';
             loadingSpinner.classList.remove('hidden');
+            
+            // Reset states for animated elements
             audioPlayer.classList.add('hidden');
+            downloadBtn.classList.add('hidden');
+            downloadBtn.classList.remove('visible'); // Ensure 'visible' is removed for re-animation
             errorMessageDiv.classList.add('hidden');
+            errorMessageDiv.classList.remove('visible');
 
+
+            if(currentAudioBlobUrl) URL.revokeObjectURL(currentAudioBlobUrl);
+            currentAudioBlobUrl = null;
+            audioPlayer.src = ''; 
+            
             try {
                 const ttsUrl = `${ELEVENLABS_API_BASE_URL}/text-to-speech/${voiceId}`;
                 const response = await fetch(ttsUrl, {
                     method: 'POST',
-                    headers: {
-                        'Accept': 'audio/mpeg',
-                        'xi-api-key': apiKey,
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Accept': 'audio/mpeg', 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        text: text,
-                        model_id: modelId, // model_id ko yahan istemal karein
-                        // voice_settings: { // Aap yahan voice settings bhi add kar sakte hain
-                        //     stability: 0.5,
-                        //     similarity_boost: 0.75
-                        // }
+                        text: text, model_id: modelId,
+                        voice_settings: { stability: 0.7, similarity_boost: 0.75 }
                     })
                 });
 
                 if (!response.ok) {
-                    // Agar response JSON mein error details hain, to unhe parse karein
                     let errorDetail = response.statusText;
                     try {
                         const errorJson = await response.json();
-                        errorDetail = errorJson.detail?.message || errorJson.detail || JSON.stringify(errorJson);
-                    } catch (e) {
-                        // Agar JSON parse nahi hota, to statusText istemal karein
-                        console.warn("Error response JSON mein nahi tha:", e);
-                    }
-                    throw new Error(`Audio generate karne mein error (${response.status}): ${errorDetail}`);
+                        errorDetail = errorJson.detail?.message || (typeof errorJson.detail === 'string' ? errorJson.detail : JSON.stringify(errorJson.detail)) || JSON.stringify(errorJson);
+                    } catch (e) { errorDetail = await response.text() || response.statusText; }
+                    throw new Error(`Error generating audio (${response.status}): ${errorDetail}`);
                 }
 
                 const audioBlob = await response.blob();
-                const audioUrl = URL.createObjectURL(audioBlob);
+                currentAudioBlobUrl = URL.createObjectURL(audioBlob);
 
-                audioPlayer.src = audioUrl;
-                audioPlayer.classList.remove('hidden');
-                audioPlayer.play();
+                audioPlayer.src = currentAudioBlobUrl;
+                audioPlayer.classList.remove('hidden'); // JS removes hidden, CSS animation 'popIn' plays
+                downloadBtn.classList.remove('hidden'); 
+                downloadBtn.classList.add('visible'); // Add 'visible' to trigger its animation
 
             } catch (error) {
                 console.error('TTS Error:', error);
-                displayError(`Audio generate karne mein nakaam: ${error.message}`);
-                audioPlayer.classList.add('hidden'); // Error par player hide karein
+                displayError(`Failed to generate audio: ${error.message}`);
+                audioPlayer.classList.add('hidden'); 
+                downloadBtn.classList.add('hidden');
+                downloadBtn.classList.remove('visible');
             } finally {
-                // UI ko reset karna
-                convertBtn.disabled = false;
-                buttonText.textContent = 'Audio Mein Badlein';
+                updateConvertButtonState();
+                buttonText.textContent = 'Convert to Audio';
                 loadingSpinner.classList.add('hidden');
             }
         });
 
-        // Error message display karna
+        downloadBtn.addEventListener('click', () => {
+            if (currentAudioBlobUrl) {
+                const a = document.createElement('a');
+                a.href = currentAudioBlobUrl;
+                a.download = `elevenlabs_audio_${Date.now()}.mp3`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } else {
+                displayError("No audio available to download.");
+            }
+        });
+
         function displayError(message) {
             errorMessageDiv.textContent = message;
-            errorMessageDiv.classList.remove('hidden');
+            errorMessageDiv.classList.remove('hidden'); // JS removes hidden
+            errorMessageDiv.classList.add('visible'); // Add 'visible' to trigger animation
         }
 
-        // Shuru mein API Key load karna
-        window.addEventListener('load', loadApiKey);
+        window.addEventListener('load', () => {
+            loadApiKey();
+            // Trigger staggered animation for form sections on load
+            // CSS handles this with animation-delay now
+        });
 
     </script>
 </body>
