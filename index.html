@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElevenLabs TTS App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Tailwind gray-100 */
+        }
+        .container {
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 0.75rem; /* Tailwind rounded-xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Tailwind shadow-lg */
+        }
+        .label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500; /* Tailwind font-medium */
+            color: #374151; /* Tailwind gray-700 */
+        }
+        .input, .textarea, .select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db; /* Tailwind gray-300 */
+            border-radius: 0.375rem; /* Tailwind rounded-md */
+            box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* Tailwind shadow-sm */
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        .input:focus, .textarea:focus, .select:focus {
+            outline: none;
+            border-color: #4f46e5; /* Tailwind indigo-500 */
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3); /* Tailwind ring-indigo-500 */
+        }
+        .button {
+            background-color: #4f46e5; /* Tailwind indigo-600 */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.375rem; /* Tailwind rounded-md */
+            font-weight: 600; /* Tailwind font-semibold */
+            cursor: pointer;
+            transition: background-color 0.15s ease-in-out;
+        }
+        .button:hover {
+            background-color: #4338ca; /* Tailwind indigo-700 */
+        }
+        .button:disabled {
+            background-color: #a5b4fc; /* Tailwind indigo-300 */
+            cursor: not-allowed;
+        }
+        .audio-player {
+            width: 100%;
+            margin-top: 1rem;
+            border-radius: 0.375rem;
+        }
+        .error-message {
+            color: #ef4444; /* Tailwind red-500 */
+            background-color: #fee2e2; /* Tailwind red-100 */
+            border: 1px solid #fca5a5; /* Tailwind red-300 */
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #4f46e5; /* Indigo */
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">ElevenLabs Text-to-Speech App</h1>
+            <p class="text-gray-600 mt-1">Apni API key istemal karke text ko audio mein badlein.</p>
+        </header>
+
+        <div class="mb-6">
+            <label for="apiKey" class="label">ElevenLabs API Key:</label>
+            <input type="password" id="apiKey" class="input" placeholder=" اپنی API Key yahan paste karein">
+            <p class="text-xs text-gray-500 mt-1">Aapki API key local storage mein save ki jayegi.</p>
+        </div>
+
+        <div class="mb-6">
+            <label for="textToConvert" class="label">Text jo Audio mein badalna hai:</label>
+            <textarea id="textToConvert" rows="5" class="textarea" placeholder="Yahan apna text likhein..."></textarea>
+        </div>
+
+        <div class="mb-6">
+            <label for="voiceSelect" class="label">Awaz Chunein:</label>
+            <select id="voiceSelect" class="select" disabled>
+                <option value="">Pehle API Key daalein...</option>
+            </select>
+        </div>
+        
+        <div class="mb-6">
+            <label for="modelSelect" class="label">Model Chunein:</label>
+            <select id="modelSelect" class="select">
+                <option value="eleven_multilingual_v2" selected>Eleven Multilingual v2 (Z्यादातर zubanon ke liye behtareen)</option>
+                <option value="eleven_multilingual_v1">Eleven Multilingual v1</option>
+                <option value="eleven_monolingual_v1">Eleven Monolingual v1 (Angrezi ke liye)</option>
+                </select>
+        </div>
+
+
+        <button id="convertBtn" class="button w-full flex items-center justify-center" disabled>
+            <span id="buttonText">Audio Mein Badlein</span>
+            <div id="loadingSpinner" class="loading-spinner hidden ml-2"></div>
+        </button>
+
+        <audio id="audioPlayer" controls class="audio-player hidden mt-6"></audio>
+
+        <div id="errorMessage" class="error-message hidden"></div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const apiKeyInput = document.getElementById('apiKey');
+        const textToConvertInput = document.getElementById('textToConvert');
+        const voiceSelect = document.getElementById('voiceSelect');
+        const modelSelect = document.getElementById('modelSelect');
+        const convertBtn = document.getElementById('convertBtn');
+        const buttonText = document.getElementById('buttonText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const errorMessageDiv = document.getElementById('errorMessage');
+
+        const ELEVENLABS_API_BASE_URL = 'https://api.elevenlabs.io/v1';
+
+        // API Key ko Local Storage se load karna
+        function loadApiKey() {
+            const savedKey = localStorage.getItem('elevenLabsApiKey');
+            if (savedKey) {
+                apiKeyInput.value = savedKey;
+                fetchVoices(savedKey); // Agar key hai to voices fetch karein
+            }
+        }
+
+        // API Key ko Local Storage mein save karna
+        apiKeyInput.addEventListener('input', () => {
+            const key = apiKeyInput.value.trim();
+            if (key) {
+                localStorage.setItem('elevenLabsApiKey', key);
+                fetchVoices(key); // Key enter karne par voices fetch karein
+                convertBtn.disabled = false;
+            } else {
+                localStorage.removeItem('elevenLabsApiKey');
+                voiceSelect.innerHTML = '<option value="">Pehle API Key daalein...</option>';
+                voiceSelect.disabled = true;
+                convertBtn.disabled = true;
+            }
+        });
+
+        // ElevenLabs se voices fetch karna
+        async function fetchVoices(apiKey) {
+            if (!apiKey) {
+                voiceSelect.innerHTML = '<option value="">API Key zaroori hai</option>';
+                voiceSelect.disabled = true;
+                return;
+            }
+
+            voiceSelect.disabled = true;
+            voiceSelect.innerHTML = '<option value="">Awazein load ho rahi hain...</option>';
+            errorMessageDiv.classList.add('hidden');
+
+            try {
+                const response = await fetch(`${ELEVENLABS_API_BASE_URL}/voices`, {
+                    headers: {
+                        'xi-api-key': apiKey,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`Voices fetch karne mein error (${response.status}): ${errorData.detail?.message || response.statusText}`);
+                }
+
+                const data = await response.json();
+                populateVoiceSelect(data.voices);
+                voiceSelect.disabled = false;
+
+            } catch (error) {
+                console.error('Voices fetch error:', error);
+                voiceSelect.innerHTML = '<option value="">Awazein fetch nahi ho sakein</option>';
+                displayError(`Awazein fetch karne mein nakaam: ${error.message}`);
+            }
+        }
+
+        // Voice selection dropdown ko populate karna
+        function populateVoiceSelect(voices) {
+            voiceSelect.innerHTML = ''; // Purane options clear karein
+            if (voices && voices.length > 0) {
+                voices.forEach(voice => {
+                    const option = document.createElement('option');
+                    option.value = voice.voice_id;
+                    option.textContent = `${voice.name} (${voice.labels?.description || 'Default'})`;
+                    voiceSelect.appendChild(option);
+                });
+            } else {
+                voiceSelect.innerHTML = '<option value="">Koi awaz nahi mili</option>';
+            }
+        }
+
+        // Text ko speech mein convert karna
+        convertBtn.addEventListener('click', async () => {
+            const apiKey = apiKeyInput.value.trim();
+            const text = textToConvertInput.value.trim();
+            const voiceId = voiceSelect.value;
+            const modelId = modelSelect.value;
+
+            if (!apiKey) {
+                displayError('ElevenLabs API Key zaroori hai.');
+                return;
+            }
+            if (!text) {
+                displayError('Kuch text likhein jisko audio mein badalna hai.');
+                return;
+            }
+            if (!voiceId) {
+                displayError('Ek awaz chunein.');
+                return;
+            }
+
+            // UI ko update karna (loading state)
+            convertBtn.disabled = true;
+            buttonText.textContent = 'Badal raha hai...';
+            loadingSpinner.classList.remove('hidden');
+            audioPlayer.classList.add('hidden');
+            errorMessageDiv.classList.add('hidden');
+
+            try {
+                const ttsUrl = `${ELEVENLABS_API_BASE_URL}/text-to-speech/${voiceId}`;
+                const response = await fetch(ttsUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'audio/mpeg',
+                        'xi-api-key': apiKey,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        text: text,
+                        model_id: modelId, // model_id ko yahan istemal karein
+                        // voice_settings: { // Aap yahan voice settings bhi add kar sakte hain
+                        //     stability: 0.5,
+                        //     similarity_boost: 0.75
+                        // }
+                    })
+                });
+
+                if (!response.ok) {
+                    // Agar response JSON mein error details hain, to unhe parse karein
+                    let errorDetail = response.statusText;
+                    try {
+                        const errorJson = await response.json();
+                        errorDetail = errorJson.detail?.message || errorJson.detail || JSON.stringify(errorJson);
+                    } catch (e) {
+                        // Agar JSON parse nahi hota, to statusText istemal karein
+                        console.warn("Error response JSON mein nahi tha:", e);
+                    }
+                    throw new Error(`Audio generate karne mein error (${response.status}): ${errorDetail}`);
+                }
+
+                const audioBlob = await response.blob();
+                const audioUrl = URL.createObjectURL(audioBlob);
+
+                audioPlayer.src = audioUrl;
+                audioPlayer.classList.remove('hidden');
+                audioPlayer.play();
+
+            } catch (error) {
+                console.error('TTS Error:', error);
+                displayError(`Audio generate karne mein nakaam: ${error.message}`);
+                audioPlayer.classList.add('hidden'); // Error par player hide karein
+            } finally {
+                // UI ko reset karna
+                convertBtn.disabled = false;
+                buttonText.textContent = 'Audio Mein Badlein';
+                loadingSpinner.classList.add('hidden');
+            }
+        });
+
+        // Error message display karna
+        function displayError(message) {
+            errorMessageDiv.textContent = message;
+            errorMessageDiv.classList.remove('hidden');
+        }
+
+        // Shuru mein API Key load karna
+        window.addEventListener('load', loadApiKey);
+
+    </script>
+</body>
+</html>
