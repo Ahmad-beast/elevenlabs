@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ElevenLabs TTS App - Voice Search</title>
+    <title>ElevenLabs TTS App - Admin Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -37,11 +37,98 @@
         }
 
         @keyframes fadeInSlideUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        /* Admin Panel Styles */
+        .admin-panel-toggle {
+            position: fixed; /* Changed to fixed for better visibility */
+            top: 1rem;
+            left: 1rem;
+            background-color: rgba(45, 212, 191, 0.2);
+            color: #2dd4bf;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            z-index: 1001; /* Above admin panel */
+            transition: all 0.3s ease;
+            border: 1px solid rgba(45, 212, 191, 0.5);
+        }
+        .admin-panel-toggle:hover {
+            background-color: rgba(45, 212, 191, 0.4);
+        }
+        .admin-panel {
+            position: fixed;
+            top: 0;
+            left: -400px; /* Initially hidden off-screen */
+            width: 400px;
+            height: 100vh;
+            background-color: rgba(15, 23, 42, 0.95); /* Even darker slate with opacity */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-right: 1px solid #2dd4bf;
+            padding: 1.5rem;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            transition: left 0.4s ease-in-out;
+            overflow-y: auto;
+            color: #e2e8f0;
+        }
+        .admin-panel.open {
+            left: 0;
+        }
+        .admin-panel h2 {
+            color: #2dd4bf;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #2dd4bf;
+            padding-bottom: 0.5rem;
+        }
+        .admin-log-entry {
+            background-color: rgba(51, 65, 85, 0.4);
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            border-left: 3px solid #2dd4bf;
+        }
+        .admin-log-entry p { margin-bottom: 0.25rem; }
+        .admin-log-entry strong { color: #94a3b8; }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1002; /* Above admin panel toggle */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: #1e293b; /* slate-800 */
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .modal-content .label { color: #94a3b8; }
+        .modal-content .input { margin-bottom: 1rem; }
+        .modal-content .button { margin-top: 0.5rem; }
+
 
         .api-key-section {
             position: absolute;
@@ -52,167 +139,81 @@
             opacity: 0; 
             animation: fadeIn 0.5s ease-out 0.5s forwards;
         }
-        .api-key-section .label {
-            font-size: 0.8rem;
-            margin-bottom: 0.3rem;
-        }
-        .api-key-section .input {
-            padding: 0.6rem;
-            font-size: 0.9rem;
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
+        .api-key-section .label { font-size: 0.8rem; margin-bottom: 0.3rem; }
+        .api-key-section .input { padding: 0.6rem; font-size: 0.9rem; }
         
-        .label {
-            display: block;
-            margin-bottom: 0.75rem;
-            font-weight: 600;
-            color: #94a3b8;
-            font-size: 0.9rem;
-        }
+        .label { display: block; margin-bottom: 0.75rem; font-weight: 600; color: #94a3b8; font-size: 0.9rem; }
         .input, .textarea, .select {
-            width: 100%;
-            padding: 1rem;
-            background-color: rgba(51, 65, 85, 0.5);
-            border: 1px solid rgba(71, 85, 105, 0.8);
-            border-radius: 0.5rem;
-            color: #e2e8f0;
+            width: 100%; padding: 1rem; background-color: rgba(51, 65, 85, 0.5);
+            border: 1px solid rgba(71, 85, 105, 0.8); border-radius: 0.5rem; color: #e2e8f0;
             transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.3s ease, transform 0.2s ease;
         }
-        /* Specific style for search input */
-        #voiceSearchInput {
-            margin-bottom: 0.75rem; /* Space between search and select */
-            padding: 0.75rem 1rem; /* Adjusted padding */
-        }
-        .input::placeholder, .textarea::placeholder {
-            color: #64748b;
-        }
+        #voiceSearchInput { margin-bottom: 0.75rem; padding: 0.75rem 1rem; }
+        .input::placeholder, .textarea::placeholder { color: #64748b; }
         .input:focus, .textarea:focus, .select:focus {
-            outline: none;
-            border-color: #2dd4bf;
-            background-color: rgba(51, 65, 85, 0.7);
+            outline: none; border-color: #2dd4bf; background-color: rgba(51, 65, 85, 0.7);
             box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.3), 0 5px 15px rgba(45, 212, 191, 0.1);
             transform: translateY(-1px);
         }
         .button {
-            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-            color: white;
-            padding: 1rem 1.5rem;
-            border: none;
-            border-radius: 0.5rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); color: white;
+            padding: 1rem 1.5rem; border: none; border-radius: 0.5rem; font-weight: 700; cursor: pointer;
+            transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.05em;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); display: flex; align-items: center; justify-content: center;
         }
         .button:hover:not(:disabled) {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(20, 184, 166, 0.3);
+            transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 25px rgba(20, 184, 166, 0.3);
             background: linear-gradient(135deg, #0d9488 0%, #2dd4bf 100%);
         }
         .button:disabled {
-            background: rgba(71, 85, 105, 0.5);
-            color: rgba(148, 163, 184, 0.7);
-            cursor: not-allowed;
-            transform: translateY(0) scale(1);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background: rgba(71, 85, 105, 0.5); color: rgba(148, 163, 184, 0.7); cursor: not-allowed;
+            transform: translateY(0) scale(1); box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        .download-button {
-            background: linear-gradient(135deg, #581c87 0%, #9333ea 100%);
-        }
+        .download-button { background: linear-gradient(135deg, #581c87 0%, #9333ea 100%); }
         .download-button:hover:not(:disabled) {
              background: linear-gradient(135deg, #7e22ce 0%, #a855f7 100%);
              box-shadow: 0 8px 25px rgba(147, 51, 234, 0.3);
         }
         .audio-player, .error-message, .download-button.visible {
-            width: 100%;
-            margin-top: 1.5rem;
-            border-radius: 0.5rem;
-            opacity: 0;
-            transform: scale(0.95) translateY(10px);
-            animation: popIn 0.4s ease-out forwards;
+            width: 100%; margin-top: 1.5rem; border-radius: 0.5rem; opacity: 0;
+            transform: scale(0.95) translateY(10px); animation: popIn 0.4s ease-out forwards;
         }
         .audio-player.hidden, .error-message.hidden, .download-button.hidden {
-            opacity: 0;
-            transform: scale(0.95) translateY(10px);
-            animation: none;
+            opacity: 0; transform: scale(0.95) translateY(10px); animation: none;
         }
+        @keyframes popIn { to { opacity: 1; transform: scale(1) translateY(0); } }
 
-        @keyframes popIn {
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-         .audio-player::-webkit-media-controls-panel {
-            background-color: rgba(51, 65, 85, 0.8);
-            border-radius: 0.5rem;
-        }
+        .audio-player::-webkit-media-controls-panel { background-color: rgba(51, 65, 85, 0.8); border-radius: 0.5rem; }
         .audio-player::-webkit-media-controls-play-button,
         .audio-player::-webkit-media-controls-timeline,
         .audio-player::-webkit-media-controls-current-time-display,
         .audio-player::-webkit-media-controls-time-remaining-display,
         .audio-player::-webkit-media-controls-mute-button,
-        .audio-player::-webkit-media-controls-volume-slider {
-            filter: invert(1) sepia(0.1) saturate(0.5) hue-rotate(180deg);
-        }
+        .audio-player::-webkit-media-controls-volume-slider { filter: invert(1) sepia(0.1) saturate(0.5) hue-rotate(180deg); }
+        
         .error-message {
-            color: #f87171;
-            background-color: rgba(127, 29, 29, 0.3);
-            border: 1px solid rgba(220, 38, 38, 0.5);
-            padding: 1rem;
-            text-align: center;
-            font-weight: 500;
+            color: #f87171; background-color: rgba(127, 29, 29, 0.3); border: 1px solid rgba(220, 38, 38, 0.5);
+            padding: 1rem; text-align: center; font-weight: 500;
         }
         .loading-spinner {
-            border: 4px solid rgba(71, 85, 105, 0.3);
-            border-top: 4px solid #2dd4bf;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
+            border: 4px solid rgba(71, 85, 105, 0.3); border-top: 4px solid #2dd4bf; border-radius: 50%;
+            width: 20px; height: 20px; animation: spin 1s linear infinite;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
         h1 {
-            font-weight: 800;
-            color: #f1f5f9;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            margin-top: 3rem; 
-            opacity: 0;
-            animation: fadeIn 0.5s ease-out 0.2s forwards;
-            font-size: 2.25rem; 
+            font-weight: 800; color: #f1f5f9; text-shadow: 0 2px 4px rgba(0,0,0,0.3); margin-top: 3rem; 
+            opacity: 0; animation: fadeIn 0.5s ease-out 0.2s forwards; font-size: 2.25rem; 
         }
-        header p {
-            color: #94a3b8;
-            opacity: 0;
-            animation: fadeIn 0.5s ease-out 0.35s forwards;
-            font-size: 1.125rem; 
-        }
-        .form-section {
-            margin-top: 1.5rem;
-            opacity: 0;
-            animation: fadeInSlideUp 0.6s ease-out forwards;
-        }
+        header p { color: #94a3b8; opacity: 0; animation: fadeIn 0.5s ease-out 0.35s forwards; font-size: 1.125rem; }
+        
+        .form-section { margin-top: 1.5rem; opacity: 0; animation: fadeInSlideUp 0.6s ease-out forwards; }
         .container > .form-section:nth-of-type(1) { animation-delay: 0.3s; } 
         .container > .form-section:nth-of-type(2) { animation-delay: 0.4s; } 
         .container > .form-section:nth-of-type(3) { animation-delay: 0.5s; } 
+        .container > .form-section:nth-of-type(4) { animation-delay: 0.6s; } /* For Name input */
         
-        #convertBtn {
-             opacity: 0;
-             animation: fadeInSlideUp 0.6s ease-out 0.6s forwards;
-        }
+        #convertBtn { opacity: 0; animation: fadeInSlideUp 0.6s ease-out 0.7s forwards; } /* Adjusted delay */
 
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(30, 41, 59, 0.5); border-radius: 10px; }
@@ -228,39 +229,59 @@
             .button { padding: 0.875rem 1.25rem; font-size: 0.875rem; }
             .input, .textarea, .select { padding: 0.875rem; }
             #voiceSearchInput { padding: 0.75rem 0.875rem; }
+            .admin-panel { width: 300px; left: -300px; } /* Smaller admin panel */
         }
 
         @media (max-width: 480px) { 
             body { padding: 0.5rem; align-items: flex-start; }
-            .container { padding: 1.5rem; margin: 0.5rem; margin-top: 1rem; }
-            h1 { font-size: 1.5rem; margin-top: 0; /* Adjusted as API key is stacked */ }
-            header { margin-bottom: 1.5rem; /* Reduce margin below header */ }
+            .container { padding: 1.5rem; margin: 0.5rem; margin-top: 4rem; /* Space for fixed admin toggle */ }
+            h1 { font-size: 1.5rem; margin-top: 0; }
+            header { margin-bottom: 1.5rem; }
             header p { font-size: 0.875rem; }
             .api-key-section {
-                position: relative; 
-                width: 100%;
-                max-width: none;
-                top: auto;
-                right: auto;
-                margin-bottom: 1.5rem; 
-                animation: fadeInSlideUp 0.6s ease-out 0.1s forwards; 
+                position: relative; width: 100%; max-width: none; top: auto; right: auto;
+                margin-bottom: 1.5rem; animation: fadeInSlideUp 0.6s ease-out 0.1s forwards; 
             }
             .container > header { animation-delay: 0s; }
-            /* API key section is now first in flow, so it gets the first animation delay if we consider it a form-like section */
-            /* The original .form-section elements are after the header */
             .container > .form-section:nth-of-type(1) { animation-delay: 0.2s; } 
             .container > .form-section:nth-of-type(2) { animation-delay: 0.3s; } 
             .container > .form-section:nth-of-type(3) { animation-delay: 0.4s; } 
-            #convertBtn { animation-delay: 0.5s; }
+            .container > .form-section:nth-of-type(4) { animation-delay: 0.5s; }
+            #convertBtn { animation-delay: 0.6s; }
 
             .form-section { margin-top: 1rem; }
             .button { padding: 0.75rem 1rem; font-size: 0.8rem; }
             .label { font-size: 0.85rem; }
             #voiceSearchInput { padding: 0.75rem; }
+            .admin-panel { width: 100%; left: -100%; border-right: none; } /* Full width admin panel */
+            .admin-panel.open { left: 0; }
+            .admin-panel-toggle { padding: 0.6rem; font-size: 0.9rem;}
         }
     </style>
 </head>
 <body>
+    <button id="adminPanelToggle" class="admin-panel-toggle">
+        <i class="fas fa-cogs"></i> Admin
+    </button>
+
+    <div id="adminPanel" class="admin-panel">
+        <h2>Admin Logs</h2>
+        <div id="adminLogsContainer">
+            <p>Login to view logs.</p>
+        </div>
+    </div>
+
+    <div id="adminPasswordModal" class="modal">
+        <div class="modal-content">
+            <h3 class="text-xl font-semibold mb-4 text-slate-200">Admin Login</h3>
+            <label for="adminPassword" class="label text-left">Password:</label>
+            <input type="password" id="adminPassword" class="input bg-slate-700 border-slate-600" placeholder="Enter admin password">
+            <p id="adminPasswordError" class="text-red-400 text-sm mt-1 mb-3 hidden"></p>
+            <button id="adminLoginBtn" class="button w-full">Login</button>
+            <button id="adminModalCloseBtn" class="button w-full bg-slate-600 hover:bg-slate-500 mt-2">Close</button>
+        </div>
+    </div>
+
     <div class="container">
         <div class="api-key-section">
             <label for="apiKey" class="label">ElevenLabs API Key:</label>
@@ -274,8 +295,13 @@
         </header>
 
         <div class="form-section mb-6">
+            <label for="userName" class="label">Your Name (for logging):</label>
+            <input type="text" id="userName" class="input" placeholder="Enter your name">
+        </div>
+
+        <div class="form-section mb-6">
             <label for="textToConvert" class="label">Text to Convert:</label>
-            <textarea id="textToConvert" rows="5" class="textarea" placeholder="Enter your text here..."></textarea>
+            <textarea id="textToConvert" rows="4" class="textarea" placeholder="Enter your text here..."></textarea>
         </div>
 
         <div class="form-section mb-6">
@@ -309,11 +335,18 @@
         <div id="errorMessage" class="error-message hidden mt-4"></div>
     </div>
 
-    <script>
+    <script type="module">
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, query, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        // import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"; // For debugging
+
         // DOM Elements
         const apiKeyInput = document.getElementById('apiKey');
+        const userNameInput = document.getElementById('userName'); // New name input
         const textToConvertInput = document.getElementById('textToConvert');
-        const voiceSearchInput = document.getElementById('voiceSearchInput'); // New search input
+        const voiceSearchInput = document.getElementById('voiceSearchInput'); 
         const voiceSelect = document.getElementById('voiceSelect');
         const modelSelect = document.getElementById('modelSelect');
         const convertBtn = document.getElementById('convertBtn');
@@ -323,10 +356,130 @@
         const downloadBtn = document.getElementById('downloadBtn');
         const errorMessageDiv = document.getElementById('errorMessage');
 
-        const ELEVENLABS_API_BASE_URL = 'https://api.elevenlabs.io/v1';
-        let currentAudioBlobUrl = null; 
-        let allVoices = []; // To store all fetched voices for searching
+        // Admin Panel Elements
+        const adminPanelToggle = document.getElementById('adminPanelToggle');
+        const adminPanel = document.getElementById('adminPanel');
+        const adminLogsContainer = document.getElementById('adminLogsContainer');
+        const adminPasswordModal = document.getElementById('adminPasswordModal');
+        const adminPasswordInput = document.getElementById('adminPassword');
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        const adminModalCloseBtn = document.getElementById('adminModalCloseBtn');
+        const adminPasswordError = document.getElementById('adminPasswordError');
 
+        const ELEVENLABS_API_BASE_URL = 'https://api.elevenlabs.io/v1';
+        const ADMIN_PASSWORD = "Monopoly1.@"; // The admin password
+        let currentAudioBlobUrl = null; 
+        let allVoices = []; 
+        let isAdminLoggedIn = false;
+        let unsubscribeLogs = null; // To store unsubscribe function for logs listener
+
+        // --- Firebase Setup ---
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+            apiKey: "AIzaSyDtKupraU6Ug-m4smjBI0AriDnTHxBqpfY", // Replace with your actual config
+            authDomain: "myelevenlabs-18ad9.firebaseapp.com",
+            projectId: "myelevenlabs-18ad9",
+            storageBucket: "myelevenlabs-18ad9.firebasestorage.app",
+            messagingSenderId: "892386214766",
+            appId: "1:892386214766:web:0000cf3c2cec4c0337777f"
+        };
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-elevenlabs-app';
+
+        let app, auth, db;
+
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+            // setLogLevel('debug'); // Optional: for Firebase debugging
+            console.log("Firebase initialized successfully. App ID:", appId);
+        } catch (error) {
+            console.error("Firebase initialization error:", error);
+            displayError("Could not connect to logging service. Please try again later.");
+        }
+        
+        // Firebase Authentication
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("User is signed in:", user.uid);
+            } else {
+                console.log("User is signed out. Attempting anonymous sign-in.");
+                signInAnonymously(auth).catch((error) => {
+                    console.error("Anonymous sign-in error:", error);
+                    displayError("Authentication failed. Logging might not work.");
+                });
+            }
+        });
+
+
+        // --- Admin Panel Logic ---
+        adminPanelToggle.addEventListener('click', () => {
+            if (isAdminLoggedIn) {
+                adminPanel.classList.toggle('open');
+            } else {
+                adminPasswordModal.classList.add('visible');
+                adminPasswordInput.focus();
+            }
+        });
+
+        adminModalCloseBtn.addEventListener('click', () => {
+            adminPasswordModal.classList.remove('visible');
+            adminPasswordInput.value = '';
+            adminPasswordError.classList.add('hidden');
+        });
+
+        adminLoginBtn.addEventListener('click', () => {
+            if (adminPasswordInput.value === ADMIN_PASSWORD) {
+                isAdminLoggedIn = true;
+                adminPasswordModal.classList.remove('visible');
+                adminPanel.classList.add('open');
+                adminPasswordInput.value = '';
+                adminPasswordError.classList.add('hidden');
+                fetchAdminLogs();
+            } else {
+                adminPasswordError.textContent = "Incorrect password.";
+                adminPasswordError.classList.remove('hidden');
+            }
+        });
+
+        async function fetchAdminLogs() {
+            if (!db || !isAdminLoggedIn) return;
+            adminLogsContainer.innerHTML = '<p>Loading logs...</p>';
+
+            const logsCollectionPath = `artifacts/${appId}/public/data/voiceGenerationLogs`;
+            const q = query(collection(db, logsCollectionPath)); // Add orderBy('timestamp', 'desc') if you add a serverTimestamp
+
+            if (unsubscribeLogs) unsubscribeLogs(); // Unsubscribe from previous listener
+
+            unsubscribeLogs = onSnapshot(q, (querySnapshot) => {
+                if (querySnapshot.empty) {
+                    adminLogsContainer.innerHTML = '<p>No voice generation logs found.</p>';
+                    return;
+                }
+                adminLogsContainer.innerHTML = ''; // Clear previous logs
+                querySnapshot.forEach((doc) => {
+                    const log = doc.data();
+                    const logEntry = document.createElement('div');
+                    logEntry.classList.add('admin-log-entry');
+                    
+                    const timestamp = log.timestamp?.toDate ? log.timestamp.toDate().toLocaleString() : 'N/A';
+                    const textSnippet = log.text ? (log.text.length > 50 ? log.text.substring(0, 50) + '...' : log.text) : 'N/A';
+
+                    logEntry.innerHTML = `
+                        <p><strong>User:</strong> ${log.userName || 'Anonymous'}</p>
+                        <p><strong>Voice ID:</strong> ${log.voiceId || 'N/A'}</p>
+                        <p><strong>Model:</strong> ${log.modelId || 'N/A'}</p>
+                        <p><strong>Text:</strong> ${textSnippet}</p>
+                        <p><strong>Time:</strong> ${timestamp}</p>
+                    `;
+                    adminLogsContainer.appendChild(logEntry);
+                });
+            }, (error) => {
+                console.error("Error fetching logs: ", error);
+                adminLogsContainer.innerHTML = '<p class="text-red-400">Error loading logs.</p>';
+            });
+        }
+
+        // --- Core App Logic ---
         function loadApiKey() {
             const savedKey = localStorage.getItem('elevenLabsApiKey');
             if (savedKey) {
@@ -335,18 +488,20 @@
                 updateConvertButtonState();
             } else {
                 updateConvertButtonState();
-                voiceSearchInput.disabled = true; // Disable search if no API key
+                voiceSearchInput.disabled = true;
             }
         }
 
         function updateConvertButtonState() {
-            if (apiKeyInput.value.trim() && textToConvertInput.value.trim()) {
+            // Also check for user name
+            if (apiKeyInput.value.trim() && textToConvertInput.value.trim() && userNameInput.value.trim()) {
                 convertBtn.disabled = false;
             } else {
                 convertBtn.disabled = true;
             }
         }
 
+        userNameInput.addEventListener('input', updateConvertButtonState);
         textToConvertInput.addEventListener('input', updateConvertButtonState);
         
         apiKeyInput.addEventListener('input', () => {
@@ -354,30 +509,27 @@
             if (key) {
                 localStorage.setItem('elevenLabsApiKey', key);
                 fetchVoices(key);
-                updateConvertButtonState();
-                voiceSearchInput.disabled = false; // Enable search on API key input
+                voiceSearchInput.disabled = false; 
             } else {
                 localStorage.removeItem('elevenLabsApiKey');
-                allVoices = []; // Clear stored voices
-                populateVoiceSelect([]); // Clear dropdown
+                allVoices = []; 
+                populateVoiceSelect([]); 
                 voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Enter API Key first...</option>';
                 voiceSelect.disabled = true;
-                voiceSearchInput.disabled = true; // Disable search
-                voiceSearchInput.value = ''; // Clear search input
-                updateConvertButtonState();
+                voiceSearchInput.disabled = true; 
+                voiceSearchInput.value = ''; 
                 downloadBtn.classList.add('hidden');
                 downloadBtn.classList.remove('visible');
                 audioPlayer.classList.add('hidden');
                 if(currentAudioBlobUrl) URL.revokeObjectURL(currentAudioBlobUrl);
                 currentAudioBlobUrl = null;
             }
+            updateConvertButtonState(); // Update button state based on API key and other fields
         });
 
-        // Event listener for voice search input
         voiceSearchInput.addEventListener('input', () => {
             const searchTerm = voiceSearchInput.value.toLowerCase();
-            if (!allVoices.length) return; // Don't search if no voices loaded
-
+            if (!allVoices.length) return; 
             const filteredVoices = allVoices.filter(voice => 
                 voice.name.toLowerCase().includes(searchTerm)
             );
@@ -387,16 +539,12 @@
         async function fetchVoices(apiKey) {
             if (!apiKey) {
                 voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">API Key required</option>';
-                voiceSelect.disabled = true;
-                voiceSearchInput.disabled = true;
-                return;
+                voiceSelect.disabled = true; voiceSearchInput.disabled = true; return;
             }
-            voiceSelect.disabled = true;
-            voiceSearchInput.disabled = true; // Disable search while loading
-            voiceSearchInput.value = ''; // Clear search on new fetch
+            voiceSelect.disabled = true; voiceSearchInput.disabled = true; 
+            voiceSearchInput.value = ''; 
             voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Loading voices...</option>';
-            errorMessageDiv.classList.add('hidden');
-            errorMessageDiv.classList.remove('visible');
+            errorMessageDiv.classList.add('hidden'); errorMessageDiv.classList.remove('visible');
 
             try {
                 const response = await fetch(`${ELEVENLABS_API_BASE_URL}/voices`, {
@@ -404,74 +552,87 @@
                 });
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({ detail: { message: response.statusText } }));
-                    allVoices = []; // Clear voices on error
+                    allVoices = []; 
                     throw new Error(`Error fetching voices (${response.status}): ${errorData.detail?.message || response.statusText}`);
                 }
                 const data = await response.json();
-                allVoices = data.voices || []; // Store all voices
-                populateVoiceSelect(allVoices); // Populate with all voices initially
-                voiceSelect.disabled = false;
-                voiceSearchInput.disabled = false; // Enable search after loading
-
+                allVoices = data.voices || []; 
+                populateVoiceSelect(allVoices); 
+                voiceSelect.disabled = false; voiceSearchInput.disabled = false; 
             } catch (error) {
                 console.error('Fetch voices error:', error);
-                allVoices = [];
-                populateVoiceSelect([]);
+                allVoices = []; populateVoiceSelect([]);
                 voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Failed to fetch voices</option>';
                 voiceSearchInput.disabled = true;
                 displayError(`Failed to load voices: ${error.message}`);
             }
         }
 
-        // Modified to accept a list of voices to display
         function populateVoiceSelect(voicesToDisplay) {
             voiceSelect.innerHTML = ''; 
             if (voicesToDisplay && voicesToDisplay.length > 0) {
                 voicesToDisplay.forEach(voice => {
                     const option = document.createElement('option');
                     option.value = voice.voice_id;
-                    option.style.color = '#1e293b';
-                    option.style.backgroundColor = '#f1f5f9';
+                    option.style.color = '#1e293b'; option.style.backgroundColor = '#f1f5f9';
                     option.textContent = `${voice.name} (${voice.labels?.description || 'Default'})`;
                     voiceSelect.appendChild(option);
                 });
             } else {
-                // Check if there was a search term to differentiate "No results" from "No voices loaded"
                 if (voiceSearchInput.value && allVoices.length > 0) {
                      voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">No voices match your search</option>';
                 } else if (!allVoices.length && apiKeyInput.value.trim()) {
                      voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">No voices found for this API key</option>';
                 } else if (!apiKeyInput.value.trim()){
                      voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Enter API Key first...</option>';
-                } else { // Default if allVoices is empty for other reasons (e.g. API error handled before this)
+                } else { 
                      voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">No voices available</option>';
                 }
             }
         }
 
+        // Function to log generation to Firestore
+        async function logVoiceGeneration(userName, voiceId, modelId, text) {
+            if (!db || !auth.currentUser) {
+                console.warn("Firestore not initialized or user not authenticated. Skipping log.");
+                return;
+            }
+            try {
+                const logsCollectionPath = `artifacts/${appId}/public/data/voiceGenerationLogs`;
+                await addDoc(collection(db, logsCollectionPath), {
+                    userName: userName,
+                    voiceId: voiceId,
+                    modelId: modelId,
+                    text: text, // Storing full text, can be truncated for display
+                    timestamp: serverTimestamp(), // Uses server time
+                    userId: auth.currentUser.uid // Log the authenticated user's ID
+                });
+                console.log("Voice generation logged.");
+            } catch (error) {
+                console.error("Error logging voice generation: ", error);
+            }
+        }
+
         convertBtn.addEventListener('click', async () => {
             const apiKey = apiKeyInput.value.trim();
+            const userName = userNameInput.value.trim(); // Get user name
             const text = textToConvertInput.value.trim();
             const voiceId = voiceSelect.value;
             const modelId = modelSelect.value;
 
             if (!apiKey) { displayError('ElevenLabs API Key is required.'); return; }
+            if (!userName) { displayError('Please enter your name for logging.'); return; } // Name validation
             if (!text) { displayError('Please enter text to convert.'); return; }
             if (!voiceId) { displayError('Please select a voice.'); return; }
 
-            convertBtn.disabled = true;
-            buttonText.textContent = 'Converting...';
+            convertBtn.disabled = true; buttonText.textContent = 'Converting...';
             loadingSpinner.classList.remove('hidden');
-            
-            audioPlayer.classList.add('hidden');
-            downloadBtn.classList.add('hidden');
-            downloadBtn.classList.remove('visible'); 
-            errorMessageDiv.classList.add('hidden');
+            audioPlayer.classList.add('hidden'); downloadBtn.classList.add('hidden');
+            downloadBtn.classList.remove('visible'); errorMessageDiv.classList.add('hidden');
             errorMessageDiv.classList.remove('visible');
 
             if(currentAudioBlobUrl) URL.revokeObjectURL(currentAudioBlobUrl);
-            currentAudioBlobUrl = null;
-            audioPlayer.src = ''; 
+            currentAudioBlobUrl = null; audioPlayer.src = ''; 
             
             try {
                 const ttsUrl = `${ELEVENLABS_API_BASE_URL}/text-to-speech/${voiceId}`;
@@ -495,18 +656,19 @@
 
                 const audioBlob = await response.blob();
                 currentAudioBlobUrl = URL.createObjectURL(audioBlob);
-
                 audioPlayer.src = currentAudioBlobUrl;
                 audioPlayer.classList.remove('hidden'); 
                 downloadBtn.classList.remove('hidden'); 
                 downloadBtn.classList.add('visible'); 
 
+                // Log to Firestore
+                await logVoiceGeneration(userName, voiceId, modelId, text);
+
             } catch (error) {
                 console.error('TTS Error:', error);
                 displayError(`Failed to generate audio: ${error.message}`);
                 audioPlayer.classList.add('hidden'); 
-                downloadBtn.classList.add('hidden');
-                downloadBtn.classList.remove('visible');
+                downloadBtn.classList.add('hidden'); downloadBtn.classList.remove('visible');
             } finally {
                 updateConvertButtonState();
                 buttonText.textContent = 'Convert to Audio';
@@ -519,12 +681,8 @@
                 const a = document.createElement('a');
                 a.href = currentAudioBlobUrl;
                 a.download = `elevenlabs_audio_${Date.now()}.mp3`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            } else {
-                displayError("No audio available to download.");
-            }
+                document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            } else { displayError("No audio available to download."); }
         });
 
         function displayError(message) {
@@ -535,8 +693,12 @@
 
         window.addEventListener('load', () => {
             loadApiKey();
+             // Check if Firebase was initialized
+            if (!app || !auth || !db) {
+                console.warn("Firebase is not available. Admin panel and logging will be disabled.");
+                adminPanelToggle.style.display = 'none'; // Hide admin toggle if Firebase failed
+            }
         });
-
     </script>
 </body>
 </html>
