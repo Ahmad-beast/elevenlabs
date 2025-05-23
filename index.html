@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ElevenLabs TTS App - Animated & Responsive</title>
+    <title>ElevenLabs TTS App - Voice Search</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -13,9 +13,9 @@
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Align items to start for scroll on small screens */
+            align-items: flex-start; 
             min-height: 100vh;
-            padding: 1rem; /* Base padding */
+            padding: 1rem; 
             color: #cbd5e1;
             overflow-x: hidden; 
         }
@@ -82,6 +82,11 @@
             border-radius: 0.5rem;
             color: #e2e8f0;
             transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.3s ease, transform 0.2s ease;
+        }
+        /* Specific style for search input */
+        #voiceSearchInput {
+            margin-bottom: 0.75rem; /* Space between search and select */
+            padding: 0.75rem 1rem; /* Adjusted padding */
         }
         .input::placeholder, .textarea::placeholder {
             color: #64748b;
@@ -184,27 +189,25 @@
             font-weight: 800;
             color: #f1f5f9;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            margin-top: 3rem; /* Default margin for larger screens */
+            margin-top: 3rem; 
             opacity: 0;
             animation: fadeIn 0.5s ease-out 0.2s forwards;
-            font-size: 2.25rem; /* Tailwind text-4xl */
+            font-size: 2.25rem; 
         }
         header p {
             color: #94a3b8;
             opacity: 0;
             animation: fadeIn 0.5s ease-out 0.35s forwards;
-            font-size: 1.125rem; /* Tailwind text-lg */
+            font-size: 1.125rem; 
         }
         .form-section {
             margin-top: 1.5rem;
             opacity: 0;
             animation: fadeInSlideUp 0.6s ease-out forwards;
         }
-        /* Stagger animation for form sections */
-        /* These selectors need to be more specific to avoid conflict with API key section if it were a .form-section */
-        .container > .form-section:nth-of-type(1) { animation-delay: 0.3s; } /* Text to Convert */
-        .container > .form-section:nth-of-type(2) { animation-delay: 0.4s; } /* Select Voice */
-        .container > .form-section:nth-of-type(3) { animation-delay: 0.5s; } /* Select Model */
+        .container > .form-section:nth-of-type(1) { animation-delay: 0.3s; } 
+        .container > .form-section:nth-of-type(2) { animation-delay: 0.4s; } 
+        .container > .form-section:nth-of-type(3) { animation-delay: 0.5s; } 
         
         #convertBtn {
              opacity: 0;
@@ -216,82 +219,45 @@
         ::-webkit-scrollbar-thumb { background: #2dd4bf; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #14b8a6; }
 
-        /* Responsive Adjustments */
-        @media (max-width: 768px) { /* md breakpoint */
-            .container {
-                padding: 2rem; /* Reduced padding */
-                margin: 1rem; /* Reduced margin */
-            }
-            h1 {
-                font-size: 1.875rem; /* Tailwind text-3xl */
-                margin-top: 4.5rem; /* Increased margin to avoid overlap with API key section */
-            }
-            header p {
-                font-size: 1rem; /* Tailwind text-base */
-            }
-            .api-key-section {
-                width: auto; /* Allow it to shrink */
-                max-width: 200px; /* Max width for smaller screens */
-                right: 1rem;
-                top: 1rem;
-            }
-            .api-key-section .input {
-                font-size: 0.8rem;
-            }
-            .button {
-                padding: 0.875rem 1.25rem; /* Slightly smaller buttons */
-                font-size: 0.875rem; /* Smaller font size for buttons */
-            }
-            .input, .textarea, .select {
-                padding: 0.875rem; /* Smaller padding for inputs */
-            }
+        @media (max-width: 768px) { 
+            .container { padding: 2rem; margin: 1rem; }
+            h1 { font-size: 1.875rem; margin-top: 4.5rem; }
+            header p { font-size: 1rem; }
+            .api-key-section { width: auto; max-width: 200px; right: 1rem; top: 1rem; }
+            .api-key-section .input { font-size: 0.8rem; }
+            .button { padding: 0.875rem 1.25rem; font-size: 0.875rem; }
+            .input, .textarea, .select { padding: 0.875rem; }
+            #voiceSearchInput { padding: 0.75rem 0.875rem; }
         }
 
-        @media (max-width: 480px) { /* sm breakpoint */
-            body {
-                padding: 0.5rem; /* Further reduce body padding */
-                align-items: flex-start; /* Ensure content starts from top */
-            }
-            .container {
-                padding: 1.5rem; /* Further reduced padding */
-                margin: 0.5rem;
-                margin-top: 1rem; /* Ensure some space at the top */
-            }
-            h1 {
-                font-size: 1.5rem; /* Tailwind text-2xl */
-                margin-top: 6rem; /* Further increased margin for API key */
-            }
-            header p {
-                font-size: 0.875rem; /* Tailwind text-sm */
-            }
+        @media (max-width: 480px) { 
+            body { padding: 0.5rem; align-items: flex-start; }
+            .container { padding: 1.5rem; margin: 0.5rem; margin-top: 1rem; }
+            h1 { font-size: 1.5rem; margin-top: 0; /* Adjusted as API key is stacked */ }
+            header { margin-bottom: 1.5rem; /* Reduce margin below header */ }
+            header p { font-size: 0.875rem; }
             .api-key-section {
-                position: relative; /* Stack API key section */
+                position: relative; 
                 width: 100%;
                 max-width: none;
                 top: auto;
                 right: auto;
-                margin-bottom: 1.5rem; /* Space below API key section when stacked */
-                animation: fadeInSlideUp 0.6s ease-out 0.1s forwards; /* Animate it like other form sections */
+                margin-bottom: 1.5rem; 
+                animation: fadeInSlideUp 0.6s ease-out 0.1s forwards; 
             }
-             /* Adjust animation delays for form sections since API key is now part of the flow */
             .container > header { animation-delay: 0s; }
-            .container > .form-section:nth-of-type(1) { animation-delay: 0.2s; }
-            .container > .form-section:nth-of-type(2) { animation-delay: 0.3s; }
-            .container > .form-section:nth-of-type(3) { animation-delay: 0.4s; }
+            /* API key section is now first in flow, so it gets the first animation delay if we consider it a form-like section */
+            /* The original .form-section elements are after the header */
+            .container > .form-section:nth-of-type(1) { animation-delay: 0.2s; } 
+            .container > .form-section:nth-of-type(2) { animation-delay: 0.3s; } 
+            .container > .form-section:nth-of-type(3) { animation-delay: 0.4s; } 
             #convertBtn { animation-delay: 0.5s; }
 
-            .form-section {
-                margin-top: 1rem;
-            }
-            .button {
-                padding: 0.75rem 1rem;
-                font-size: 0.8rem;
-            }
-             .label {
-                font-size: 0.85rem;
-            }
+            .form-section { margin-top: 1rem; }
+            .button { padding: 0.75rem 1rem; font-size: 0.8rem; }
+            .label { font-size: 0.85rem; }
+            #voiceSearchInput { padding: 0.75rem; }
         }
-
     </style>
 </head>
 <body>
@@ -314,7 +280,8 @@
 
         <div class="form-section mb-6">
             <label for="voiceSelect" class="label">Select Voice:</label>
-            <select id="voiceSelect" class="select" disabled>
+            <input type="text" id="voiceSearchInput" class="input" placeholder="Search voices..." disabled>
+            <select id="voiceSelect" class="select mt-2" disabled>
                 <option value="" style="color: #94a3b8;">Enter API Key first...</option>
             </select>
         </div>
@@ -346,6 +313,7 @@
         // DOM Elements
         const apiKeyInput = document.getElementById('apiKey');
         const textToConvertInput = document.getElementById('textToConvert');
+        const voiceSearchInput = document.getElementById('voiceSearchInput'); // New search input
         const voiceSelect = document.getElementById('voiceSelect');
         const modelSelect = document.getElementById('modelSelect');
         const convertBtn = document.getElementById('convertBtn');
@@ -357,6 +325,7 @@
 
         const ELEVENLABS_API_BASE_URL = 'https://api.elevenlabs.io/v1';
         let currentAudioBlobUrl = null; 
+        let allVoices = []; // To store all fetched voices for searching
 
         function loadApiKey() {
             const savedKey = localStorage.getItem('elevenLabsApiKey');
@@ -366,6 +335,7 @@
                 updateConvertButtonState();
             } else {
                 updateConvertButtonState();
+                voiceSearchInput.disabled = true; // Disable search if no API key
             }
         }
 
@@ -385,10 +355,15 @@
                 localStorage.setItem('elevenLabsApiKey', key);
                 fetchVoices(key);
                 updateConvertButtonState();
+                voiceSearchInput.disabled = false; // Enable search on API key input
             } else {
                 localStorage.removeItem('elevenLabsApiKey');
+                allVoices = []; // Clear stored voices
+                populateVoiceSelect([]); // Clear dropdown
                 voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Enter API Key first...</option>';
                 voiceSelect.disabled = true;
+                voiceSearchInput.disabled = true; // Disable search
+                voiceSearchInput.value = ''; // Clear search input
                 updateConvertButtonState();
                 downloadBtn.classList.add('hidden');
                 downloadBtn.classList.remove('visible');
@@ -398,17 +373,30 @@
             }
         });
 
+        // Event listener for voice search input
+        voiceSearchInput.addEventListener('input', () => {
+            const searchTerm = voiceSearchInput.value.toLowerCase();
+            if (!allVoices.length) return; // Don't search if no voices loaded
+
+            const filteredVoices = allVoices.filter(voice => 
+                voice.name.toLowerCase().includes(searchTerm)
+            );
+            populateVoiceSelect(filteredVoices);
+        });
+
         async function fetchVoices(apiKey) {
             if (!apiKey) {
                 voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">API Key required</option>';
                 voiceSelect.disabled = true;
+                voiceSearchInput.disabled = true;
                 return;
             }
             voiceSelect.disabled = true;
+            voiceSearchInput.disabled = true; // Disable search while loading
+            voiceSearchInput.value = ''; // Clear search on new fetch
             voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Loading voices...</option>';
             errorMessageDiv.classList.add('hidden');
             errorMessageDiv.classList.remove('visible');
-
 
             try {
                 const response = await fetch(`${ELEVENLABS_API_BASE_URL}/voices`, {
@@ -416,22 +404,30 @@
                 });
                 if (!response.ok) {
                     const errorData = await response.json().catch(() => ({ detail: { message: response.statusText } }));
+                    allVoices = []; // Clear voices on error
                     throw new Error(`Error fetching voices (${response.status}): ${errorData.detail?.message || response.statusText}`);
                 }
                 const data = await response.json();
-                populateVoiceSelect(data.voices);
+                allVoices = data.voices || []; // Store all voices
+                populateVoiceSelect(allVoices); // Populate with all voices initially
                 voiceSelect.disabled = false;
+                voiceSearchInput.disabled = false; // Enable search after loading
+
             } catch (error) {
                 console.error('Fetch voices error:', error);
+                allVoices = [];
+                populateVoiceSelect([]);
                 voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Failed to fetch voices</option>';
+                voiceSearchInput.disabled = true;
                 displayError(`Failed to load voices: ${error.message}`);
             }
         }
 
-        function populateVoiceSelect(voices) {
+        // Modified to accept a list of voices to display
+        function populateVoiceSelect(voicesToDisplay) {
             voiceSelect.innerHTML = ''; 
-            if (voices && voices.length > 0) {
-                voices.forEach(voice => {
+            if (voicesToDisplay && voicesToDisplay.length > 0) {
+                voicesToDisplay.forEach(voice => {
                     const option = document.createElement('option');
                     option.value = voice.voice_id;
                     option.style.color = '#1e293b';
@@ -440,7 +436,16 @@
                     voiceSelect.appendChild(option);
                 });
             } else {
-                voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">No voices found</option>';
+                // Check if there was a search term to differentiate "No results" from "No voices loaded"
+                if (voiceSearchInput.value && allVoices.length > 0) {
+                     voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">No voices match your search</option>';
+                } else if (!allVoices.length && apiKeyInput.value.trim()) {
+                     voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">No voices found for this API key</option>';
+                } else if (!apiKeyInput.value.trim()){
+                     voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Enter API Key first...</option>';
+                } else { // Default if allVoices is empty for other reasons (e.g. API error handled before this)
+                     voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">No voices available</option>';
+                }
             }
         }
 
@@ -463,7 +468,6 @@
             downloadBtn.classList.remove('visible'); 
             errorMessageDiv.classList.add('hidden');
             errorMessageDiv.classList.remove('visible');
-
 
             if(currentAudioBlobUrl) URL.revokeObjectURL(currentAudioBlobUrl);
             currentAudioBlobUrl = null;
