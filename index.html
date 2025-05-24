@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ElevenLabs TTS App - Admin User Management</title>
+    <title>ElevenLabs TTS App - Hardcoded API Key</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -47,7 +47,7 @@
         }
         .admin-panel-toggle:hover { background-color: rgba(45, 212, 191, 0.4); }
         .admin-panel { 
-            position: fixed; top: 0; left: -450px; /* Increased width */ width: 450px; height: 100vh;
+            position: fixed; top: 0; left: -450px; width: 450px; height: 100vh;
             background-color: rgba(15, 23, 42, 0.97); backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); border-right: 1px solid #2dd4bf; padding: 1.5rem;
             box-shadow: 5px 0 15px rgba(0,0,0,0.3); z-index: 1000; transition: left 0.4s ease-in-out;
@@ -152,11 +152,13 @@
             color: #94a3b8; opacity: 0; animation: fadeIn 0.5s ease-out 0.35s forwards; font-size: 1.125rem;
         }
         .form-section { margin-top: 1.5rem; opacity: 0; animation: fadeInSlideUp 0.6s ease-out forwards; }
-        .app-container > .form-section:nth-of-type(1) { animation-delay: 0.3s; } 
-        .app-container > .form-section:nth-of-type(2) { animation-delay: 0.4s; } 
-        .app-container > .form-section:nth-of-type(3) { animation-delay: 0.5s; } 
-        .app-container > .form-section:nth-of-type(4) { animation-delay: 0.6s; }
-        #convertBtn { opacity: 0; animation: fadeInSlideUp 0.6s ease-out 0.7s forwards; }
+        /* Adjusted nth-of-type selectors because API key section is removed */
+        .app-container > .form-section:nth-of-type(1) { animation-delay: 0.3s; } /* Text to Convert */
+        .app-container > .form-section:nth-of-type(2) { animation-delay: 0.4s; } /* Select Voice */
+        .app-container > .form-section:nth-of-type(3) { animation-delay: 0.5s; } /* Select Model */
+        
+        #convertBtn { opacity: 0; animation: fadeInSlideUp 0.6s ease-out 0.6s forwards; } 
+
 
         /* Responsive adjustments */
         @media (max-width: 768px) { 
@@ -166,7 +168,7 @@
             .user-info { font-size:0.8rem; right: 1rem; top: 1rem;}
             .button { padding: 0.875rem 1.25rem; font-size: 0.875rem; }
             .input, .textarea, .select { padding: 0.875rem; }
-            .admin-panel { width: 320px; left: -320px; } /* Adjusted width */
+            .admin-panel { width: 320px; left: -320px; } 
         }
         @media (max-width: 480px) { 
             body { padding: 0.5rem; }
@@ -193,42 +195,24 @@
         
         <h3>Create New User</h3>
         <form id="adminCreateUserForm" class="space-y-3">
-            <div>
-                <label for="adminNewUserName" class="label">Name:</label>
-                <input type="text" id="adminNewUserName" class="input" required>
-            </div>
-            <div>
-                <label for="adminNewUserEmail" class="label">Email:</label>
-                <input type="email" id="adminNewUserEmail" class="input" required>
-            </div>
-            <div>
-                <label for="adminNewUserPassword" class="label">Password:</label>
-                <input type="password" id="adminNewUserPassword" class="input" required>
-            </div>
+            <div><label for="adminNewUserName" class="label">Name:</label><input type="text" id="adminNewUserName" class="input" required></div>
+            <div><label for="adminNewUserEmail" class="label">Email:</label><input type="email" id="adminNewUserEmail" class="input" required></div>
+            <div><label for="adminNewUserPassword" class="label">Password:</label><input type="password" id="adminNewUserPassword" class="input" required></div>
             <div>
                 <label for="adminUserExpiry" class="label">Access Duration:</label>
                 <select id="adminUserExpiry" class="select">
-                    <option value="1">1 Day</option>
-                    <option value="7" selected>7 Days</option>
-                    <option value="15">15 Days</option>
-                    <option value="30">30 Days</option>
-                    <option value="0">No Expiry</option> 
+                    <option value="1">1 Day</option><option value="7" selected>7 Days</option><option value="15">15 Days</option>
+                    <option value="30">30 Days</option><option value="0">No Expiry</option> 
                 </select>
             </div>
             <button type="submit" id="adminCreateUserBtn" class="button text-sm py-2">Create User</button>
             <p id="adminCreateUserError" class="error-message hidden text-xs py-2"></p>
             <p id="adminCreateUserSuccess" class="text-green-400 text-xs py-2 hidden"></p>
         </form>
-
         <hr class="admin-divider">
-
         <h3>Manage Users</h3>
-        <div id="adminManageUsersContainer">
-            <p>Loading users...</p>
-        </div>
-        
+        <div id="adminManageUsersContainer"><p>Loading users...</p></div>
         <hr class="admin-divider">
-
         <h3>Activity Logs</h3>
         <div id="adminLogsContainer"><p>Login to view logs.</p></div>
     </div>
@@ -247,21 +231,15 @@
     <div id="authContainer" class="auth-container">
         <form id="loginForm" class="">
             <h2 class="auth-title">User Login</h2>
-            <div class="mb-4">
-                <label for="loginEmail" class="label">Email</label>
-                <input type="email" id="loginEmail" class="input" required placeholder="your@email.com">
-            </div>
-            <div class="mb-6">
-                <label for="loginPassword" class="label">Password</label>
-                <input type="password" id="loginPassword" class="input" required placeholder="••••••••">
-            </div>
+            <div class="mb-4"><label for="loginEmail" class="label">Email</label><input type="email" id="loginEmail" class="input" required placeholder="your@email.com"></div>
+            <div class="mb-6"><label for="loginPassword" class="label">Password</label><input type="password" id="loginPassword" class="input" required placeholder="••••••••"></div>
             <p id="loginError" class="error-message hidden"></p>
             <button type="submit" class="button">Login</button>
-            <a href="https://wa.me/+923064482383" target="_blank" class="button whatsapp-button">
-                <i class="fab fa-whatsapp"></i> Contact for Account Start from 99 PKR
+            <a href="https://wa.me/923064482383?text=ElevenLabs%20Subscription" target="_blank" class="button whatsapp-button">
+                <i class="fab fa-whatsapp"></i> Contact for Account,Starting From 99 PKR
             </a>
         </form>
-        </div>
+    </div>
 
     <div id="appContainer" class="app-container hidden">
         <div class="user-info" id="userInfo">
@@ -274,12 +252,6 @@
             <p class="text-slate-400 mt-2 text-lg">Convert text to audio.</p>
         </header>
 
-        <div class="form-section mb-6 api-key-section hidden">
-            <label for="apiKey" class="label">Your ElevenLabs API Key:</label>
-            <input type="password" id="apiKey" class="input" placeholder="Paste your API Key here">
-            <p class="text-xs text-slate-500 mt-1">Your key is saved locally for your account.</p>
-        </div>
-
         <div class="form-section mb-6">
             <label for="textToConvert" class="label">Text to Convert:</label>
             <textarea id="textToConvert" rows="4" class="textarea" placeholder="Enter your text here..."></textarea>
@@ -289,7 +261,7 @@
             <label for="voiceSelect" class="label">Select Voice:</label>
             <input type="text" id="voiceSearchInput" class="input" placeholder="Search voices..." disabled>
             <select id="voiceSelect" class="select mt-2" disabled>
-                <option value="" style="color: #94a3b8;">Enter API Key to load voices...</option>
+                <option value="" style="color: #94a3b8;">Loading voices...</option>
             </select>
         </div>
         
@@ -325,27 +297,23 @@
             signOut, 
             onAuthStateChanged,
             updateProfile,
-            // deleteUser // Note: deleteUser can only be called on the currently signed-in user from client.
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { 
             getFirestore, collection, addDoc, serverTimestamp, query, onSnapshot, 
-            doc, setDoc, getDoc, updateDoc, deleteDoc, Timestamp // Added Timestamp
+            doc, setDoc, getDoc, updateDoc, deleteDoc, Timestamp 
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // DOM Elements
         const authContainer = document.getElementById('authContainer');
         const appContainer = document.getElementById('appContainer');
         const loginForm = document.getElementById('loginForm');
-        // Signup form elements are removed from general user access
         const loginEmailInput = document.getElementById('loginEmail');
         const loginPasswordInput = document.getElementById('loginPassword');
         const loginError = document.getElementById('loginError');
         const userEmailDisplay = document.getElementById('userEmailDisplay');
         const logoutButton = document.getElementById('logoutButton');
         const adminPanelToggleBtn = document.getElementById('adminPanelToggle'); 
-
-        const apiKeyInput = document.getElementById('apiKey');
-        const apiKeySection = document.querySelector('.api-key-section'); 
+        
         const textToConvertInput = document.getElementById('textToConvert');
         const voiceSearchInput = document.getElementById('voiceSearchInput'); 
         const voiceSelect = document.getElementById('voiceSelect');
@@ -377,6 +345,7 @@
 
 
         const ELEVENLABS_API_BASE_URL = 'https://api.elevenlabs.io/v1';
+        const DEFAULT_ELEVENLABS_API_KEY = "sk_4b326f6a8f8712a54f02b3b990fe3fbf8e63f008c727298b"; 
         const ADMIN_PASSWORD = "Monopoly1.@"; 
         let currentAudioBlobUrl = null; 
         let allVoices = []; 
@@ -418,44 +387,38 @@
                     const userData = userDocSnap.data();
                     if (userData.accountExpiry && userData.accountExpiry.toDate() < new Date()) {
                         displayLoginError("Your account has expired. Please contact admin.");
-                        await signOut(auth); // Log out expired user
+                        await signOut(auth); 
                         return;
                     }
-                    currentUser = { ...user, ...userData }; // Combine auth user with firestore data
+                    currentUser = { ...user, ...userData }; 
                 } else {
-                    // This case might happen if user was created in Auth but not in Firestore users collection
-                    // Or for the admin user if not explicitly added to 'users' collection
-                    // For simplicity, we'll assume admin doesn't need an expiry or is handled differently
-                    // If it's a regular user without a Firestore record, they might be new or an anomaly.
-                    // For now, let them proceed if they are not the admin.
-                    // A robust system would ensure every auth user has a corresponding Firestore user record.
                     console.warn(`User document not found in Firestore for UID: ${user.uid}. They might not have expiry set.`);
-                    currentUser = user; // Use auth user data only
-                     // If this user is not the admin (e.g. based on email), and no userDoc, consider it an issue.
-                    if (user.email !== "YOUR_ADMIN_EMAIL@example.com") { // Replace with actual admin email
+                    currentUser = user; 
+                    // IMPORTANT: Replace "YOUR_ADMIN_EMAIL@example.com" with your actual admin email
+                    if (user.email !== "YOUR_ADMIN_EMAIL@example.com") { 
+                        // Potentially log out non-admin users without a Firestore record if they are not the admin
+                        // This logic might need adjustment based on how you manage your admin user.
+                        // If admin user also doesn't have a firestore doc, this could log them out.
+                        // Consider adding admin to 'users' collection without expiry or a different check.
                         // displayLoginError("User account not fully configured. Please contact admin.");
                         // await signOut(auth);
                         // return;
                     }
                 }
 
-
                 console.log("User is signed in:", currentUser.uid, currentUser.email, currentUser.displayName);
                 userEmailDisplay.textContent = `Logged in: ${currentUser.displayName || currentUser.email}`;
                 authContainer.classList.add('hidden');
                 appContainer.classList.remove('hidden');
                 adminPanelToggleBtn.classList.remove('hidden'); 
-                apiKeySection.classList.remove('hidden'); 
-
-                const savedUserApiKey = localStorage.getItem(`elevenLabsApiKey_${currentUser.uid}`);
-                apiKeyInput.value = savedUserApiKey || '';
                 
-                if (apiKeyInput.value.trim()) {
-                    fetchVoices(apiKeyInput.value.trim());
+                if (DEFAULT_ELEVENLABS_API_KEY && DEFAULT_ELEVENLABS_API_KEY !== "YOUR_ACTUAL_ELEVENLABS_API_KEY_HERE") {
+                    fetchVoices(DEFAULT_ELEVENLABS_API_KEY);
                 } else {
-                    voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Please enter your API Key to load voices.</option>';
+                    voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">App API Key not configured.</option>';
                     voiceSelect.disabled = true;
                     voiceSearchInput.disabled = true;
+                    displayAppError("App's ElevenLabs API Key is not configured. Please contact admin.");
                 }
 
             } else {
@@ -464,11 +427,10 @@
                 authContainer.classList.remove('hidden');
                 appContainer.classList.add('hidden');
                 adminPanelToggleBtn.classList.add('hidden'); 
-                apiKeySection.classList.add('hidden'); 
-                apiKeyInput.value = ''; 
+                
                 allVoices = []; 
                 populateVoiceSelect([]); 
-                voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Enter API Key to load voices...</option>';
+                voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Login to load voices...</option>';
                 voiceSearchInput.disabled = true;
                 voiceSelect.disabled = true;
 
@@ -488,7 +450,6 @@
             const password = loginPasswordInput.value;
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                // onAuthStateChanged will handle UI update
                 loginForm.reset();
             } catch (error) {
                 console.error("Login error:", error);
@@ -516,111 +477,91 @@
             adminPasswordError.classList.add('hidden');
         });
         adminLoginBtn.addEventListener('click', () => {
-            // IMPORTANT: This is a client-side password check and is NOT secure for production.
-            // A proper admin system should use Firebase Custom Claims or a dedicated admin role.
             if (adminPasswordInput.value === ADMIN_PASSWORD) {
                 isAdminLoggedIn = true; adminPasswordModal.classList.remove('visible');
                 adminPanel.classList.add('open'); adminPasswordInput.value = '';
                 adminPasswordError.classList.add('hidden'); 
                 fetchAdminLogs();
-                displayUsersInAdminPanel(); // Fetch and display users
+                displayUsersInAdminPanel(); 
             } else {
                 adminPasswordError.textContent = "Incorrect password.";
                 adminPasswordError.classList.remove('hidden');
             }
         });
 
-        // Admin: Create New User
-        adminCreateUserForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            adminCreateUserError.classList.add('hidden');
-            adminCreateUserSuccess.classList.add('hidden');
-            adminCreateUserBtn.disabled = true;
+        adminCreateUserForm.addEventListener('submit', async (e) => { 
+            e.preventDefault(); 
+            adminCreateUserError.classList.add('hidden'); 
+            adminCreateUserSuccess.classList.add('hidden'); 
+            adminCreateUserBtn.disabled = true; 
+            const name = adminNewUserNameInput.value.trim(); 
+            const email = adminNewUserEmailInput.value.trim(); 
+            const password = adminNewUserPasswordInput.value; 
+            const expiryDays = parseInt(adminUserExpirySelect.value); 
+            if (!name || !email || !password) { 
+                adminCreateUserError.textContent = "All fields are required."; 
+                adminCreateUserError.classList.remove('hidden'); 
+                adminCreateUserBtn.disabled = false; return; 
+            } 
+            try { 
+                // IMPORTANT: To create users without affecting current admin's auth state,
+                // this should ideally be done via Firebase Admin SDK in a Cloud Function.
+                // The current method might sign out the admin if not handled carefully or
+                // if Firebase rules prevent creating users by non-admin SDKs without special setup.
+                // For now, we proceed, but be aware of this limitation.
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password); 
+                const newUser = userCredential.user; 
+                console.log("Admin created new user in Auth:", newUser.uid); 
+                await updateProfile(newUser, { displayName: name }); 
+                let expiryDate = null; 
+                if (expiryDays > 0) { 
+                    expiryDate = new Date(); 
+                    expiryDate.setDate(expiryDate.getDate() + expiryDays); 
+                } 
+                const userDocRef = doc(db, "users", newUser.uid); 
+                await setDoc(userDocRef, { 
+                    uid: newUser.uid, displayName: name, email: email, 
+                    createdAt: serverTimestamp(), 
+                    accountExpiry: expiryDate ? Timestamp.fromDate(expiryDate) : null, 
+                    createdBy: currentUser ? currentUser.uid : 'admin_direct_creation' 
+                }); 
+                adminCreateUserSuccess.textContent = `User ${name} (${email}) created successfully!`; 
+                adminCreateUserSuccess.classList.remove('hidden'); 
+                adminCreateUserForm.reset(); 
 
-            const name = adminNewUserNameInput.value.trim();
-            const email = adminNewUserEmailInput.value.trim();
-            const password = adminNewUserPasswordInput.value;
-            const expiryDays = parseInt(adminUserExpirySelect.value);
+                // After creating a user, the admin might be signed in as the new user.
+                // The admin needs to sign out and sign back in with their admin credentials.
+                // This is a significant UX issue with client-side user creation by an admin.
+                // A Cloud Function is the robust way to handle this.
+                // For now, we'll just log a warning.
+                console.warn("Admin created a new user. Admin might need to re-login if their auth state changed.");
 
-            if (!name || !email || !password) {
-                adminCreateUserError.textContent = "All fields are required.";
-                adminCreateUserError.classList.remove('hidden');
-                adminCreateUserBtn.disabled = false;
-                return;
-            }
 
-            try {
-                // Note: Creating users directly like this from client-side admin panel is generally okay for admin actions,
-                // but ensure your Firestore rules for the 'users' collection are secure.
-                // This does NOT sign in the admin as the new user.
-                
-                // Temporary sign-out admin if a robust solution for creating user isn't available without re-auth
-                // This is a workaround. Ideally, use Firebase Admin SDK in a Cloud Function.
-                // For now, we'll try to create user. If it fails due to auth state, it's a limitation.
-                
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const newUser = userCredential.user;
-                console.log("Admin created new user in Auth:", newUser.uid);
-
-                await updateProfile(newUser, { displayName: name });
-
-                let expiryDate = null;
-                if (expiryDays > 0) {
-                    expiryDate = new Date();
-                    expiryDate.setDate(expiryDate.getDate() + expiryDays);
-                }
-
-                const userDocRef = doc(db, "users", newUser.uid);
-                await setDoc(userDocRef, {
-                    uid: newUser.uid,
-                    displayName: name,
-                    email: email,
-                    createdAt: serverTimestamp(),
-                    accountExpiry: expiryDate ? Timestamp.fromDate(expiryDate) : null,
-                    createdBy: currentUser ? currentUser.uid : 'admin_direct_creation' // Log who created
-                });
-
-                adminCreateUserSuccess.textContent = `User ${name} (${email}) created successfully!`;
-                adminCreateUserSuccess.classList.remove('hidden');
-                adminCreateUserForm.reset();
-
-                // Important: Re-authenticate the admin if creating users signs them out.
-                // This part is tricky with client-side only. The simplest is that admin might need to log back in
-                // if the createUserWithEmailAndPassword changes the auth state.
-                // onAuthStateChanged should ideally handle the admin's own session.
-
-            } catch (error) {
-                console.error("Admin create user error:", error);
-                adminCreateUserError.textContent = error.message;
-                adminCreateUserError.classList.remove('hidden');
-            } finally {
-                adminCreateUserBtn.disabled = false;
-            }
+            } catch (error) { 
+                console.error("Admin create user error:", error); 
+                adminCreateUserError.textContent = error.message; 
+                adminCreateUserError.classList.remove('hidden'); 
+            } finally { 
+                adminCreateUserBtn.disabled = false; 
+            } 
         });
         
-        // Admin: Display Users
-        async function displayUsersInAdminPanel() {
-            if (!db || !isAdminLoggedIn) return;
-            adminManageUsersContainer.innerHTML = '<p>Loading users...</p>';
-
-            const usersCollectionRef = collection(db, "users");
-            // Add query(usersCollectionRef, orderBy("createdAt", "desc")) if needed
-            
-            if(unsubscribeUsers) unsubscribeUsers();
-
-            unsubscribeUsers = onSnapshot(query(usersCollectionRef), (querySnapshot) => {
-                if (querySnapshot.empty) {
-                    adminManageUsersContainer.innerHTML = '<p>No users found in database.</p>';
-                    return;
-                }
-                adminManageUsersContainer.innerHTML = '';
-                querySnapshot.forEach((docSnap) => {
-                    const userData = docSnap.data();
-                    const userEntry = document.createElement('div');
-                    userEntry.classList.add('admin-user-entry');
-                    const expiryText = userData.accountExpiry ? userData.accountExpiry.toDate().toLocaleDateString() : 'No Expiry';
-                    const isExpired = userData.accountExpiry && userData.accountExpiry.toDate() < new Date();
-
+        async function displayUsersInAdminPanel() { 
+            if (!db || !isAdminLoggedIn) return; 
+            adminManageUsersContainer.innerHTML = '<p>Loading users...</p>'; 
+            const usersCollectionRef = collection(db, "users"); 
+            if(unsubscribeUsers) unsubscribeUsers(); 
+            unsubscribeUsers = onSnapshot(query(usersCollectionRef), (querySnapshot) => { 
+                if (querySnapshot.empty) { 
+                    adminManageUsersContainer.innerHTML = '<p>No users found in database.</p>'; return; 
+                } 
+                adminManageUsersContainer.innerHTML = ''; 
+                querySnapshot.forEach((docSnap) => { 
+                    const userData = docSnap.data(); 
+                    const userEntry = document.createElement('div'); 
+                    userEntry.classList.add('admin-user-entry'); 
+                    const expiryText = userData.accountExpiry ? userData.accountExpiry.toDate().toLocaleDateString() : 'No Expiry'; 
+                    const isExpired = userData.accountExpiry && userData.accountExpiry.toDate() < new Date(); 
                     userEntry.innerHTML = `
                         <p><strong>Name:</strong> ${userData.displayName || 'N/A'}</p>
                         <p><strong>Email:</strong> ${userData.email || 'N/A'}</p>
@@ -629,94 +570,247 @@
                         <div class="actions mt-2">
                             <button class="extend-expiry-btn" data-uid="${userData.uid}">Extend 7 Days</button>
                             <button class="delete-user-btn delete-btn" data-uid="${userData.uid}" data-email="${userData.email}">Delete User</button>
-                        </div>
-                    `;
-                    adminManageUsersContainer.appendChild(userEntry);
-                });
-
-                // Add event listeners for new buttons
-                document.querySelectorAll('.extend-expiry-btn').forEach(button => {
-                    button.addEventListener('click', handleExtendExpiry);
-                });
-                document.querySelectorAll('.delete-user-btn').forEach(button => {
-                    button.addEventListener('click', handleDeleteUserFirestoreRecord);
-                });
-
-            }, (error) => {
-                console.error("Error fetching users for admin: ", error);
-                adminManageUsersContainer.innerHTML = '<p class="text-red-400">Error loading users.</p>';
-            });
+                        </div>`; 
+                    adminManageUsersContainer.appendChild(userEntry); 
+                }); 
+                document.querySelectorAll('.extend-expiry-btn').forEach(button => { 
+                    button.addEventListener('click', handleExtendExpiry); 
+                }); 
+                document.querySelectorAll('.delete-user-btn').forEach(button => { 
+                    button.addEventListener('click', handleDeleteUserFirestoreRecord); 
+                }); 
+            }, (error) => { 
+                console.error("Error fetching users for admin: ", error); 
+                adminManageUsersContainer.innerHTML = '<p class="text-red-400">Error loading users.</p>'; 
+            }); 
         }
 
-        async function handleExtendExpiry(event) {
-            const uid = event.target.dataset.uid;
-            if (!uid || !confirm(`Extend access for user ${uid} by 7 days?`)) return;
-
-            try {
-                const userDocRef = doc(db, "users", uid);
-                const userDocSnap = await getDoc(userDocRef);
-                if (!userDocSnap.exists()) {
-                    alert("User document not found."); return;
-                }
-                let currentExpiry = userDocSnap.data().accountExpiry ? userDocSnap.data().accountExpiry.toDate() : new Date();
-                if (currentExpiry < new Date()) currentExpiry = new Date(); // If expired, extend from now
-
-                const newExpiryDate = new Date(currentExpiry);
-                newExpiryDate.setDate(newExpiryDate.getDate() + 7);
-                
-                await updateDoc(userDocRef, { accountExpiry: Timestamp.fromDate(newExpiryDate) });
-                alert(`Access extended for user ${uid}.`);
-                // The onSnapshot listener for users should auto-refresh the list.
-            } catch (error) {
-                console.error("Error extending expiry:", error);
-                alert(`Failed to extend expiry: ${error.message}`);
-            }
+        async function handleExtendExpiry(event) { 
+            const uid = event.target.dataset.uid; 
+            if (!uid || !confirm(`Extend access for user ${uid} by 7 days?`)) return; 
+            try { 
+                const userDocRef = doc(db, "users", uid); 
+                const userDocSnap = await getDoc(userDocRef); 
+                if (!userDocSnap.exists()) { 
+                    alert("User document not found."); return; 
+                } 
+                let currentExpiry = userDocSnap.data().accountExpiry ? userDocSnap.data().accountExpiry.toDate() : new Date(); 
+                if (currentExpiry < new Date()) currentExpiry = new Date(); 
+                const newExpiryDate = new Date(currentExpiry); 
+                newExpiryDate.setDate(newExpiryDate.getDate() + 7); 
+                await updateDoc(userDocRef, { accountExpiry: Timestamp.fromDate(newExpiryDate) }); 
+                alert(`Access extended for user ${uid}.`); 
+            } catch (error) { 
+                console.error("Error extending expiry:", error); 
+                alert(`Failed to extend expiry: ${error.message}`); 
+            } 
         }
         
-        async function handleDeleteUserFirestoreRecord(event) {
-            const uid = event.target.dataset.uid;
-            const email = event.target.dataset.email;
-            if (!uid || !confirm(`Are you sure you want to delete user ${email} (UID: ${uid}) from the database? This will NOT delete their authentication record.`)) return;
-
-            try {
-                const userDocRef = doc(db, "users", uid);
-                await deleteDoc(userDocRef);
-                alert(`User record ${email} deleted from Firestore. You may need to delete their Auth record manually or via Admin SDK.`);
-                // The onSnapshot listener for users should auto-refresh the list.
-                // IMPORTANT: Deleting the user from Firebase Authentication requires Admin SDK (e.g., in a Cloud Function).
-                // Client-side SDK cannot delete other users' Auth records.
-                console.warn(`Firestore record for user ${uid} deleted. Auth record for ${email} still exists.`);
-
-            } catch (error) {
-                console.error("Error deleting user Firestore record:", error);
-                alert(`Failed to delete user record: ${error.message}`);
-            }
+        async function handleDeleteUserFirestoreRecord(event) { 
+            const uid = event.target.dataset.uid; 
+            const email = event.target.dataset.email; 
+            if (!uid || !confirm(`Are you sure you want to delete user ${email} (UID: ${uid}) from the database? This will NOT delete their authentication record.`)) return; 
+            try { 
+                const userDocRef = doc(db, "users", uid); 
+                await deleteDoc(userDocRef); 
+                alert(`User record ${email} deleted from Firestore. You may need to delete their Auth record manually or via Admin SDK.`); 
+                console.warn(`Firestore record for user ${uid} deleted. Auth record for ${email} still exists.`); 
+            } catch (error) { 
+                console.error("Error deleting user Firestore record:", error); 
+                alert(`Failed to delete user record: ${error.message}`); 
+            } 
         }
 
-
-        async function fetchAdminLogs() { /* ... (same as before, ensure 'db' and 'appId' are used correctly) ... */ }
+        async function fetchAdminLogs() { 
+            if (!db || !isAdminLoggedIn) return; 
+            adminLogsContainer.innerHTML = '<p>Loading logs...</p>'; 
+            const logsCollectionPath = `artifacts/${appId}/public/data/voiceGenerationLogs`; 
+            const q = query(collection(db, logsCollectionPath)); 
+            if (unsubscribeLogs) unsubscribeLogs(); 
+            unsubscribeLogs = onSnapshot(q, (querySnapshot) => { 
+                if (querySnapshot.empty) { 
+                    adminLogsContainer.innerHTML = '<p>No voice generation logs found.</p>'; return; 
+                } 
+                adminLogsContainer.innerHTML = ''; 
+                querySnapshot.forEach((docSnap) => { 
+                    const log = docSnap.data(); 
+                    const logEntry = document.createElement('div'); 
+                    logEntry.classList.add('admin-log-entry'); 
+                    const timestamp = log.timestamp?.toDate ? log.timestamp.toDate().toLocaleString() : 'N/A'; 
+                    const textSnippet = log.text ? (log.text.length > 50 ? log.text.substring(0, 50) + '...' : log.text) : 'N/A'; 
+                    logEntry.innerHTML = `<p><strong>User:</strong> ${log.userName || 'N/A'} (<em>${log.userEmail || 'N/A'}</em>)</p>
+                                        <p><strong>Voice ID:</strong> ${log.voiceId || 'N/A'}</p>
+                                        <p><strong>Model:</strong> ${log.modelId || 'N/A'}</p>
+                                        <p><strong>Text:</strong> ${textSnippet}</p>
+                                        <p><strong>Time:</strong> ${timestamp}</p>`; 
+                    adminLogsContainer.appendChild(logEntry); 
+                }); 
+            }, (error) => { 
+                console.error("Error fetching logs: ", error); 
+                adminLogsContainer.innerHTML = '<p class="text-red-400">Error loading logs.</p>'; 
+            }); 
+        }
 
 
         // --- Core App Logic (TTS, Voice Fetching etc.) ---
-        function updateConvertButtonState() { /* ... (same) ... */ }
-        textToConvertInput.addEventListener('input', updateConvertButtonState);
-        apiKeyInput.addEventListener('input', () => { /* ... (same) ... */ });
-        voiceSearchInput.addEventListener('input', () => { /* ... (same) ... */ });
-        async function fetchVoices(apiKeyToUse) { /* ... (same) ... */ }
-        function populateVoiceSelect(voicesToDisplay) { /* ... (same) ... */ }
-        async function logVoiceGeneration(userName, userEmail, voiceId, modelId, text) { /* ... (same) ... */ }
-        convertBtn.addEventListener('click', async () => { /* ... (same, ensure userNameForLog and userEmailForLog are from currentUser) ... */ });
-        downloadBtn.addEventListener('click', () => { /* ... (same) ... */ });
+        function updateConvertButtonState() {
+            if (currentUser && textToConvertInput.value.trim() && DEFAULT_ELEVENLABS_API_KEY && DEFAULT_ELEVENLABS_API_KEY !== "YOUR_ACTUAL_ELEVENLABS_API_KEY_HERE") { 
+                 convertBtn.disabled = false;
+            } else {
+                convertBtn.disabled = true;
+            }
+        }
         
-        function displayLoginError(message) { // Specific for login form
-            loginError.textContent = message;
-            loginError.classList.remove('hidden');
+        textToConvertInput.addEventListener('input', updateConvertButtonState);
+        
+        voiceSearchInput.addEventListener('input', () => { 
+            const searchTerm = voiceSearchInput.value.toLowerCase();
+            if (!allVoices.length) return; 
+            const filteredVoices = allVoices.filter(voice => 
+                voice.name.toLowerCase().includes(searchTerm)
+            );
+            populateVoiceSelect(filteredVoices);
+        });
+
+        async function fetchVoices(apiKeyToUse) { 
+            if (!apiKeyToUse) { 
+                 console.error("fetchVoices called without an API key. This should not happen with hardcoded key.");
+                 voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">App API Key Error.</option>';
+                 return; 
+            }
+
+            voiceSelect.disabled = true; voiceSearchInput.disabled = true; 
+            voiceSearchInput.value = ''; 
+            voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Loading voices...</option>';
+            appErrorMessage.classList.add('hidden'); appErrorMessage.classList.remove('visible');
+
+            try {
+                const response = await fetch(`${ELEVENLABS_API_BASE_URL}/voices`, {
+                    headers: { 'xi-api-key': apiKeyToUse, 'Content-Type': 'application/json' }
+                });
+                if (!response.ok) { 
+                    const errorData = await response.json().catch(() => ({ detail: { message: response.statusText } }));
+                    allVoices = []; 
+                    throw new Error(`Error fetching voices (${response.status}): ${errorData.detail?.message || response.statusText}`);
+                 }
+                const data = await response.json();
+                allVoices = data.voices || []; 
+                populateVoiceSelect(allVoices); 
+                voiceSelect.disabled = false; voiceSearchInput.disabled = false; 
+            } catch (error) { 
+                console.error('Fetch voices error:', error);
+                allVoices = []; populateVoiceSelect([]);
+                voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Failed to fetch voices.</option>';
+                voiceSearchInput.disabled = true; 
+                displayAppError(`Failed to load voices: ${error.message}. Contact admin if issue persists.`);
+            }
         }
-        function displayAppError(message) {
-            appErrorMessage.textContent = message; 
-            appErrorMessage.classList.remove('hidden'); 
-            appErrorMessage.classList.add('visible'); 
+
+        function populateVoiceSelect(voicesToDisplay) {
+            voiceSelect.innerHTML = ''; 
+            if (voicesToDisplay && voicesToDisplay.length > 0) {
+                voicesToDisplay.forEach(voice => {
+                    const option = document.createElement('option'); option.value = voice.voice_id;
+                    option.style.color = '#1e293b'; option.style.backgroundColor = '#f1f5f9';
+                    option.textContent = `${voice.name} (${voice.labels?.description || 'Default'})`;
+                    voiceSelect.appendChild(option);
+                });
+            } else {
+                 if (!DEFAULT_ELEVENLABS_API_KEY || DEFAULT_ELEVENLABS_API_KEY === "YOUR_ACTUAL_ELEVENLABS_API_KEY_HERE" && currentUser) { 
+                     voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">App API Key not configured.</option>';
+                 } else if (voiceSearchInput.value && allVoices.length > 0) { 
+                     voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">No voices match your search</option>';
+                 } else if (allVoices.length === 0 && DEFAULT_ELEVENLABS_API_KEY && DEFAULT_ELEVENLABS_API_KEY !== "YOUR_ACTUAL_ELEVENLABS_API_KEY_HERE"){ 
+                     voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">No voices found with app API key.</option>';
+                 } else { 
+                     voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">No voices available</option>';
+                 }
+            }
         }
+
+        async function logVoiceGeneration(userName, userEmail, voiceId, modelId, text) { 
+            if (!db || !currentUser) { 
+                console.warn("Firestore not initialized or user not authenticated. Skipping log."); return;
+            }
+            try {
+                const logsCollectionPath = `artifacts/${appId}/public/data/voiceGenerationLogs`;
+                await addDoc(collection(db, logsCollectionPath), {
+                    userName: userName, userEmail: userEmail,
+                    voiceId: voiceId, modelId: modelId, text: text, 
+                    timestamp: serverTimestamp(), userId: currentUser.uid 
+                });
+                console.log("Voice generation logged.");
+            } catch (error) { console.error("Error logging voice generation: ", error); }
+        }
+        
+        convertBtn.addEventListener('click', async () => {
+            const apiKeyToUse = DEFAULT_ELEVENLABS_API_KEY; 
+            if (!apiKeyToUse || apiKeyToUse === "YOUR_ACTUAL_ELEVENLABS_API_KEY_HERE") { 
+                displayAppError('App ElevenLabs API Key is not configured. Please contact admin.'); return; 
+            }
+            if (!currentUser) { displayAppError('Please login to generate voice.'); return; }
+            
+            const userNameForLog = currentUser.displayName || "Anonymous User";
+            const userEmailForLog = currentUser.email;
+            const text = textToConvertInput.value.trim();
+            const voiceId = voiceSelect.value;
+            const modelId = modelSelect.value;
+
+            if (!text) { displayAppError('Please enter text to convert.'); return; }
+            if (!voiceId) { displayAppError('Please select a voice.'); return; }
+            
+            convertBtn.disabled = true; buttonText.textContent = 'Converting...';
+            loadingSpinner.classList.remove('hidden');
+            audioPlayer.classList.add('hidden'); downloadBtn.classList.add('hidden');
+            downloadBtn.classList.remove('visible'); appErrorMessage.classList.add('hidden');
+            appErrorMessage.classList.remove('visible');
+
+            if(currentAudioBlobUrl) URL.revokeObjectURL(currentAudioBlobUrl);
+            currentAudioBlobUrl = null; audioPlayer.src = ''; 
+            
+            try {
+                const ttsUrl = `${ELEVENLABS_API_BASE_URL}/text-to-speech/${voiceId}`;
+                const response = await fetch(ttsUrl, {
+                    method: 'POST',
+                    headers: { 'Accept': 'audio/mpeg', 'xi-api-key': apiKeyToUse, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        text: text, model_id: modelId,
+                        voice_settings: { stability: 0.7, similarity_boost: 0.75 }
+                    })
+                });
+                if (!response.ok) { 
+                    let errorDetail = response.statusText;
+                    try { const errorJson = await response.json(); errorDetail = errorJson.detail?.message || (typeof errorJson.detail === 'string' ? errorJson.detail : JSON.stringify(errorJson.detail)) || JSON.stringify(errorJson);
+                    } catch (e) { errorDetail = await response.text() || response.statusText; }
+                    throw new Error(`Error generating audio (${response.status}): ${errorDetail}`);
+                }
+                const audioBlob = await response.blob();
+                currentAudioBlobUrl = URL.createObjectURL(audioBlob);
+                audioPlayer.src = currentAudioBlobUrl;
+                audioPlayer.classList.remove('hidden'); 
+                downloadBtn.classList.remove('hidden'); 
+                downloadBtn.classList.add('visible'); 
+                await logVoiceGeneration(userNameForLog, userEmailForLog, voiceId, modelId, text);
+            } catch (error) { 
+                console.error('TTS Error:', error);
+                displayAppError(`Failed to generate audio: ${error.message}`);
+                audioPlayer.classList.add('hidden'); 
+                downloadBtn.classList.add('hidden'); downloadBtn.classList.remove('visible');
+            } finally { 
+                updateConvertButtonState();
+                buttonText.textContent = 'Convert to Audio';
+                loadingSpinner.classList.add('hidden');
+            }
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            if (currentAudioBlobUrl) { const a = document.createElement('a'); a.href = currentAudioBlobUrl;
+                a.download = `elevenlabs_audio_${Date.now()}.mp3`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            } else { displayAppError("No audio available to download."); }
+        });
+        
+        function displayLoginError(message) { loginError.textContent = message; loginError.classList.remove('hidden');}
+        function displayAppError(message) { appErrorMessage.textContent = message; appErrorMessage.classList.remove('hidden'); appErrorMessage.classList.add('visible'); }
         
         window.addEventListener('load', () => {
             if (!app || !auth || !db) {
