@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ElevenLabs TTS App - Email/Password Auth</title>
+    <title>ElevenLabs TTS App - API Key After Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -20,11 +20,11 @@
             overflow-x: hidden; 
         }
         .auth-container, .app-container {
-            max-width: 500px; /* Adjusted width for auth forms */
+            max-width: 500px; 
             width: 100%;
             margin: 2rem auto;
             padding: 2.5rem;
-            background-color: rgba(30, 41, 59, 0.7); /* Slightly more opaque */
+            background-color: rgba(30, 41, 59, 0.7); 
             border-radius: 1rem; 
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(15px);
@@ -34,19 +34,19 @@
             transform: translateY(20px);
             animation: fadeInSlideUp 0.7s ease-out forwards;
         }
-        .app-container { max-width: 700px; position: relative; } /* Main app container */
+        .app-container { max-width: 700px; position: relative; } 
 
         @keyframes fadeInSlideUp { to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { to { opacity: 1; } }
 
-        /* Admin Panel (remains same) */
-        .admin-panel-toggle { /* ... existing styles ... */ 
+        /* Admin Panel Styles */
+        .admin-panel-toggle { 
             position: fixed; top: 1rem; left: 1rem; background-color: rgba(45, 212, 191, 0.2);
             color: #2dd4bf; padding: 0.75rem; border-radius: 0.5rem; cursor: pointer; z-index: 1001;
             transition: all 0.3s ease; border: 1px solid rgba(45, 212, 191, 0.5);
         }
         .admin-panel-toggle:hover { background-color: rgba(45, 212, 191, 0.4); }
-        .admin-panel { /* ... existing styles ... */
+        .admin-panel { 
             position: fixed; top: 0; left: -400px; width: 400px; height: 100vh;
             background-color: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); border-right: 1px solid #2dd4bf; padding: 1.5rem;
@@ -55,51 +55,51 @@
         }
         .admin-panel.open { left: 0; }
         .admin-panel h2 { color: #2dd4bf; font-size: 1.5rem; margin-bottom: 1rem; border-bottom: 1px solid #2dd4bf; padding-bottom: 0.5rem; }
-        .admin-log-entry { /* ... existing styles ... */
+        .admin-log-entry { 
             background-color: rgba(51, 65, 85, 0.4); padding: 0.75rem; border-radius: 0.375rem;
             margin-bottom: 0.75rem; font-size: 0.875rem; border-left: 3px solid #2dd4bf;
         }
         .admin-log-entry p { margin-bottom: 0.25rem; } .admin-log-entry strong { color: #94a3b8; }
 
-        /* Modal Styles (remains same) */
-        .modal { /* ... existing styles ... */
+        /* Modal Styles */
+        .modal { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7);
             display: flex; justify-content: center; align-items: center; z-index: 1002;
             opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
         }
         .modal.visible { opacity: 1; visibility: visible; }
-        .modal-content { /* ... existing styles ... */
+        .modal-content { 
             background-color: #1e293b; padding: 2rem; border-radius: 0.75rem;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 90%; max-width: 400px; text-align: center;
         }
         .modal-content .label { color: #94a3b8; } .modal-content .input { margin-bottom: 1rem; }
         .modal-content .button { margin-top: 0.5rem; }
 
-        /* Common styles for input, label, button - slightly adjusted */
+        /* Common styles */
         .label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #94a3b8; font-size: 0.9rem; }
         .input, .textarea, .select {
-            width: 100%; padding: 0.875rem; background-color: rgba(51, 65, 85, 0.6); /* More opacity */
+            width: 100%; padding: 0.875rem; background-color: rgba(51, 65, 85, 0.6); 
             border: 1px solid rgba(71, 85, 105, 0.8); border-radius: 0.5rem; color: #e2e8f0;
             transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.3s ease, transform 0.2s ease;
         }
         #voiceSearchInput { margin-bottom: 0.75rem; padding: 0.75rem 1rem; }
         .input::placeholder, .textarea::placeholder { color: #64748b; }
         .input:focus, .textarea:focus, .select:focus {
-            outline: none; border-color: #2dd4bf; background-color: rgba(51, 65, 85, 0.8); /* More opacity on focus */
+            outline: none; border-color: #2dd4bf; background-color: rgba(51, 65, 85, 0.8); 
             box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.3), 0 5px 15px rgba(45, 212, 191, 0.1);
             transform: translateY(-1px);
         }
-        .button { /* ... existing styles, but ensure it's flexible ... */
+        .button { 
             background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); color: white; padding: 0.875rem 1.5rem;
             border: none; border-radius: 0.5rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease;
             text-transform: uppercase; letter-spacing: 0.05em; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
             display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 1rem;
         }
-        .button:hover:not(:disabled) { /* ... existing styles ... */
+        .button:hover:not(:disabled) { 
             transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 25px rgba(20, 184, 166, 0.3);
             background: linear-gradient(135deg, #0d9488 0%, #2dd4bf 100%);
         }
-        .button:disabled { /* ... existing styles ... */
+        .button:disabled { 
             background: rgba(71, 85, 105, 0.5); color: rgba(148, 163, 184, 0.7); cursor: not-allowed;
             transform: translateY(0) scale(1); box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
@@ -114,36 +114,28 @@
         }
         .user-info p { margin-bottom: 0.25rem; }
         .logout-button {
-            background: none; border: none; color: #f87171; /* red-400 */
+            background: none; border: none; color: #f87171; 
             text-decoration: underline; cursor: pointer; padding: 0.25rem 0; font-size: 0.9rem;
         }
-        .logout-button:hover { color: #ef4444; /* red-500 */ }
+        .logout-button:hover { color: #ef4444; }
         
-        /* App Specific - API Key Section (no longer used if API key stored per user or globally managed) */
-        /* .api-key-section { display: none; } /* Hide if not needed */
-        .api-key-section {
-            margin-bottom: 1.5rem; /* Space if kept */
-        }
-
-
-        /* Remaining styles (audio, error, spinner, headings, form-section, scrollbar, responsive) mostly same */
         h2.auth-title { color: #e2e8f0; font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; text-align:center; }
-        .error-message { /* ... existing styles ... */
+        .error-message { 
             color: #f87171; background-color: rgba(127, 29, 29, 0.3); border: 1px solid rgba(220, 38, 38, 0.5);
             padding: 1rem; text-align: center; font-weight: 500; margin-top: 1rem; border-radius: 0.5rem;
         }
-        .loading-spinner { /* ... existing styles ... */
+        .loading-spinner { 
             border: 4px solid rgba(71, 85, 105, 0.3); border-top: 4px solid #2dd4bf; border-radius: 50%;
             width: 20px; height: 20px; animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
-        .app-container h1 { /* ... existing styles ... */
+        .app-container h1 { 
             font-weight: 800; color: #f1f5f9; text-shadow: 0 2px 4px rgba(0,0,0,0.3); 
-            margin-top: 0; /* Adjusted as API key might be gone or user info is top right */
+            margin-top: 0; 
             opacity: 0; animation: fadeIn 0.5s ease-out 0.2s forwards; font-size: 2.25rem; 
         }
-        .app-container header p { /* ... existing styles ... */
+        .app-container header p { 
             color: #94a3b8; opacity: 0; animation: fadeIn 0.5s ease-out 0.35s forwards; font-size: 1.125rem;
         }
         .form-section { margin-top: 1.5rem; opacity: 0; animation: fadeInSlideUp 0.6s ease-out forwards; }
@@ -166,10 +158,10 @@
         @media (max-width: 480px) { 
             body { padding: 0.5rem; }
             .auth-container, .app-container { padding: 1.5rem; margin: 0.5rem auto; margin-top: 1rem; }
-            .app-container {margin-top: 4rem; } /* Space for admin toggle if logged in */
+            .app-container {margin-top: 4rem; } 
             .app-container h1 { font-size: 1.5rem; }
             .app-container header p { font-size: 0.875rem; }
-            .user-info {width: calc(100% - 80px); text-align:left; left: 70px;} /* Adjust user info for mobile */
+            .user-info {width: calc(100% - 80px); text-align:left; left: 70px;} 
             .button { padding: 0.75rem 1rem; font-size: 0.8rem; }
             .admin-panel { width: 100%; left: -100%; border-right: none; } 
             .admin-panel.open { left: 0; }
@@ -244,10 +236,10 @@
             <p class="text-slate-400 mt-2 text-lg">Convert text to audio.</p>
         </header>
 
-        <div class="form-section mb-6 api-key-section">
-            <label for="apiKey" class="label">Your ElevenLabs API Key (Optional):</label>
-            <input type="password" id="apiKey" class="input" placeholder="Paste your API Key here if you have one">
-            <p class="text-xs text-slate-500 mt-1">If provided, this key will be used. Otherwise, a default key might be used (if configured).</p>
+        <div class="form-section mb-6 api-key-section hidden">
+            <label for="apiKey" class="label">Your ElevenLabs API Key:</label>
+            <input type="password" id="apiKey" class="input" placeholder="Paste your API Key here">
+            <p class="text-xs text-slate-500 mt-1">Your key is saved locally for your account.</p>
         </div>
 
         <div class="form-section mb-6">
@@ -259,7 +251,7 @@
             <label for="voiceSelect" class="label">Select Voice:</label>
             <input type="text" id="voiceSearchInput" class="input" placeholder="Search voices..." disabled>
             <select id="voiceSelect" class="select mt-2" disabled>
-                <option value="" style="color: #94a3b8;">Enter API Key or use default...</option>
+                <option value="" style="color: #94a3b8;">Enter API Key to load voices...</option>
             </select>
         </div>
         
@@ -282,7 +274,8 @@
         </button>
 
         <audio id="audioPlayer" controls class="audio-player hidden mt-6"></audio>
-        <div id="appErrorMessage" class="error-message hidden mt-4"></div> </div>
+        <div id="appErrorMessage" class="error-message hidden mt-4"></div>
+    </div>
 
     <script type="module">
         // Firebase Imports
@@ -313,10 +306,10 @@
         const showLogin = document.getElementById('showLogin');
         const userEmailDisplay = document.getElementById('userEmailDisplay');
         const logoutButton = document.getElementById('logoutButton');
-        const adminPanelToggleBtn = document.getElementById('adminPanelToggle'); // Renamed for clarity
+        const adminPanelToggleBtn = document.getElementById('adminPanelToggle'); 
 
         const apiKeyInput = document.getElementById('apiKey');
-        // const userNameInput = document.getElementById('userName'); // User name from auth profile
+        const apiKeySection = document.querySelector('.api-key-section'); 
         const textToConvertInput = document.getElementById('textToConvert');
         const voiceSearchInput = document.getElementById('voiceSearchInput'); 
         const voiceSelect = document.getElementById('voiceSelect');
@@ -326,9 +319,9 @@
         const loadingSpinner = document.getElementById('loadingSpinner');
         const audioPlayer = document.getElementById('audioPlayer');
         const downloadBtn = document.getElementById('downloadBtn');
-        const appErrorMessage = document.getElementById('appErrorMessage'); // Renamed
+        const appErrorMessage = document.getElementById('appErrorMessage'); 
 
-        // Admin Panel Elements (remain same)
+        // Admin Panel Elements
         const adminPanel = document.getElementById('adminPanel');
         const adminLogsContainer = document.getElementById('adminLogsContainer');
         const adminPasswordModal = document.getElementById('adminPasswordModal');
@@ -343,16 +336,16 @@
         let allVoices = []; 
         let isAdminLoggedIn = false;
         let unsubscribeLogs = null; 
-        let currentUser = null; // To store current user details
+        let currentUser = null; 
 
         // --- Firebase Setup ---
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-            apiKey: "AIzaSyDtKupraU6Ug-m4smjBI0AriDnTHxBqpfY",
+            apiKey: "AIzaSyDtKupraU6Ug-m4smjBI0AriDnTHxBqpfY", // Replace with your actual config
             authDomain: "myelevenlabs-18ad9.firebaseapp.com",
             projectId: "myelevenlabs-18ad9",
-            storageBucket: "myelevenlabs-18ad9.firebasestorage.app",
+            storageBucket: "myelevenlabs-18ad9.appspot.com", // Corrected from firebasestorage.app
             messagingSenderId: "892386214766",
-            appId: "1:892386214766:web:0000cf3c2cec4c0337777f",
+            appId: "1:892386214766:web:0000cf3c2cec4c0337777f", // Ensure this is correct
         };
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-elevenlabs-app';
         let app, auth, db;
@@ -373,46 +366,49 @@
                 currentUser = user;
                 console.log("User is signed in:", user.uid, user.email, user.displayName);
                 userEmailDisplay.textContent = `Logged in: ${user.displayName || user.email}`;
-                // userNameInput.value = user.displayName || ''; // Pre-fill name if available
                 authContainer.classList.add('hidden');
                 appContainer.classList.remove('hidden');
-                adminPanelToggleBtn.classList.remove('hidden'); // Show admin toggle if user is logged in
+                adminPanelToggleBtn.classList.remove('hidden'); 
+                apiKeySection.classList.remove('hidden'); 
 
-                // Load API key for this user (if saved) or clear it
                 const savedUserApiKey = localStorage.getItem(`elevenLabsApiKey_${user.uid}`);
-                if (savedUserApiKey) {
-                    apiKeyInput.value = savedUserApiKey;
+                apiKeyInput.value = savedUserApiKey || '';
+                
+                if (apiKeyInput.value.trim()) {
+                    fetchVoices(apiKeyInput.value.trim());
                 } else {
-                    apiKeyInput.value = ''; // Clear for new user or if not saved
+                    voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Please enter your API Key to load voices.</option>';
+                    voiceSelect.disabled = true;
+                    voiceSearchInput.disabled = true;
                 }
-                fetchVoices(apiKeyInput.value.trim() || null); // Pass null if no key to use default/show error
 
             } else {
                 currentUser = null;
                 console.log("User is signed out.");
                 authContainer.classList.remove('hidden');
                 appContainer.classList.add('hidden');
-                adminPanelToggleBtn.classList.add('hidden'); // Hide admin toggle
-                adminPanel.classList.remove('open'); // Close admin panel on logout
+                adminPanelToggleBtn.classList.add('hidden'); 
+                apiKeySection.classList.add('hidden'); 
+                apiKeyInput.value = ''; 
+                allVoices = []; 
+                populateVoiceSelect([]); 
+                voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Enter API Key to load voices...</option>';
+                voiceSearchInput.disabled = true;
+                voiceSelect.disabled = true;
+
+                adminPanel.classList.remove('open'); 
                 isAdminLoggedIn = false;
                 if (unsubscribeLogs) unsubscribeLogs();
             }
-            updateConvertButtonState(); // Update button based on auth state too
+            updateConvertButtonState(); 
         });
 
         // Toggle between Login and Signup forms
-        showSignup.addEventListener('click', () => {
-            loginForm.classList.add('hidden');
-            signupForm.classList.remove('hidden');
-        });
-        showLogin.addEventListener('click', () => {
-            signupForm.classList.add('hidden');
-            loginForm.classList.remove('hidden');
-        });
-
-        // --- Signup Form ---
-        signupForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        showSignup.addEventListener('click', () => { loginForm.classList.add('hidden'); signupForm.classList.remove('hidden'); });
+        showLogin.addEventListener('click', () => { signupForm.classList.add('hidden'); loginForm.classList.remove('hidden'); });
+        
+        signupForm.addEventListener('submit', async (e) => { 
+            e.preventDefault(); 
             signupError.classList.add('hidden');
             const name = signupNameInput.value.trim();
             const email = signupEmailInput.value.trim();
@@ -423,13 +419,10 @@
                 signupError.classList.remove('hidden');
                 return;
             }
-
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                // Update profile with display name
                 await updateProfile(userCredential.user, { displayName: name });
                 console.log("User signed up and profile updated:", userCredential.user);
-                // Auth state listener will handle UI changes
                 signupForm.reset();
             } catch (error) {
                 console.error("Signup error:", error);
@@ -438,16 +431,14 @@
             }
         });
 
-        // --- Login Form ---
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+        loginForm.addEventListener('submit', async (e) => { 
+            e.preventDefault(); 
             loginError.classList.add('hidden');
             const email = loginEmailInput.value.trim();
             const password = loginPasswordInput.value;
             try {
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 console.log("User logged in:", userCredential.user);
-                // Auth state listener will handle UI changes
                 loginForm.reset();
             } catch (error) {
                 console.error("Login error:", error);
@@ -456,52 +447,16 @@
             }
         });
 
-        // --- Logout Button ---
-        logoutButton.addEventListener('click', async () => {
+        logoutButton.addEventListener('click', async () => { 
             try {
                 await signOut(auth);
-                // Auth state listener will handle UI changes
             } catch (error) {
                 console.error("Logout error:", error);
                 displayAppError(error.message);
             }
         });
         
-        // --- Admin Panel Logic (remains same) ---
-        adminPanelToggleBtn.addEventListener('click', () => { /* ... */ });
-        adminModalCloseBtn.addEventListener('click', () => { /* ... */ });
-        adminLoginBtn.addEventListener('click', () => { /* ... */ });
-        async function fetchAdminLogs() { /* ... (same as before, ensure 'db' and 'appId' are used correctly) ... */
-            if (!db || !isAdminLoggedIn) return;
-            adminLogsContainer.innerHTML = '<p>Loading logs...</p>';
-            const logsCollectionPath = `artifacts/${appId}/public/data/voiceGenerationLogs`; // Ensure appId is correct
-            const q = query(collection(db, logsCollectionPath)); 
-
-            if (unsubscribeLogs) unsubscribeLogs(); 
-
-            unsubscribeLogs = onSnapshot(q, (querySnapshot) => {
-                if (querySnapshot.empty) {
-                    adminLogsContainer.innerHTML = '<p>No voice generation logs found.</p>'; return;
-                }
-                adminLogsContainer.innerHTML = ''; 
-                querySnapshot.forEach((doc) => {
-                    const log = doc.data();
-                    const logEntry = document.createElement('div');
-                    logEntry.classList.add('admin-log-entry');
-                    const timestamp = log.timestamp?.toDate ? log.timestamp.toDate().toLocaleString() : 'N/A';
-                    const textSnippet = log.text ? (log.text.length > 50 ? log.text.substring(0, 50) + '...' : log.text) : 'N/A';
-                    logEntry.innerHTML = `<p><strong>User:</strong> ${log.userName || 'N/A'} (<em>${log.userEmail || 'N/A'}</em>)</p>
-                                        <p><strong>Voice ID:</strong> ${log.voiceId || 'N/A'}</p>
-                                        <p><strong>Model:</strong> ${log.modelId || 'N/A'}</p>
-                                        <p><strong>Text:</strong> ${textSnippet}</p>
-                                        <p><strong>Time:</strong> ${timestamp}</p>`;
-                    adminLogsContainer.appendChild(logEntry);
-                });
-            }, (error) => {
-                console.error("Error fetching logs: ", error);
-                adminLogsContainer.innerHTML = '<p class="text-red-400">Error loading logs.</p>';
-            });
-        }
+        // Admin Panel Logic
         adminPanelToggleBtn.addEventListener('click', () => {
             if (isAdminLoggedIn) { adminPanel.classList.toggle('open'); } 
             else { adminPasswordModal.classList.add('visible'); adminPasswordInput.focus(); }
@@ -520,13 +475,31 @@
                 adminPasswordError.classList.remove('hidden');
             }
         });
+        async function fetchAdminLogs() { 
+            if (!db || !isAdminLoggedIn) return;
+            adminLogsContainer.innerHTML = '<p>Loading logs...</p>';
+            const logsCollectionPath = `artifacts/${appId}/public/data/voiceGenerationLogs`; 
+            const q = query(collection(db, logsCollectionPath)); 
+            if (unsubscribeLogs) unsubscribeLogs(); 
+            unsubscribeLogs = onSnapshot(q, (querySnapshot) => {
+                if (querySnapshot.empty) { adminLogsContainer.innerHTML = '<p>No voice generation logs found.</p>'; return; }
+                adminLogsContainer.innerHTML = ''; 
+                querySnapshot.forEach((doc) => {
+                    const log = doc.data(); const logEntry = document.createElement('div');
+                    logEntry.classList.add('admin-log-entry');
+                    const timestamp = log.timestamp?.toDate ? log.timestamp.toDate().toLocaleString() : 'N/A';
+                    const textSnippet = log.text ? (log.text.length > 50 ? log.text.substring(0, 50) + '...' : log.text) : 'N/A';
+                    logEntry.innerHTML = `<p><strong>User:</strong> ${log.userName || 'N/A'} (<em>${log.userEmail || 'N/A'}</em>)</p><p><strong>Voice ID:</strong> ${log.voiceId || 'N/A'}</p><p><strong>Model:</strong> ${log.modelId || 'N/A'}</p><p><strong>Text:</strong> ${textSnippet}</p><p><strong>Time:</strong> ${timestamp}</p>`;
+                    adminLogsContainer.appendChild(logEntry);
+                });
+            }, (error) => { console.error("Error fetching logs: ", error); adminLogsContainer.innerHTML = '<p class="text-red-400">Error loading logs.</p>'; });
+        }
 
 
         // --- Core App Logic (TTS, Voice Fetching etc.) ---
         function updateConvertButtonState() {
             const userProvidedApiKey = apiKeyInput.value.trim();
-            // For now, enable if logged in, text is present. API key handling can be more complex.
-            if (currentUser && textToConvertInput.value.trim()) {
+            if (currentUser && textToConvertInput.value.trim() && userProvidedApiKey) { 
                  convertBtn.disabled = false;
             } else {
                 convertBtn.disabled = true;
@@ -537,34 +510,35 @@
         
         apiKeyInput.addEventListener('input', () => {
             const key = apiKeyInput.value.trim();
-            if (currentUser) { // Save API key per user
+            if (currentUser) { 
                 if (key) {
                     localStorage.setItem(`elevenLabsApiKey_${currentUser.uid}`, key);
+                    fetchVoices(key); 
                 } else {
                     localStorage.removeItem(`elevenLabsApiKey_${currentUser.uid}`);
+                    allVoices = [];
+                    populateVoiceSelect([]);
+                     voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Please enter your API Key to load voices.</option>';
+                    voiceSelect.disabled = true;
+                    voiceSearchInput.disabled = true;
                 }
             }
-            fetchVoices(key || null); // Fetch with new key or default if empty
             updateConvertButtonState();
         });
 
-        voiceSearchInput.addEventListener('input', () => { /* ... (same) ... */ });
+        voiceSearchInput.addEventListener('input', () => { 
+            const searchTerm = voiceSearchInput.value.toLowerCase();
+            if (!allVoices.length) return; 
+            const filteredVoices = allVoices.filter(voice => 
+                voice.name.toLowerCase().includes(searchTerm)
+            );
+            populateVoiceSelect(filteredVoices);
+        });
 
-        async function fetchVoices(apiKeyToUse) { // Modified to accept key
-            if (!apiKeyToUse && !confirm("No API key provided by you. Attempt to use a default key (if configured)? This might incur charges on the app owner's account.")) {
-                voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">API Key required or use default</option>';
-                voiceSelect.disabled = true; voiceSearchInput.disabled = true;
-                allVoices = []; populateVoiceSelect([]);
-                return;
-            }
-            // If apiKeyToUse is null/empty, you might have a default key on server-side or a shared one (less secure for client-side).
-            // For this example, we'll assume if apiKeyToUse is null, it means we can't fetch.
-            // In a real app, you'd handle the "default key" scenario, possibly by having a backend proxy.
-            const effectiveApiKey = apiKeyToUse; //  || "YOUR_SHARED_DEFAULT_KEY_IF_ANY_AND_IF_SECURE_TO_EXPOSE_OR_USE_PROXY";
-
-            if (!effectiveApiKey) { // If still no key after potential default logic
-                 voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">No API Key available</option>';
-                 voiceSelect.disabled = true; voiceSearchInput.disabled = true; allVoices = []; populateVoiceSelect([]); return;
+        async function fetchVoices(apiKeyToUse) { 
+            if (!apiKeyToUse) { 
+                 console.log("fetchVoices called without API key, UI should prompt for key.");
+                 return; 
             }
 
             voiceSelect.disabled = true; voiceSearchInput.disabled = true; 
@@ -574,30 +548,45 @@
 
             try {
                 const response = await fetch(`${ELEVENLABS_API_BASE_URL}/voices`, {
-                    headers: { 'xi-api-key': effectiveApiKey, 'Content-Type': 'application/json' }
+                    headers: { 'xi-api-key': apiKeyToUse, 'Content-Type': 'application/json' }
                 });
-                if (!response.ok) {
+                if (!response.ok) { 
                     const errorData = await response.json().catch(() => ({ detail: { message: response.statusText } }));
                     allVoices = []; 
                     throw new Error(`Error fetching voices (${response.status}): ${errorData.detail?.message || response.statusText}`);
-                }
+                 }
                 const data = await response.json();
                 allVoices = data.voices || []; 
                 populateVoiceSelect(allVoices); 
                 voiceSelect.disabled = false; voiceSearchInput.disabled = false; 
-            } catch (error) {
+            } catch (error) { 
                 console.error('Fetch voices error:', error);
                 allVoices = []; populateVoiceSelect([]);
-                voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Failed to fetch voices</option>';
-                voiceSearchInput.disabled = true;
-                displayAppError(`Failed to load voices: ${error.message}`);
+                voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Failed to fetch voices with provided API Key.</option>'; // More specific error
+                voiceSearchInput.disabled = true; // Keep disabled if fetch fails
+                displayAppError(`Failed to load voices: ${error.message}. Check your API Key.`);
             }
         }
 
-        function populateVoiceSelect(voicesToDisplay) { /* ... (same) ... */ }
+        function populateVoiceSelect(voicesToDisplay) {
+            voiceSelect.innerHTML = ''; 
+            if (voicesToDisplay && voicesToDisplay.length > 0) {
+                voicesToDisplay.forEach(voice => {
+                    const option = document.createElement('option'); option.value = voice.voice_id;
+                    option.style.color = '#1e293b'; option.style.backgroundColor = '#f1f5f9';
+                    option.textContent = `${voice.name} (${voice.labels?.description || 'Default'})`;
+                    voiceSelect.appendChild(option);
+                });
+            } else {
+                if (!apiKeyInput.value.trim() && currentUser) { voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Enter API Key to load voices.</option>';}
+                else if (voiceSearchInput.value && allVoices.length > 0) { voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">No voices match your search</option>';}
+                else if (allVoices.length === 0 && apiKeyInput.value.trim()){ voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">No voices found for this API key</option>';}
+                else { voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">No voices available</option>';}
+            }
+        }
 
-        async function logVoiceGeneration(userName, userEmail, voiceId, modelId, text) {
-            if (!db || !currentUser) { /* ... (modified to include userEmail) ... */ 
+        async function logVoiceGeneration(userName, userEmail, voiceId, modelId, text) { 
+            if (!db || !currentUser) { 
                 console.warn("Firestore not initialized or user not authenticated. Skipping log."); return;
             }
             try {
@@ -612,12 +601,7 @@
         }
 
         convertBtn.addEventListener('click', async () => {
-            const userProvidedApiKey = apiKeyInput.value.trim();
-            // Logic to determine which API key to use: User's key > Default/Admin Key (if any)
-            // For simplicity, we use user's key if provided. Otherwise, this example won't proceed without a key.
-            // A more robust app might have a backend to manage a pool of keys or a default key.
-            const apiKeyToUse = userProvidedApiKey; 
-
+            const apiKeyToUse = apiKeyInput.value.trim(); 
             if (!apiKeyToUse) { displayAppError('ElevenLabs API Key is required.'); return; }
             if (!currentUser) { displayAppError('Please login to generate voice.'); return; }
             
@@ -629,7 +613,7 @@
 
             if (!text) { displayAppError('Please enter text to convert.'); return; }
             if (!voiceId) { displayAppError('Please select a voice.'); return; }
-
+            
             convertBtn.disabled = true; buttonText.textContent = 'Converting...';
             loadingSpinner.classList.remove('hidden');
             audioPlayer.classList.add('hidden'); downloadBtn.classList.add('hidden');
@@ -649,7 +633,7 @@
                         voice_settings: { stability: 0.7, similarity_boost: 0.75 }
                     })
                 });
-                if (!response.ok) { /* ... (error handling same) ... */ 
+                if (!response.ok) { 
                     let errorDetail = response.statusText;
                     try { const errorJson = await response.json(); errorDetail = errorJson.detail?.message || (typeof errorJson.detail === 'string' ? errorJson.detail : JSON.stringify(errorJson.detail)) || JSON.stringify(errorJson);
                     } catch (e) { errorDetail = await response.text() || response.statusText; }
@@ -662,38 +646,34 @@
                 downloadBtn.classList.remove('hidden'); 
                 downloadBtn.classList.add('visible'); 
                 await logVoiceGeneration(userNameForLog, userEmailForLog, voiceId, modelId, text);
-            } catch (error) {
+            } catch (error) { 
                 console.error('TTS Error:', error);
                 displayAppError(`Failed to generate audio: ${error.message}`);
                 audioPlayer.classList.add('hidden'); 
                 downloadBtn.classList.add('hidden'); downloadBtn.classList.remove('visible');
-            } finally {
+            } finally { 
                 updateConvertButtonState();
                 buttonText.textContent = 'Convert to Audio';
                 loadingSpinner.classList.add('hidden');
             }
         });
 
-        downloadBtn.addEventListener('click', () => { /* ... (same) ... */ });
-
-        function displayAppError(message) { // Renamed to avoid conflict
-            appErrorMessage.textContent = message;
-            appErrorMessage.classList.remove('hidden'); 
-            appErrorMessage.classList.add('visible'); 
+        downloadBtn.addEventListener('click', () => {
+            if (currentAudioBlobUrl) { const a = document.createElement('a'); a.href = currentAudioBlobUrl;
+                a.download = `elevenlabs_audio_${Date.now()}.mp3`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            } else { displayAppError("No audio available to download."); }
+        });
+        function displayAppError(message) {
+            appErrorMessage.textContent = message; appErrorMessage.classList.remove('hidden'); appErrorMessage.classList.add('visible'); 
         }
-
+        
         window.addEventListener('load', () => {
-            // Firebase Auth state listener will handle initial UI (auth or app)
             if (!app || !auth || !db) {
                 console.warn("Firebase is not available. Core functionality will be limited.");
-                // displayAppError("Essential services are unavailable. Please try again later.");
                 authContainer.innerHTML = '<p class="text-center text-red-400 p-4">Essential services are unavailable. Please try refreshing the page or contact support.</p>';
-                authContainer.classList.remove('hidden'); // Ensure auth container (or a message within it) is shown
-                appContainer.classList.add('hidden');
-                adminPanelToggleBtn.style.display = 'none';
+                authContainer.classList.remove('hidden'); appContainer.classList.add('hidden'); adminPanelToggleBtn.style.display = 'none';
             }
         });
     </script>
 </body>
 </html>
-
