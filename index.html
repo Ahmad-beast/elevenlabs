@@ -3,822 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ElevenLabs</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Site Under Maintenance</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-color: #6a11cb; /* Modern purple */
+            --secondary-color: #2575fc; /* Modern blue */
+            --text-color: #333;
+            --light-text-color: #f8f9fa;
+            --background-color: #f4f7f6;
+            --container-background: #ffffff;
+            --whatsapp-color: #25D366;
+            --whatsapp-hover-color: #1DAE50;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
             display: flex;
+            align-items: center;
             justify-content: center;
-            align-items: flex-start; 
             min-height: 100vh;
-            padding: 1rem; 
-            color: #cbd5e1;
-            overflow-x: hidden; 
+            text-align: center;
+            overflow-x: hidden; /* Prevent horizontal scroll on small screens */
         }
-        .auth-container, .app-container {
-            max-width: 500px; 
-            width: 100%;
-            margin: 2rem auto;
-            padding: 2.5rem;
-            background-color: rgba(30, 41, 59, 0.7); 
-            border-radius: 1rem; 
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(51, 65, 85, 0.7);
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInSlideUp 0.7s ease-out forwards;
-        }
-        .app-container { max-width: 700px; position: relative; } 
 
-        @keyframes fadeInSlideUp { to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { to { opacity: 1; } }
+        .container {
+            background: var(--container-background);
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            max-width: 600px;
+            width: 90%;
+            animation: fadeIn 1s ease-out;
+        }
 
-        /* Admin Panel Styles */
-        .admin-panel-toggle { 
-            position: fixed; top: 1rem; left: 1rem; background-color: rgba(45, 212, 191, 0.2);
-            color: #2dd4bf; padding: 0.75rem; border-radius: 0.5rem; cursor: pointer; z-index: 1001;
-            transition: all 0.3s ease; border: 1px solid rgba(45, 212, 191, 0.5);
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        .admin-panel-toggle:hover { background-color: rgba(45, 212, 191, 0.4); }
-        .admin-panel { 
-            position: fixed; top: 0; left: -450px; width: 450px; height: 100vh;
-            background-color: rgba(15, 23, 42, 0.97); backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px); border-right: 1px solid #2dd4bf; padding: 1.5rem;
-            box-shadow: 5px 0 15px rgba(0,0,0,0.3); z-index: 1000; transition: left 0.4s ease-in-out;
-            overflow-y: auto; color: #e2e8f0;
-        }
-        .admin-panel.open { left: 0; }
-        .admin-panel h2, .admin-panel h3 { color: #2dd4bf; font-size: 1.5rem; margin-bottom: 1rem; border-bottom: 1px solid #2dd4bf; padding-bottom: 0.5rem; }
-        .admin-panel h3 { font-size: 1.25rem; margin-top: 1.5rem; }
-        .admin-log-entry, .admin-user-entry { 
-            background-color: rgba(51, 65, 85, 0.4); padding: 0.75rem; border-radius: 0.375rem;
-            margin-bottom: 0.75rem; font-size: 0.875rem; border-left: 3px solid #2dd4bf;
-        }
-        .admin-log-entry p, .admin-user-entry p { margin-bottom: 0.25rem; } 
-        .admin-log-entry strong, .admin-user-entry strong { color: #94a3b8; }
-        .admin-user-entry .actions button {
-            background-color: rgba(45, 212, 191, 0.3); color: #2dd4bf;
-            padding: 0.3rem 0.6rem; font-size: 0.75rem; border-radius: 0.25rem; margin-right: 0.5rem;
-            border: 1px solid rgba(45, 212, 191, 0.5);
-        }
-        .admin-user-entry .actions button:hover { background-color: rgba(45, 212, 191, 0.5); }
-        .admin-user-entry .actions .delete-btn { background-color: rgba(239, 68, 68, 0.3); color: #f87171; border-color: rgba(239, 68, 68, 0.5);}
-        .admin-user-entry .actions .delete-btn:hover { background-color: rgba(239, 68, 68, 0.5); }
 
+        .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
 
-        /* Modal Styles */
-        .modal { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7);
-            display: flex; justify-content: center; align-items: center; z-index: 1002;
-            opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-weight: 700;
         }
-        .modal.visible { opacity: 1; visibility: visible; }
-        .modal-content { 
-            background-color: #1e293b; padding: 2rem; border-radius: 0.75rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 90%; max-width: 400px; text-align: center;
-        }
-        .modal-content .label { color: #94a3b8; } .modal-content .input { margin-bottom: 1rem; }
-        .modal-content .button { margin-top: 0.5rem; }
 
-        /* Common styles */
-        .label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #94a3b8; font-size: 0.9rem; }
-        .input, .textarea, .select {
-            width: 100%; padding: 0.875rem; background-color: rgba(51, 65, 85, 0.6); 
-            border: 1px solid rgba(71, 85, 105, 0.8); border-radius: 0.5rem; color: #e2e8f0;
-            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.3s ease, transform 0.2s ease;
+        p {
+            font-size: 1.1em;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            color: #555;
         }
-        #voiceSearchInput { margin-bottom: 0.75rem; padding: 0.75rem 1rem; }
-        .input::placeholder, .textarea::placeholder { color: #64748b; }
-        .input:focus, .textarea:focus, .select:focus {
-            outline: none; border-color: #2dd4bf; background-color: rgba(51, 65, 85, 0.8); 
-            box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.3), 0 5px 15px rgba(45, 212, 191, 0.1);
-            transform: translateY(-1px);
+
+        .sorry-message {
+            font-weight: 600;
+            color: var(--secondary-color);
+            font-size: 1.2em;
         }
-        .button { 
-            background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%); color: white; padding: 0.875rem 1.5rem;
-            border: none; border-radius: 0.5rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease;
-            text-transform: uppercase; letter-spacing: 0.05em; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 1rem;
-        }
-        .button:hover:not(:disabled) { 
-            transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 25px rgba(20, 184, 166, 0.3);
-            background: linear-gradient(135deg, #0d9488 0%, #2dd4bf 100%);
-        }
-        .button:disabled { 
-            background: rgba(71, 85, 105, 0.5); color: rgba(148, 163, 184, 0.7); cursor: not-allowed;
-            transform: translateY(0) scale(1); box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+
         .whatsapp-button {
-            background: #25D366; color: white; margin-top: 1.5rem;
-            display: inline-flex; align-items: center; justify-content: center; width: auto; padding: 0.75rem 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--whatsapp-color);
+            color: var(--light-text-color);
+            padding: 12px 25px;
+            border-radius: 50px; /* Pill shape */
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-        .whatsapp-button:hover { background: #1DAE50; }
-        .whatsapp-button i { margin-right: 0.5rem; }
 
-        .user-info {
-            position: absolute; top: 1.5rem; right: 1.5rem; text-align: right; z-index: 10;
-            opacity: 0; animation: fadeIn 0.5s ease-out 0.5s forwards; font-size: 0.9rem;
+        .whatsapp-button svg {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            fill: var(--light-text-color);
         }
-        .user-info p { margin-bottom: 0.25rem; }
-        .logout-button {
-            background: none; border: none; color: #f87171; 
-            text-decoration: underline; cursor: pointer; padding: 0.25rem 0; font-size: 0.9rem;
-        }
-        .logout-button:hover { color: #ef4444; }
-        
-        h2.auth-title { color: #e2e8f0; font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; text-align:center; }
-        .error-message { 
-            color: #f87171; background-color: rgba(127, 29, 29, 0.3); border: 1px solid rgba(220, 38, 38, 0.5);
-            padding: 1rem; text-align: center; font-weight: 500; margin-top: 1rem; border-radius: 0.5rem;
-        }
-        .loading-spinner { 
-            border: 4px solid rgba(71, 85, 105, 0.3); border-top: 4px solid #2dd4bf; border-radius: 50%;
-            width: 20px; height: 20px; animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        .app-container h1 { 
-            font-weight: 800; color: #f1f5f9; text-shadow: 0 2px 4px rgba(0,0,0,0.3); 
-            margin-top: 0; 
-            opacity: 0; animation: fadeIn 0.5s ease-out 0.2s forwards; font-size: 2.25rem; 
-        }
-        .app-container header p { 
-            color: #94a3b8; opacity: 0; animation: fadeIn 0.5s ease-out 0.35s forwards; font-size: 1.125rem;
-        }
-        .form-section { margin-top: 1.5rem; opacity: 0; animation: fadeInSlideUp 0.6s ease-out forwards; }
-        /* Adjusted nth-of-type selectors because API key section is removed */
-        .app-container > .form-section:nth-of-type(1) { animation-delay: 0.3s; } /* Text to Convert */
-        .app-container > .form-section:nth-of-type(2) { animation-delay: 0.4s; } /* Select Voice */
-        .app-container > .form-section:nth-of-type(3) { animation-delay: 0.5s; } /* Select Model */
-        
-        #convertBtn { opacity: 0; animation: fadeInSlideUp 0.6s ease-out 0.6s forwards; } 
 
+        .whatsapp-button:hover {
+            background-color: var(--whatsapp-hover-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) { 
-            .auth-container, .app-container { padding: 2rem; margin: 1rem auto; }
-            .app-container h1 { font-size: 1.875rem; }
-            .app-container header p { font-size: 1rem; }
-            .user-info { font-size:0.8rem; right: 1rem; top: 1rem;}
-            .button { padding: 0.875rem 1.25rem; font-size: 0.875rem; }
-            .input, .textarea, .select { padding: 0.875rem; }
-            .admin-panel { width: 320px; left: -320px; } 
+        .footer-text {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #777;
         }
-        @media (max-width: 480px) { 
-            body { padding: 0.5rem; }
-            .auth-container, .app-container { padding: 1.5rem; margin: 0.5rem auto; margin-top: 1rem; }
-            .app-container {margin-top: 4rem; } 
-            .app-container h1 { font-size: 1.5rem; }
-            .app-container header p { font-size: 0.875rem; }
-            .user-info {width: calc(100% - 80px); text-align:left; left: 70px;} 
-            .button { padding: 0.75rem 1rem; font-size: 0.8rem; }
-            .admin-panel { width: 100%; left: -100%; border-right: none; } 
-            .admin-panel.open { left: 0; }
-            .admin-panel-toggle { padding: 0.6rem; font-size: 0.9rem;}
+
+        /* Optional: Add a subtle animation to the icon */
+        .icon-animation {
+            animation: pulse 2s infinite ease-in-out;
         }
-        .hidden { display: none !important; }
-        hr.admin-divider { border-color: rgba(71, 85, 105, 0.8); margin: 1.5rem 0; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
     </style>
 </head>
 <body>
-    <button id="adminPanelToggle" class="admin-panel-toggle hidden">
-        <i class="fas fa-cogs"></i> Admin
-    </button>
-    <div id="adminPanel" class="admin-panel">
-        <h2>Admin Panel</h2>
-        
-        <h3>Create New User</h3>
-        <form id="adminCreateUserForm" class="space-y-3">
-            <div><label for="adminNewUserName" class="label">Name:</label><input type="text" id="adminNewUserName" class="input" required></div>
-            <div><label for="adminNewUserEmail" class="label">Email:</label><input type="email" id="adminNewUserEmail" class="input" required></div>
-            <div><label for="adminNewUserPassword" class="label">Password:</label><input type="password" id="adminNewUserPassword" class="input" required></div>
-            <div>
-                <label for="adminUserExpiry" class="label">Access Duration:</label>
-                <select id="adminUserExpiry" class="select">
-                    <option value="1">1 Day</option><option value="7" selected>7 Days</option><option value="15">15 Days</option>
-                    <option value="30">30 Days</option><option value="0">No Expiry</option> 
-                </select>
-            </div>
-            <button type="submit" id="adminCreateUserBtn" class="button text-sm py-2">Create User</button>
-            <p id="adminCreateUserError" class="error-message hidden text-xs py-2"></p>
-            <p id="adminCreateUserSuccess" class="text-green-400 text-xs py-2 hidden"></p>
-        </form>
-        <hr class="admin-divider">
-        <h3>Manage Users</h3>
-        <div id="adminManageUsersContainer"><p>Loading users...</p></div>
-        <hr class="admin-divider">
-        <h3>Activity Logs</h3>
-        <div id="adminLogsContainer"><p>Login to view logs.</p></div>
+
+    <div class="container">
+        <div class="icon icon-animation">
+            &#x1F6A7; </div>
+        <h1>Site Under Maintenance</h1>
+        <p class="sorry-message">We're sorry for the inconvenience!</p>
+        <p>Our website is currently undergoing scheduled maintenance to improve your experience. We'll be back online shortly.</p>
+        <p>Thank you for your patience.</p>
+
+        <a href="https://wa.me/923064482383?text=Hello!%20I'd%20like%20more%20details%20about%20the%20site%20maintenance." class="whatsapp-button" target="_blank">
+            <svg viewBox="0 0 896 896" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="20px" height="20px" fill-rule="evenodd" clip-rule="evenodd" image-rendering="optimizeQuality" shape-rendering="geometricPrecision" text-rendering="geometricPrecision"><path d="M606 221c-40-42-92-66-148-66-118 0-214 95-214 212s96 212 214 212c2 0 3 0 5 0h1l118-69c6-4 14-1 16 6l17 70c2 7-3 15-10 17-34 9-70 14-107 14-159 0-288-128-288-286S299 65 458 65c75 0 142 30 192 79 8 7 8 18 1 25l-44 42zm-194 99c-6-1-12 3-13 9l-19 99c-1 4 0 8 4 11l69 57c4 3 9 4 13 1l99-40c6-2 9-9 6-15l-41-99c-2-6-9-9-15-6l-99 41zm158-53c20 0 36 16 36 36s-16 36-36 36-36-16-36-36c0-20 17-36 36-36z"></path></svg>
+            For more details
+        </a>
+
+        <p class="footer-text">&copy; <span id="currentYear"></span> Your Company Name. All rights reserved.</p>
     </div>
 
-    <div id="adminPasswordModal" class="modal">
-        <div class="modal-content">
-            <h3 class="text-xl font-semibold mb-4 text-slate-200">Admin Login</h3>
-            <label for="adminPassword" class="label text-left">Password:</label>
-            <input type="password" id="adminPassword" class="input bg-slate-700 border-slate-600" placeholder="Enter admin password">
-            <p id="adminPasswordError" class="text-red-400 text-sm mt-1 mb-3 hidden"></p>
-            <button id="adminLoginBtn" class="button w-full">Login</button>
-            <button id="adminModalCloseBtn" class="button w-full bg-slate-600 hover:bg-slate-500 mt-2">Close</button>
-        </div>
-    </div>
+    <script>
+        // Simple script to update the year automatically
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-    <div id="authContainer" class="auth-container">
-        <form id="loginForm" class="">
-            <h2 class="auth-title">Welcome Back</h2>
-            <div class="mb-4"><label for="loginEmail" class="label">Email</label><input type="email" id="loginEmail" class="input" required placeholder="your@email.com"></div>
-            <div class="mb-6"><label for="loginPassword" class="label">Password</label><input type="password" id="loginPassword" class="input" required placeholder="••••••••"></div>
-            <p id="loginError" class="error-message hidden"></p>
-            <button type="submit" class="button">Login</button>
-            <a href="https://wa.me/923064482383?text=ElevenLabs%20Subscription" target="_blank" class="button whatsapp-button">
-                <i class="fab fa-whatsapp"></i> Contact for Account,Starting From 99 PKR
-            </a>
-        </form>
-    </div>
+        // You can add more JavaScript here if needed for other functionalities,
+        // like a countdown timer if you have an estimated time of return.
+        // Example:
+        // const countdownDate = new Date("May 30, 2025 15:00:00").getTime();
+        // const countdownFunction = setInterval(function() {
+        //     const now = new Date().getTime();
+        //     const distance = countdownDate - now;
+        //     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        //     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        //     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        //     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    <div id="appContainer" class="app-container hidden">
-        <div class="user-info" id="userInfo">
-            <p id="userEmailDisplay"></p>
-            <button id="logoutButton" class="logout-button">Logout</button>
-        </div>
-        
-        <header class="text-center mb-8">
-            <h1>ElevenLabs TTS App</h1>
-            <p class="text-slate-400 mt-2 text-lg">Convert text to audio.</p>
-        </header>
+        //     // Assuming you have an element with id="countdown"
+        //     // document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
+        //     // + minutes + "m " + seconds + "s ";
 
-        <div class="form-section mb-6">
-            <label for="textToConvert" class="label">Text to Convert:</label>
-            <textarea id="textToConvert" rows="4" class="textarea" placeholder="Enter your text here..."></textarea>
-        </div>
-
-        <div class="form-section mb-6">
-            <label for="voiceSelect" class="label">Select Voice:</label>
-            <input type="text" id="voiceSearchInput" class="input" placeholder="Search voices..." disabled>
-            <select id="voiceSelect" class="select mt-2" disabled>
-                <option value="" style="color: #94a3b8;">Loading voices...</option>
-            </select>
-        </div>
-        
-        <div class="form-section mb-6">
-            <label for="modelSelect" class="label">Select Model:</label>
-            <select id="modelSelect" class="select">
-                <option value="eleven_multilingual_v2" selected>Eleven Multilingual v2</option>
-                <option value="eleven_multilingual_v1">Eleven Multilingual v1</option>
-                <option value="eleven_monolingual_v1">Eleven Monolingual v1</option>
-            </select>
-        </div>
-
-        <button id="convertBtn" class="button w-full py-3.5 mb-4" disabled>
-            <span id="buttonText" class="mr-2">Convert to Audio</span>
-            <div id="loadingSpinner" class="loading-spinner hidden"></div>
-        </button>
-
-        <button id="downloadBtn" class="button download-button w-full py-3.5 hidden">
-            <i class="fas fa-download mr-2"></i> Download Audio
-        </button>
-
-        <audio id="audioPlayer" controls class="audio-player hidden mt-6"></audio>
-        <div id="appErrorMessage" class="error-message hidden mt-4"></div>
-    </div>
-
-    <script type="module">
-        // Firebase Imports
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { 
-            getAuth, 
-            createUserWithEmailAndPassword, 
-            signInWithEmailAndPassword, 
-            signOut, 
-            onAuthStateChanged,
-            updateProfile,
-        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { 
-            getFirestore, collection, addDoc, serverTimestamp, query, onSnapshot, 
-            doc, setDoc, getDoc, updateDoc, deleteDoc, Timestamp 
-        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // DOM Elements
-        const authContainer = document.getElementById('authContainer');
-        const appContainer = document.getElementById('appContainer');
-        const loginForm = document.getElementById('loginForm');
-        const loginEmailInput = document.getElementById('loginEmail');
-        const loginPasswordInput = document.getElementById('loginPassword');
-        const loginError = document.getElementById('loginError');
-        const userEmailDisplay = document.getElementById('userEmailDisplay');
-        const logoutButton = document.getElementById('logoutButton');
-        const adminPanelToggleBtn = document.getElementById('adminPanelToggle'); 
-        
-        const textToConvertInput = document.getElementById('textToConvert');
-        const voiceSearchInput = document.getElementById('voiceSearchInput'); 
-        const voiceSelect = document.getElementById('voiceSelect');
-        const modelSelect = document.getElementById('modelSelect');
-        const convertBtn = document.getElementById('convertBtn');
-        const buttonText = document.getElementById('buttonText');
-        const loadingSpinner = document.getElementById('loadingSpinner');
-        const audioPlayer = document.getElementById('audioPlayer');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const appErrorMessage = document.getElementById('appErrorMessage'); 
-
-        // Admin Panel Elements
-        const adminPanel = document.getElementById('adminPanel');
-        const adminLogsContainer = document.getElementById('adminLogsContainer');
-        const adminPasswordModal = document.getElementById('adminPasswordModal');
-        const adminPasswordInput = document.getElementById('adminPassword');
-        const adminLoginBtn = document.getElementById('adminLoginBtn');
-        const adminModalCloseBtn = document.getElementById('adminModalCloseBtn');
-        const adminPasswordError = document.getElementById('adminPasswordError');
-        const adminCreateUserForm = document.getElementById('adminCreateUserForm');
-        const adminNewUserNameInput = document.getElementById('adminNewUserName');
-        const adminNewUserEmailInput = document.getElementById('adminNewUserEmail');
-        const adminNewUserPasswordInput = document.getElementById('adminNewUserPassword');
-        const adminUserExpirySelect = document.getElementById('adminUserExpiry');
-        const adminCreateUserBtn = document.getElementById('adminCreateUserBtn');
-        const adminCreateUserError = document.getElementById('adminCreateUserError');
-        const adminCreateUserSuccess = document.getElementById('adminCreateUserSuccess');
-        const adminManageUsersContainer = document.getElementById('adminManageUsersContainer');
-
-
-        const ELEVENLABS_API_BASE_URL = 'https://api.elevenlabs.io/v1';
-        const DEFAULT_ELEVENLABS_API_KEY = "sk_f8d2ebd886e313dc628d26f122c72139499e2496b5a0c72f"; 
-        const ADMIN_PASSWORD = "Monopoly1.@"; 
-        let currentAudioBlobUrl = null; 
-        let allVoices = []; 
-        let isAdminLoggedIn = false;
-        let unsubscribeLogs = null; 
-        let unsubscribeUsers = null;
-        let currentUser = null; 
-
-        // --- Firebase Setup ---
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-            apiKey: "AIzaSyDtKupraU6Ug-m4smjBI0AriDnTHxBqpfY",
-            authDomain: "myelevenlabs-18ad9.firebaseapp.com",
-            projectId: "myelevenlabs-18ad9",
-            storageBucket: "myelevenlabs-18ad9.firebasestorage.app",
-            messagingSenderId: "892386214766",
-            appId: "1:892386214766:web:0000cf3c2cec4c0337777f",
-            measurementId: "G-GK8FR0P65Y"
-        };
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-elevenlabs-app';
-        let app, auth, db;
-
-        try {
-            app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-            db = getFirestore(app);
-            console.log("Firebase initialized successfully. App ID:", appId);
-        } catch (error) {
-            console.error("Firebase initialization error:", error);
-            displayAppError("Could not connect to services. Please try again later.");
-        }
-        
-        // --- Authentication State Listener ---
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                const userDocRef = doc(db, `users/${user.uid}`);
-                const userDocSnap = await getDoc(userDocRef);
-
-                if (userDocSnap.exists()) {
-                    const userData = userDocSnap.data();
-                    if (userData.accountExpiry && userData.accountExpiry.toDate() < new Date()) {
-                        displayLoginError("Your account has expired. Please contact admin.");
-                        await signOut(auth); 
-                        return;
-                    }
-                    currentUser = { ...user, ...userData }; 
-                } else {
-                    console.warn(`User document not found in Firestore for UID: ${user.uid}. They might not have expiry set.`);
-                    currentUser = user; 
-                    // IMPORTANT: Replace "YOUR_ADMIN_EMAIL@example.com" with your actual admin email
-                    if (user.email !== "YOUR_ADMIN_EMAIL@example.com") { 
-                        // Potentially log out non-admin users without a Firestore record if they are not the admin
-                        // This logic might need adjustment based on how you manage your admin user.
-                        // If admin user also doesn't have a firestore doc, this could log them out.
-                        // Consider adding admin to 'users' collection without expiry or a different check.
-                        // displayLoginError("User account not fully configured. Please contact admin.");
-                        // await signOut(auth);
-                        // return;
-                    }
-                }
-
-                console.log("User is signed in:", currentUser.uid, currentUser.email, currentUser.displayName);
-                userEmailDisplay.textContent = `Logged in: ${currentUser.displayName || currentUser.email}`;
-                authContainer.classList.add('hidden');
-                appContainer.classList.remove('hidden');
-                adminPanelToggleBtn.classList.remove('hidden'); 
-                
-                if (DEFAULT_ELEVENLABS_API_KEY && DEFAULT_ELEVENLABS_API_KEY !== "YOUR_ACTUAL_ELEVENLABS_API_KEY_HERE") {
-                    fetchVoices(DEFAULT_ELEVENLABS_API_KEY);
-                } else {
-                    voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">App API Key not configured.</option>';
-                    voiceSelect.disabled = true;
-                    voiceSearchInput.disabled = true;
-                    displayAppError("App's ElevenLabs API Key is not configured. Please contact admin.");
-                }
-
-            } else {
-                currentUser = null;
-                console.log("User is signed out.");
-                authContainer.classList.remove('hidden');
-                appContainer.classList.add('hidden');
-                adminPanelToggleBtn.classList.add('hidden'); 
-                
-                allVoices = []; 
-                populateVoiceSelect([]); 
-                voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Login to load voices...</option>';
-                voiceSearchInput.disabled = true;
-                voiceSelect.disabled = true;
-
-                adminPanel.classList.remove('open'); 
-                isAdminLoggedIn = false;
-                if (unsubscribeLogs) unsubscribeLogs();
-                if (unsubscribeUsers) unsubscribeUsers();
-            }
-            updateConvertButtonState(); 
-        });
-        
-        // Login Form
-        loginForm.addEventListener('submit', async (e) => { 
-            e.preventDefault(); 
-            loginError.classList.add('hidden');
-            const email = loginEmailInput.value.trim();
-            const password = loginPasswordInput.value;
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                loginForm.reset();
-            } catch (error) {
-                console.error("Login error:", error);
-                displayLoginError(error.message);
-            }
-        });
-
-        // Logout Button 
-        logoutButton.addEventListener('click', async () => { 
-            try {
-                await signOut(auth);
-            } catch (error) {
-                console.error("Logout error:", error);
-                displayAppError(error.message);
-            }
-        });
-        
-        // Admin Panel Logic
-        adminPanelToggleBtn.addEventListener('click', () => {
-            if (isAdminLoggedIn) { adminPanel.classList.toggle('open'); } 
-            else { adminPasswordModal.classList.add('visible'); adminPasswordInput.focus(); }
-        });
-        adminModalCloseBtn.addEventListener('click', () => {
-            adminPasswordModal.classList.remove('visible'); adminPasswordInput.value = '';
-            adminPasswordError.classList.add('hidden');
-        });
-        adminLoginBtn.addEventListener('click', () => {
-            if (adminPasswordInput.value === ADMIN_PASSWORD) {
-                isAdminLoggedIn = true; adminPasswordModal.classList.remove('visible');
-                adminPanel.classList.add('open'); adminPasswordInput.value = '';
-                adminPasswordError.classList.add('hidden'); 
-                fetchAdminLogs();
-                displayUsersInAdminPanel(); 
-            } else {
-                adminPasswordError.textContent = "Incorrect password.";
-                adminPasswordError.classList.remove('hidden');
-            }
-        });
-
-        adminCreateUserForm.addEventListener('submit', async (e) => { 
-            e.preventDefault(); 
-            adminCreateUserError.classList.add('hidden'); 
-            adminCreateUserSuccess.classList.add('hidden'); 
-            adminCreateUserBtn.disabled = true; 
-            const name = adminNewUserNameInput.value.trim(); 
-            const email = adminNewUserEmailInput.value.trim(); 
-            const password = adminNewUserPasswordInput.value; 
-            const expiryDays = parseInt(adminUserExpirySelect.value); 
-            if (!name || !email || !password) { 
-                adminCreateUserError.textContent = "All fields are required."; 
-                adminCreateUserError.classList.remove('hidden'); 
-                adminCreateUserBtn.disabled = false; return; 
-            } 
-            try { 
-                // IMPORTANT: To create users without affecting current admin's auth state,
-                // this should ideally be done via Firebase Admin SDK in a Cloud Function.
-                // The current method might sign out the admin if not handled carefully or
-                // if Firebase rules prevent creating users by non-admin SDKs without special setup.
-                // For now, we proceed, but be aware of this limitation.
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password); 
-                const newUser = userCredential.user; 
-                console.log("Admin created new user in Auth:", newUser.uid); 
-                await updateProfile(newUser, { displayName: name }); 
-                let expiryDate = null; 
-                if (expiryDays > 0) { 
-                    expiryDate = new Date(); 
-                    expiryDate.setDate(expiryDate.getDate() + expiryDays); 
-                } 
-                const userDocRef = doc(db, "users", newUser.uid); 
-                await setDoc(userDocRef, { 
-                    uid: newUser.uid, displayName: name, email: email, 
-                    createdAt: serverTimestamp(), 
-                    accountExpiry: expiryDate ? Timestamp.fromDate(expiryDate) : null, 
-                    createdBy: currentUser ? currentUser.uid : 'admin_direct_creation' 
-                }); 
-                adminCreateUserSuccess.textContent = `User ${name} (${email}) created successfully!`; 
-                adminCreateUserSuccess.classList.remove('hidden'); 
-                adminCreateUserForm.reset(); 
-
-                // After creating a user, the admin might be signed in as the new user.
-                // The admin needs to sign out and sign back in with their admin credentials.
-                // This is a significant UX issue with client-side user creation by an admin.
-                // A Cloud Function is the robust way to handle this.
-                // For now, we'll just log a warning.
-                console.warn("Admin created a new user. Admin might need to re-login if their auth state changed.");
-
-
-            } catch (error) { 
-                console.error("Admin create user error:", error); 
-                adminCreateUserError.textContent = error.message; 
-                adminCreateUserError.classList.remove('hidden'); 
-            } finally { 
-                adminCreateUserBtn.disabled = false; 
-            } 
-        });
-        
-        async function displayUsersInAdminPanel() { 
-            if (!db || !isAdminLoggedIn) return; 
-            adminManageUsersContainer.innerHTML = '<p>Loading users...</p>'; 
-            const usersCollectionRef = collection(db, "users"); 
-            if(unsubscribeUsers) unsubscribeUsers(); 
-            unsubscribeUsers = onSnapshot(query(usersCollectionRef), (querySnapshot) => { 
-                if (querySnapshot.empty) { 
-                    adminManageUsersContainer.innerHTML = '<p>No users found in database.</p>'; return; 
-                } 
-                adminManageUsersContainer.innerHTML = ''; 
-                querySnapshot.forEach((docSnap) => { 
-                    const userData = docSnap.data(); 
-                    const userEntry = document.createElement('div'); 
-                    userEntry.classList.add('admin-user-entry'); 
-                    const expiryText = userData.accountExpiry ? userData.accountExpiry.toDate().toLocaleDateString() : 'No Expiry'; 
-                    const isExpired = userData.accountExpiry && userData.accountExpiry.toDate() < new Date(); 
-                    userEntry.innerHTML = `
-                        <p><strong>Name:</strong> ${userData.displayName || 'N/A'}</p>
-                        <p><strong>Email:</strong> ${userData.email || 'N/A'}</p>
-                        <p><strong>UID:</strong> ${userData.uid || 'N/A'}</p>
-                        <p><strong>Expiry:</strong> <span class="${isExpired ? 'text-red-400' : ''}">${expiryText}</span></p>
-                        <div class="actions mt-2">
-                            <button class="extend-expiry-btn" data-uid="${userData.uid}">Extend 7 Days</button>
-                            <button class="delete-user-btn delete-btn" data-uid="${userData.uid}" data-email="${userData.email}">Delete User</button>
-                        </div>`; 
-                    adminManageUsersContainer.appendChild(userEntry); 
-                }); 
-                document.querySelectorAll('.extend-expiry-btn').forEach(button => { 
-                    button.addEventListener('click', handleExtendExpiry); 
-                }); 
-                document.querySelectorAll('.delete-user-btn').forEach(button => { 
-                    button.addEventListener('click', handleDeleteUserFirestoreRecord); 
-                }); 
-            }, (error) => { 
-                console.error("Error fetching users for admin: ", error); 
-                adminManageUsersContainer.innerHTML = '<p class="text-red-400">Error loading users.</p>'; 
-            }); 
-        }
-
-        async function handleExtendExpiry(event) { 
-            const uid = event.target.dataset.uid; 
-            if (!uid || !confirm(`Extend access for user ${uid} by 7 days?`)) return; 
-            try { 
-                const userDocRef = doc(db, "users", uid); 
-                const userDocSnap = await getDoc(userDocRef); 
-                if (!userDocSnap.exists()) { 
-                    alert("User document not found."); return; 
-                } 
-                let currentExpiry = userDocSnap.data().accountExpiry ? userDocSnap.data().accountExpiry.toDate() : new Date(); 
-                if (currentExpiry < new Date()) currentExpiry = new Date(); 
-                const newExpiryDate = new Date(currentExpiry); 
-                newExpiryDate.setDate(newExpiryDate.getDate() + 7); 
-                await updateDoc(userDocRef, { accountExpiry: Timestamp.fromDate(newExpiryDate) }); 
-                alert(`Access extended for user ${uid}.`); 
-            } catch (error) { 
-                console.error("Error extending expiry:", error); 
-                alert(`Failed to extend expiry: ${error.message}`); 
-            } 
-        }
-        
-        async function handleDeleteUserFirestoreRecord(event) { 
-            const uid = event.target.dataset.uid; 
-            const email = event.target.dataset.email; 
-            if (!uid || !confirm(`Are you sure you want to delete user ${email} (UID: ${uid}) from the database? This will NOT delete their authentication record.`)) return; 
-            try { 
-                const userDocRef = doc(db, "users", uid); 
-                await deleteDoc(userDocRef); 
-                alert(`User record ${email} deleted from Firestore. You may need to delete their Auth record manually or via Admin SDK.`); 
-                console.warn(`Firestore record for user ${uid} deleted. Auth record for ${email} still exists.`); 
-            } catch (error) { 
-                console.error("Error deleting user Firestore record:", error); 
-                alert(`Failed to delete user record: ${error.message}`); 
-            } 
-        }
-
-        async function fetchAdminLogs() { 
-            if (!db || !isAdminLoggedIn) return; 
-            adminLogsContainer.innerHTML = '<p>Loading logs...</p>'; 
-            const logsCollectionPath = `artifacts/${appId}/public/data/voiceGenerationLogs`; 
-            const q = query(collection(db, logsCollectionPath)); 
-            if (unsubscribeLogs) unsubscribeLogs(); 
-            unsubscribeLogs = onSnapshot(q, (querySnapshot) => { 
-                if (querySnapshot.empty) { 
-                    adminLogsContainer.innerHTML = '<p>No voice generation logs found.</p>'; return; 
-                } 
-                adminLogsContainer.innerHTML = ''; 
-                querySnapshot.forEach((docSnap) => { 
-                    const log = docSnap.data(); 
-                    const logEntry = document.createElement('div'); 
-                    logEntry.classList.add('admin-log-entry'); 
-                    const timestamp = log.timestamp?.toDate ? log.timestamp.toDate().toLocaleString() : 'N/A'; 
-                    const textSnippet = log.text ? (log.text.length > 50 ? log.text.substring(0, 50) + '...' : log.text) : 'N/A'; 
-                    logEntry.innerHTML = `<p><strong>User:</strong> ${log.userName || 'N/A'} (<em>${log.userEmail || 'N/A'}</em>)</p>
-                                        <p><strong>Voice ID:</strong> ${log.voiceId || 'N/A'}</p>
-                                        <p><strong>Model:</strong> ${log.modelId || 'N/A'}</p>
-                                        <p><strong>Text:</strong> ${textSnippet}</p>
-                                        <p><strong>Time:</strong> ${timestamp}</p>`; 
-                    adminLogsContainer.appendChild(logEntry); 
-                }); 
-            }, (error) => { 
-                console.error("Error fetching logs: ", error); 
-                adminLogsContainer.innerHTML = '<p class="text-red-400">Error loading logs.</p>'; 
-            }); 
-        }
-
-
-        // --- Core App Logic (TTS, Voice Fetching etc.) ---
-        function updateConvertButtonState() {
-            if (currentUser && textToConvertInput.value.trim() && DEFAULT_ELEVENLABS_API_KEY && DEFAULT_ELEVENLABS_API_KEY !== "YOUR_ACTUAL_ELEVENLABS_API_KEY_HERE") { 
-                 convertBtn.disabled = false;
-            } else {
-                convertBtn.disabled = true;
-            }
-        }
-        
-        textToConvertInput.addEventListener('input', updateConvertButtonState);
-        
-        voiceSearchInput.addEventListener('input', () => { 
-            const searchTerm = voiceSearchInput.value.toLowerCase();
-            if (!allVoices.length) return; 
-            const filteredVoices = allVoices.filter(voice => 
-                voice.name.toLowerCase().includes(searchTerm)
-            );
-            populateVoiceSelect(filteredVoices);
-        });
-
-        async function fetchVoices(apiKeyToUse) { 
-            if (!apiKeyToUse) { 
-                 console.error("fetchVoices called without an API key. This should not happen with hardcoded key.");
-                 voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">App API Key Error.</option>';
-                 return; 
-            }
-
-            voiceSelect.disabled = true; voiceSearchInput.disabled = true; 
-            voiceSearchInput.value = ''; 
-            voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Loading voices...</option>';
-            appErrorMessage.classList.add('hidden'); appErrorMessage.classList.remove('visible');
-
-            try {
-                const response = await fetch(`${ELEVENLABS_API_BASE_URL}/voices`, {
-                    headers: { 'xi-api-key': apiKeyToUse, 'Content-Type': 'application/json' }
-                });
-                if (!response.ok) { 
-                    const errorData = await response.json().catch(() => ({ detail: { message: response.statusText } }));
-                    allVoices = []; 
-                    throw new Error(`Error fetching voices (${response.status}): ${errorData.detail?.message || response.statusText}`);
-                 }
-                const data = await response.json();
-                allVoices = data.voices || []; 
-                populateVoiceSelect(allVoices); 
-                voiceSelect.disabled = false; voiceSearchInput.disabled = false; 
-            } catch (error) { 
-                console.error('Fetch voices error:', error);
-                allVoices = []; populateVoiceSelect([]);
-                voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">Failed to fetch voices.</option>';
-                voiceSearchInput.disabled = true; 
-                displayAppError(`Failed to load voices: ${error.message}. Contact admin if issue persists.`);
-            }
-        }
-
-        function populateVoiceSelect(voicesToDisplay) {
-            voiceSelect.innerHTML = ''; 
-            if (voicesToDisplay && voicesToDisplay.length > 0) {
-                voicesToDisplay.forEach(voice => {
-                    const option = document.createElement('option'); option.value = voice.voice_id;
-                    option.style.color = '#1e293b'; option.style.backgroundColor = '#f1f5f9';
-                    option.textContent = `${voice.name} (${voice.labels?.description || 'Default'})`;
-                    voiceSelect.appendChild(option);
-                });
-            } else {
-                 if (!DEFAULT_ELEVENLABS_API_KEY || DEFAULT_ELEVENLABS_API_KEY === "YOUR_ACTUAL_ELEVENLABS_API_KEY_HERE" && currentUser) { 
-                     voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">App API Key not configured.</option>';
-                 } else if (voiceSearchInput.value && allVoices.length > 0) { 
-                     voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">No voices match your search</option>';
-                 } else if (allVoices.length === 0 && DEFAULT_ELEVENLABS_API_KEY && DEFAULT_ELEVENLABS_API_KEY !== "YOUR_ACTUAL_ELEVENLABS_API_KEY_HERE"){ 
-                     voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">No voices found with app API key.</option>';
-                 } else { 
-                     voiceSelect.innerHTML = '<option value="" style="color: #94a3b8;">No voices available</option>';
-                 }
-            }
-        }
-
-        async function logVoiceGeneration(userName, userEmail, voiceId, modelId, text) { 
-            if (!db || !currentUser) { 
-                console.warn("Firestore not initialized or user not authenticated. Skipping log."); return;
-            }
-            try {
-                const logsCollectionPath = `artifacts/${appId}/public/data/voiceGenerationLogs`;
-                await addDoc(collection(db, logsCollectionPath), {
-                    userName: userName, userEmail: userEmail,
-                    voiceId: voiceId, modelId: modelId, text: text, 
-                    timestamp: serverTimestamp(), userId: currentUser.uid 
-                });
-                console.log("Voice generation logged.");
-            } catch (error) { console.error("Error logging voice generation: ", error); }
-        }
-        
-        convertBtn.addEventListener('click', async () => {
-            const apiKeyToUse = DEFAULT_ELEVENLABS_API_KEY; 
-            if (!apiKeyToUse || apiKeyToUse === "YOUR_ACTUAL_ELEVENLABS_API_KEY_HERE") { 
-                displayAppError('App ElevenLabs API Key is not configured. Please contact admin.'); return; 
-            }
-            if (!currentUser) { displayAppError('Please login to generate voice.'); return; }
-            
-            const userNameForLog = currentUser.displayName || "Anonymous User";
-            const userEmailForLog = currentUser.email;
-            const text = textToConvertInput.value.trim();
-            const voiceId = voiceSelect.value;
-            const modelId = modelSelect.value;
-
-            if (!text) { displayAppError('Please enter text to convert.'); return; }
-            if (!voiceId) { displayAppError('Please select a voice.'); return; }
-            
-            convertBtn.disabled = true; buttonText.textContent = 'Converting...';
-            loadingSpinner.classList.remove('hidden');
-            audioPlayer.classList.add('hidden'); downloadBtn.classList.add('hidden');
-            downloadBtn.classList.remove('visible'); appErrorMessage.classList.add('hidden');
-            appErrorMessage.classList.remove('visible');
-
-            if(currentAudioBlobUrl) URL.revokeObjectURL(currentAudioBlobUrl);
-            currentAudioBlobUrl = null; audioPlayer.src = ''; 
-            
-            try {
-                const ttsUrl = `${ELEVENLABS_API_BASE_URL}/text-to-speech/${voiceId}`;
-                const response = await fetch(ttsUrl, {
-                    method: 'POST',
-                    headers: { 'Accept': 'audio/mpeg', 'xi-api-key': apiKeyToUse, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        text: text, model_id: modelId,
-                        voice_settings: { stability: 0.7, similarity_boost: 0.75 }
-                    })
-                });
-                if (!response.ok) { 
-                    let errorDetail = response.statusText;
-                    try { const errorJson = await response.json(); errorDetail = errorJson.detail?.message || (typeof errorJson.detail === 'string' ? errorJson.detail : JSON.stringify(errorJson.detail)) || JSON.stringify(errorJson);
-                    } catch (e) { errorDetail = await response.text() || response.statusText; }
-                    throw new Error(`Error generating audio (${response.status}): ${errorDetail}`);
-                }
-                const audioBlob = await response.blob();
-                currentAudioBlobUrl = URL.createObjectURL(audioBlob);
-                audioPlayer.src = currentAudioBlobUrl;
-                audioPlayer.classList.remove('hidden'); 
-                downloadBtn.classList.remove('hidden'); 
-                downloadBtn.classList.add('visible'); 
-                await logVoiceGeneration(userNameForLog, userEmailForLog, voiceId, modelId, text);
-            } catch (error) { 
-                console.error('TTS Error:', error);
-                displayAppError(`Failed to generate audio: ${error.message}`);
-                audioPlayer.classList.add('hidden'); 
-                downloadBtn.classList.add('hidden'); downloadBtn.classList.remove('visible');
-            } finally { 
-                updateConvertButtonState();
-                buttonText.textContent = 'Convert to Audio';
-                loadingSpinner.classList.add('hidden');
-            }
-        });
-
-        downloadBtn.addEventListener('click', () => {
-            if (currentAudioBlobUrl) { const a = document.createElement('a'); a.href = currentAudioBlobUrl;
-                a.download = `elevenlabs_audio_${Date.now()}.mp3`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
-            } else { displayAppError("No audio available to download."); }
-        });
-        
-        function displayLoginError(message) { loginError.textContent = message; loginError.classList.remove('hidden');}
-        function displayAppError(message) { appErrorMessage.textContent = message; appErrorMessage.classList.remove('hidden'); appErrorMessage.classList.add('visible'); }
-        
-        window.addEventListener('load', () => {
-            if (!app || !auth || !db) {
-                console.warn("Firebase is not available. Core functionality will be limited.");
-                authContainer.innerHTML = '<p class="text-center text-red-400 p-4">Essential services are unavailable. Please try refreshing the page or contact support.</p>';
-                authContainer.classList.remove('hidden'); appContainer.classList.add('hidden'); adminPanelToggleBtn.style.display = 'none';
-            }
-        });
+        //     if (distance < 0) {
+        //         clearInterval(countdownFunction);
+        //         // document.getElementById("countdown").innerHTML = "We should be back now!";
+        //     }
+        // }, 1000);
     </script>
+
 </body>
 </html>
