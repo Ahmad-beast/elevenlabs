@@ -3,173 +3,1070 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Site Under Maintenance</title>
+    <title>Text To Speach</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-
-        :root {
-            --primary-color: #6a11cb; /* Modern purple */
-            --secondary-color: #2575fc; /* Modern blue */
-            --text-color: #333;
-            --light-text-color: #f8f9fa;
-            --background-color: #f4f7f6;
-            --container-background: #ffffff;
-            --whatsapp-color: #25D366;
-            --whatsapp-hover-color: #1DAE50;
-        }
-
         body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: var(--text-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-            overflow-x: hidden; /* Prevent horizontal scroll on small screens */
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Dark gray background */
+            color: #e5e7eb; /* Light gray text */
         }
-
-        .container {
-            background: var(--container-background);
-            padding: 40px 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            max-width: 600px;
-            width: 90%;
-            animation: fadeIn 1s ease-out;
+        /* Custom scrollbar for webkit browsers */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        ::-webkit-scrollbar-track {
+            background: #1f2937; /* Darker gray track */
         }
-
-        .icon {
-            font-size: 60px;
-            margin-bottom: 20px;
-            color: var(--primary-color);
+        ::-webkit-scrollbar-thumb {
+            background: #4b5563; /* Medium gray thumb */
+            border-radius: 4px;
         }
-
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 15px;
-            color: var(--primary-color);
-            font-weight: 700;
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280; /* Lighter gray thumb on hover */
         }
-
-        p {
-            font-size: 1.1em;
-            line-height: 1.7;
-            margin-bottom: 25px;
-            color: #555;
+        .hidden-page { display: none; }
+        .auth-card {
+            background-color: #1f2937; /* Darker card background */
+            border: 1px solid #374151; /* Subtle border */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
-
-        .sorry-message {
-            font-weight: 600;
-            color: var(--secondary-color);
-            font-size: 1.2em;
+        .btn-primary {
+            background-color: #3b82f6; /* Blue */
+            transition: background-color 0.3s ease;
         }
-
-        .whatsapp-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--whatsapp-color);
-            color: var(--light-text-color);
-            padding: 12px 25px;
-            border-radius: 50px; /* Pill shape */
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1em;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        .btn-primary:hover {
+            background-color: #2563eb;
         }
-
-        .whatsapp-button svg {
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
-            fill: var(--light-text-color);
+        .btn-secondary {
+            background-color: #4b5563; /* Medium Gray */
+            transition: background-color 0.3s ease;
         }
-
-        .whatsapp-button:hover {
-            background-color: var(--whatsapp-hover-color);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        .btn-secondary:hover {
+            background-color: #6b7280;
         }
-
-        .footer-text {
-            margin-top: 30px;
-            font-size: 0.9em;
-            color: #777;
+        .input-field {
+            background-color: #374151; /* Dark input background */
+            border: 1px solid #4b5563;
+            color: #e5e7eb;
         }
-
-        /* Optional: Add a subtle animation to the icon */
-        .icon-animation {
-            animation: pulse 2s infinite ease-in-out;
+        .input-field:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+            outline: none;
         }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        .modal-content {
+            background-color: #1f2937;
+            border: 1px solid #374151;
         }
-
+        .tab-active {
+            border-bottom-color: #3b82f6;
+            color: #3b82f6;
+        }
+        .tab-inactive {
+            border-bottom-color: transparent;
+        }
+        /* Loading Spinner */
+        .loader {
+            border: 4px solid #374151; /* Light grey */
+            border-top: 4px solid #3b82f6; /* Blue */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .dropdown-menu {
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            z-index: 50;
+        }
+        .dropdown-item:hover {
+            background-color: #374151;
+        }
     </style>
 </head>
-<body>
+<body class="flex items-center justify-center min-h-screen">
 
-    <div class="container">
-        <div class="icon icon-animation">
-            &#x1F6A7; </div>
-        <h1>Site Under Maintenance</h1>
-        <p class="sorry-message">We're sorry for the inconvenience!</p>
-        <p>Our website is currently undergoing scheduled maintenance to improve your experience. We'll be back online shortly.</p>
-        <p>Thank you for your patience.</p>
+    <div id="appContainer" class="w-full max-w-5xl mx-auto p-4 md:p-8">
 
-        <a href="https://wa.me/923064482383?text=Hello!%20I'd%20like%20more%20details%20about%20the%20site%20maintenance." class="whatsapp-button" target="_blank">
-            <svg viewBox="0 0 896 896" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="20px" height="20px" fill-rule="evenodd" clip-rule="evenodd" image-rendering="optimizeQuality" shape-rendering="geometricPrecision" text-rendering="geometricPrecision"><path d="M606 221c-40-42-92-66-148-66-118 0-214 95-214 212s96 212 214 212c2 0 3 0 5 0h1l118-69c6-4 14-1 16 6l17 70c2 7-3 15-10 17-34 9-70 14-107 14-159 0-288-128-288-286S299 65 458 65c75 0 142 30 192 79 8 7 8 18 1 25l-44 42zm-194 99c-6-1-12 3-13 9l-19 99c-1 4 0 8 4 11l69 57c4 3 9 4 13 1l99-40c6-2 9-9 6-15l-41-99c-2-6-9-9-15-6l-99 41zm158-53c20 0 36 16 36 36s-16 36-36 36-36-16-36-36c0-20 17-36 36-36z"></path></svg>
-            For more details
-        </a>
+        <div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[100]">
+            <div class="loader"></div>
+            <p class="ml-4 text-xl font-semibold">Processing...</p>
+        </div>
 
-        <p class="footer-text">&copy; <span id="currentYear"></span>  All rights reserved.</p>
+        <div id="customModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-[90] p-4">
+            <div class="modal-content p-6 rounded-lg shadow-xl w-full max-w-md">
+                <h3 id="modalTitle" class="text-xl font-semibold mb-4">Modal Title</h3>
+                <div id="modalBody" class="mb-6">Modal content goes here.</div>
+                <div id="modalPasswordInputContainer" class="hidden mb-4">
+                    <label for="modalPasswordInput" class="block text-sm font-medium text-gray-300 mb-1">Admin Password:</label>
+                    <input type="password" id="modalPasswordInput" class="input-field w-full p-2 rounded-md" placeholder="Enter admin password">
+                    <p id="modalPasswordError" class="text-red-500 text-sm mt-1 hidden">Incorrect password.</p>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button id="modalCancelButton" class="btn-secondary px-4 py-2 rounded-md text-white">Cancel</button>
+                    <button id="modalConfirmButton" class="btn-primary px-4 py-2 rounded-md text-white">Confirm</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="loginPage" class="auth-card p-8 rounded-lg shadow-lg max-w-md mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Welcome Back!</h2>
+            <form id="loginForm">
+                <div class="mb-6">
+                    <label for="loginEmail" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                    <input type="email" id="loginEmail" class="input-field w-full p-3 rounded-md" placeholder="you@example.com" required>
+                </div>
+                <div class="mb-6">
+                    <label for="loginPassword" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+                    <input type="password" id="loginPassword" class="input-field w-full p-3 rounded-md" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-primary w-full py-3 rounded-md text-white font-semibold mb-4">Login</button>
+            </form>
+            <p class="text-center text-sm text-gray-400 mb-4"> 
+            </p>
+            <a href="https://wa.me/923001234567?text=Hello,%20I%20would%20like%20to%20request%20an%20account." target="_blank" class="block w-full text-center bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-md transition duration-300">
+                <i class="fab fa-whatsapp mr-2"></i>Request Account via WhatsApp
+            </a>
+            <p id="loginError" class="text-red-500 text-center mt-4"></p>
+        </div>
+
+        <div id="signupPage" class="hidden-page auth-card p-8 rounded-lg shadow-lg max-w-md mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-teal-500">Create Account</h2>
+            <form id="signupForm">
+                <div class="mb-6">
+                    <label for="signupEmail" class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                    <input type="email" id="signupEmail" class="input-field w-full p-3 rounded-md" placeholder="you@example.com" required>
+                </div>
+                <div class="mb-6">
+                    <label for="signupPassword" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+                    <input type="password" id="signupPassword" class="input-field w-full p-3 rounded-md" placeholder="Choose a strong password" required>
+                </div>
+                 <div class="mb-6">
+                    <label for="signupConfirmPassword" class="block text-sm font-medium text-gray-300 mb-1">Confirm Password</label>
+                    <input type="password" id="signupConfirmPassword" class="input-field w-full p-3 rounded-md" placeholder="Confirm your password" required>
+                </div>
+                <button type="submit" class="btn-primary w-full py-3 rounded-md text-white font-semibold mb-4">Sign Up</button>
+            </form>
+            <p class="text-center text-sm text-gray-400">
+                Already have an account? <a href="#" id="showLogin" class="font-medium text-blue-400 hover:text-blue-300">Login</a>
+            </p>
+            <p id="signupError" class="text-red-500 text-center mt-4"></p>
+        </div>
+
+        <div id="userPanelPage" class="hidden-page">
+            <header class="flex justify-between items-center mb-8 p-4 bg-gray-800 rounded-lg shadow">
+                <h1 class="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">User Dashboard</h1>
+                <div class="relative">
+                    <button id="userMenuButton" class="text-gray-300 hover:text-white focus:outline-none">
+                        <i class="fas fa-ellipsis-v fa-lg"></i>
+                    </button>
+                    <div id="userDropdownMenu" class="hidden absolute right-0 mt-2 w-48 dropdown-menu rounded-md shadow-lg py-1">
+                        <div class="px-4 py-2 text-sm text-gray-400" id="userDetails">user@example.com</div>
+                        <a href="#" id="goToAdminPanel" class="block px-4 py-2 text-sm text-gray-200 dropdown-item">Go to Admin Panel</a>
+                        <a href="#" id="logoutButton" class="block px-4 py-2 text-sm text-gray-200 dropdown-item">Logout</a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="md:col-span-2 p-6 bg-gray-800 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold mb-6">Generate Speech</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <label for="ttsText" class="block text-sm font-medium text-gray-300 mb-1">Text to Synthesize</label>
+                            <textarea id="ttsText" rows="4" class="input-field w-full p-3 rounded-md" placeholder="Enter text here..."></textarea>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="voiceSearch" class="block text-sm font-medium text-gray-300 mb-1">Search Voice</label>
+                                <input type="text" id="voiceSearch" class="input-field w-full p-2 rounded-md" placeholder="Search by name...">
+                            </div>
+                            <div>
+                                <label for="voiceSelect" class="block text-sm font-medium text-gray-300 mb-1">Select Voice</label>
+                                <select id="voiceSelect" class="input-field w-full p-2.5 rounded-md">
+                                    <option value="">Loading voices...</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="modelSelect" class="block text-sm font-medium text-gray-300 mb-1">Voice Model</label>
+                            <select id="modelSelect" class="input-field w-full p-2.5 rounded-md">
+                                <option value="eleven_multilingual_v2">Eleven Multilingual v2</option>
+                                <option value="eleven_monolingual_v1">Eleven Monolingual v1</option>
+                                </select>
+                        </div>
+                        
+                        <button id="generateVoiceButton" class="btn-primary w-full py-3 rounded-md text-white font-semibold flex items-center justify-center">
+                            <i class="fas fa-play mr-2"></i>Generate Voice
+                        </button>
+                        
+                        <div id="audioPlayerContainer" class="mt-4 hidden">
+                            <audio id="audioPlayer" controls class="w-full"></audio>
+                            <button id="downloadVoiceButton" class="mt-2 btn-secondary w-full py-2 rounded-md text-white font-semibold flex items-center justify-center">
+                                <i class="fas fa-download mr-2"></i>Download Voice
+                            </button>
+                        </div>
+                         <p id="ttsError" class="text-red-500 text-sm mt-2"></p>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-gray-800 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold mb-4">Generation History</h3>
+                    <div id="ttsHistoryList" class="space-y-3 max-h-96 overflow-y-auto">
+                        <p class="text-gray-400">No history yet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="adminPanelPage" class="hidden-page">
+            <header class="flex justify-between items-center mb-8 p-4 bg-gray-800 rounded-lg shadow">
+                <h1 class="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-500">Admin Control Panel</h1>
+                <button id="backToUserPanel" class="btn-secondary px-4 py-2 rounded-md text-white"><i class="fas fa-arrow-left mr-2"></i>Back to User Panel</button>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 p-6 bg-gray-800 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold mb-4">User Management</h3>
+                    <div class="mb-4">
+                        <input type="text" id="adminUserSearch" class="input-field w-full p-2 rounded-md" placeholder="Search users by email...">
+                    </div>
+                    <div id="adminUserList" class="space-y-3 max-h-[500px] overflow-y-auto">
+                        <p class="text-gray-400">Loading users...</p>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-gray-800 rounded-lg shadow space-y-6">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">Create New User</h3>
+                        <form id="adminCreateUserForm" class="space-y-3">
+                            <input type="email" id="adminNewUserEmail" class="input-field w-full p-2 rounded-md" placeholder="New user email" required>
+                            <input type="password" id="adminNewUserPassword" class="input-field w-full p-2 rounded-md" placeholder="Temporary password" required>
+                            <select id="adminUserExpiry" class="input-field w-full p-2.5 rounded-md">
+                                <option value="0">No Expiry</option>
+                                <option value="1">1 Day</option>
+                                <option value="7">7 Days</option>
+                                <option value="15">15 Days</option>
+                                <option value="30">30 Days</option>
+                            </select>
+                            <button type="submit" class="btn-primary w-full py-2 rounded-md text-white font-semibold">Create User</button>
+                        </form>
+                        <p id="adminCreateUserError" class="text-red-500 text-sm mt-2"></p>
+                        <p id="adminCreateUserSuccess" class="text-green-500 text-sm mt-2"></p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Admin Info</h3>
+                        <p class="text-sm text-gray-400"><strong>IP Address:</strong> <span id="adminIpAddress">Fetching...</span></p>
+                        <p class="text-sm text-gray-400"><strong>Device:</strong> <span id="adminDeviceName">Fetching...</span></p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Voice Usage Analytics (Mock)</h3>
+                        <p class="text-sm text-gray-400">Total Users: <span id="analyticsTotalUsers">0</span></p>
+                        <p class="text-sm text-gray-400">Total TTS Generations (All Users): <span id="analyticsTotalGenerations">0</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <script>
-        // Simple script to update the year automatically
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
+    <script type="module">
+        // Firebase and App Configuration (IMPORTANT: Replace with your actual Firebase config)
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+             apiKey: "AIzaSyCGoZMddAe6cHFzgAC3c5HJQkzlh6hcHKw",
+            authDomain: "elevenlabs-ef1a1.firebaseapp.com",
+            projectId: "elevenlabs-ef1a1",
+            storageBucket: "elevenlabs-ef1a1.firebasestorage.app",
+            messagingSenderId: "385444291608",
+            appId: "1:385444291608:web:0c0e526ae8f2984719cf6d",
+            measurementId: "G-6HGJR8W3S5"
+        };
 
-        // You can add more JavaScript here if needed for other functionalities,
-        // like a countdown timer if you have an estimated time of return.
-        // Example:
-        // const countdownDate = new Date("May 30, 2025 15:00:00").getTime();
-        // const countdownFunction = setInterval(function() {
-        //     const now = new Date().getTime();
-        //     const distance = countdownDate - now;
-        //     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        //     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        //     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        //     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        const ELEVENLABS_API_KEY = "sk_523c2ee511319ae1aafeae21213445d17a8237d3924d41e6"; // <-- REPLACE WITH YOUR ELEVENLABS API KEY
+        const ADMIN_PASSWORD = "Monopoly1.@"; // Keep this secure in a real app (e.g., backend check)
+        const APP_ID = typeof __app_id !== 'undefined' ? __app_id : 'voicegen-pro-default';
 
-        //     // Assuming you have an element with id="countdown"
-        //     // document.getElementById("countdown").innerHTML = days + "d " + hours + "h "
-        //     // + minutes + "m " + seconds + "s ";
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword, 
+            signInWithEmailAndPassword, 
+            signOut, 
+            onAuthStateChanged,
+            signInWithCustomToken,
+            signInAnonymously
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            doc, 
+            setDoc, 
+            getDoc, 
+            collection, 
+            addDoc, 
+            query, 
+            where, 
+            getDocs, 
+            Timestamp,
+            updateDoc,
+            orderBy,
+            limit,
+            onSnapshot,
+            deleteDoc,
+            writeBatch
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        //     if (distance < 0) {
-        //         clearInterval(countdownFunction);
-        //         // document.getElementById("countdown").innerHTML = "We should be back now!";
-        //     }
-        // }, 1000);
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // DOM Elements
+        const pageElements = {
+            loginPage: document.getElementById('loginPage'),
+            signupPage: document.getElementById('signupPage'),
+            userPanelPage: document.getElementById('userPanelPage'),
+            adminPanelPage: document.getElementById('adminPanelPage'),
+        };
+        const loginForm = document.getElementById('loginForm');
+       /* const signupForm = document.getElementById('signupForm');
+        const loginError = document.getElementById('loginError');
+        const signupError = document.getElementById('signupError');
+        const showSignup = document.getElementById('showSignup'); */
+        const showLogin = document.getElementById('showLogin');
+        const logoutButton = document.getElementById('logoutButton');
+        const userDetails = document.getElementById('userDetails');
+        const userMenuButton = document.getElementById('userMenuButton');
+        const userDropdownMenu = document.getElementById('userDropdownMenu');
+        const goToAdminPanel = document.getElementById('goToAdminPanel');
+        const backToUserPanel = document.getElementById('backToUserPanel');
+        
+        const ttsText = document.getElementById('ttsText');
+        const voiceSelect = document.getElementById('voiceSelect');
+        const voiceSearch = document.getElementById('voiceSearch');
+        const modelSelect = document.getElementById('modelSelect');
+        const generateVoiceButton = document.getElementById('generateVoiceButton');
+        const audioPlayerContainer = document.getElementById('audioPlayerContainer');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const downloadVoiceButton = document.getElementById('downloadVoiceButton');
+        const ttsHistoryList = document.getElementById('ttsHistoryList');
+        const ttsError = document.getElementById('ttsError');
+
+        const adminUserSearch = document.getElementById('adminUserSearch');
+        const adminUserList = document.getElementById('adminUserList');
+        const adminCreateUserForm = document.getElementById('adminCreateUserForm');
+        const adminNewUserEmail = document.getElementById('adminNewUserEmail');
+        const adminNewUserPassword = document.getElementById('adminNewUserPassword');
+        const adminUserExpiry = document.getElementById('adminUserExpiry');
+        const adminCreateUserError = document.getElementById('adminCreateUserError');
+        const adminCreateUserSuccess = document.getElementById('adminCreateUserSuccess');
+        const adminIpAddress = document.getElementById('adminIpAddress');
+        const adminDeviceName = document.getElementById('adminDeviceName');
+        const analyticsTotalUsers = document.getElementById('analyticsTotalUsers');
+        const analyticsTotalGenerations = document.getElementById('analyticsTotalGenerations');
+
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const customModal = document.getElementById('customModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const modalPasswordInputContainer = document.getElementById('modalPasswordInputContainer');
+        const modalPasswordInput = document.getElementById('modalPasswordInput');
+        const modalPasswordError = document.getElementById('modalPasswordError');
+        const modalCancelButton = document.getElementById('modalCancelButton');
+        const modalConfirmButton = document.getElementById('modalConfirmButton');
+        
+        let currentAudioBlob = null;
+        let elevenLabsVoices = []; // To store fetched voices
+        let currentUserId = null; // To store current user's ID
+
+        // --- Utility Functions ---
+        function showPage(pageId) {
+            for (const id in pageElements) {
+                pageElements[id].classList.add('hidden-page');
+            }
+            if (pageElements[pageId]) {
+                pageElements[pageId].classList.remove('hidden-page');
+            } else {
+                console.error("Page not found:", pageId);
+                pageElements.loginPage.classList.remove('hidden-page'); // Fallback to login
+            }
+        }
+
+        function showLoading(show = true) {
+            loadingOverlay.classList.toggle('hidden', !show);
+        }
+
+        function showModal(title, body, showPasswordInput = false, confirmCallback = null, cancelCallback = null) {
+            modalTitle.textContent = title;
+            modalBody.innerHTML = body; // Use innerHTML to allow basic HTML in body
+            modalPasswordInputContainer.classList.toggle('hidden', !showPasswordInput);
+            modalPasswordInput.value = '';
+            modalPasswordError.classList.add('hidden');
+
+            customModal.classList.remove('hidden');
+
+            modalConfirmButton.onclick = () => {
+                if (showPasswordInput) {
+                    if (modalPasswordInput.value === ADMIN_PASSWORD) {
+                        customModal.classList.add('hidden');
+                        if (confirmCallback) confirmCallback();
+                    } else {
+                        modalPasswordError.textContent = "Incorrect password. Please try again.";
+                        modalPasswordError.classList.remove('hidden');
+                    }
+                } else {
+                    customModal.classList.add('hidden');
+                    if (confirmCallback) confirmCallback();
+                }
+            };
+            modalCancelButton.onclick = () => {
+                customModal.classList.add('hidden');
+                if (cancelCallback) cancelCallback();
+            };
+        }
+        
+        function showMessage(type, messageElement, message) {
+            messageElement.textContent = message;
+            messageElement.className = type === 'error' ? 'text-red-500 text-sm mt-2' : 'text-green-500 text-sm mt-2';
+            if (message) {
+                 setTimeout(() => { messageElement.textContent = ''; }, 5000);
+            }
+        }
+
+
+        // --- Firebase Authentication & User Management ---
+        onAuthStateChanged(auth, async (user) => {
+            showLoading(true);
+            if (user) {
+                currentUserId = user.uid;
+                userDetails.textContent = user.email;
+                try {
+                    const userDocRef = doc(db, `/artifacts/${APP_ID}/public/data/app_users/${user.uid}`);
+                    const userDoc = await getDoc(userDocRef);
+                    if (!userDoc.exists()) {
+                        const ipInfo = await getIpInfo();
+                        await setDoc(userDocRef, {
+                            email: user.email,
+                            uid: user.uid,
+                            createdAt: Timestamp.now(),
+                            isActive: true,
+                            expiryDate: null, // No expiry by default
+                            lastLogin: Timestamp.now(),
+                            ipAddress: ipInfo.ip,
+                            userAgent: navigator.userAgent
+                        });
+                    } else {
+                         const ipInfo = await getIpInfo();
+                         await updateDoc(userDocRef, {
+                            lastLogin: Timestamp.now(),
+                            ipAddress: ipInfo.ip,
+                            userAgent: navigator.userAgent
+                        });
+                    }
+                    // Check if user is active and not expired
+                    const updatedUserDoc = await getDoc(userDocRef); // Re-fetch after potential update
+                    const userData = updatedUserDoc.data();
+
+                    if (!userData.isActive) {
+                        await signOut(auth);
+                        showModal("Account Deactivated", "Your account has been deactivated by an administrator. Please contact support.", false, () => showPage('loginPage'));
+                        return;
+                    }
+                    if (userData.expiryDate && userData.expiryDate.toDate() < new Date()) {
+                        await signOut(auth);
+                        showModal("Account Expired", "Your account has expired. Please contact support to renew.", false, () => showPage('loginPage'));
+                        return;
+                    }
+
+                } catch (error) {
+                    console.error("Error managing user document:", error);
+                    showMessage('error', loginError, "Error accessing user data.");
+                }
+                fetchElevenLabsVoices();
+                loadTTSHistory();
+                showPage('userPanelPage');
+            } else {
+                currentUserId = null;
+                showPage('loginPage');
+                userDetails.textContent = '';
+                userDropdownMenu.classList.add('hidden');
+            }
+            showLoading(false);
+        });
+
+        async function initialAuth() {
+            showLoading(true);
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    // If no custom token, check if a user is already signed in (e.g. from a previous session)
+                    // onAuthStateChanged will handle this. If not, they stay on login/signup.
+                    // If you want to force anonymous sign-in as a fallback:
+                    // await signInAnonymously(auth); 
+                    // console.log("Signed in anonymously as a fallback.");
+                }
+            } catch (error) {
+                console.error("Error during initial auth:", error);
+                // Fallback to anonymous or let onAuthStateChanged handle no user
+                try {
+                    // await signInAnonymously(auth);
+                    // console.log("Signed in anonymously after custom token error.");
+                } catch (anonError) {
+                    console.error("Anonymous sign-in failed:", anonError);
+                }
+            } finally {
+                showLoading(false);
+            }
+        }
+
+
+        if (loginForm) {
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                showLoading(true);
+                loginError.textContent = '';
+                try {
+                    await signInWithEmailAndPassword(auth, loginEmail.value, loginPassword.value);
+                    // onAuthStateChanged will handle navigation
+                } catch (error) {
+                    console.error("Login error:", error);
+                    showMessage('error', loginError, error.message);
+                }
+                showLoading(false);
+            });
+        }
+
+    /*    if (signupForm) {
+            signupForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                showLoading(true);
+                signupError.textContent = '';
+                if (signupPassword.value !== signupConfirmPassword.value) {
+                    showMessage('error', signupError, "Passwords do not match.");
+                    showLoading(false);
+                    return;
+                }
+                try {
+                    const userCredential = await createUserWithEmailAndPassword(auth, signupEmail.value, signupPassword.value);
+                    const user = userCredential.user;
+                    const ipInfo = await getIpInfo();
+                    // Create user document in Firestore
+                    const userDocRef = doc(db, `/artifacts/${APP_ID}/public/data/app_users/${user.uid}`);
+                    await setDoc(userDocRef, {
+                        email: user.email,
+                        uid: user.uid,
+                        createdAt: Timestamp.now(),
+                        isActive: true,
+                        expiryDate: null, // Default no expiry
+                        lastLogin: Timestamp.now(),
+                        ipAddress: ipInfo.ip,
+                        userAgent: navigator.userAgent
+                    });
+                    // onAuthStateChanged will handle navigation
+                } catch (error) {
+                    console.error("Signup error:", error);
+                    showMessage('error', signupError, error.message);
+                }
+                showLoading(false);
+            });
+        }
+            */
+
+        if (logoutButton) {
+            logoutButton.addEventListener('click', async () => {
+                showLoading(true);
+                try {
+                    await signOut(auth);
+                    // onAuthStateChanged will handle navigation to loginPage
+                } catch (error) {
+                    console.error("Logout error:", error);
+                    alert("Error logging out: " + error.message); // Fallback, replace with modal
+                }
+                showLoading(false);
+            });
+        }
+
+        // --- Navigation ---
+      //  if (showSignup) showSignup.addEventListener('click', (e) => { e.preventDefault(); showPage('signupPage'); });
+      //  if (showLogin) showLogin.addEventListener('click', (e) => { e.preventDefault(); showPage('loginPage'); });
+
+        if (userMenuButton) {
+            userMenuButton.addEventListener('click', () => {
+                userDropdownMenu.classList.toggle('hidden');
+            });
+        }
+        // Close dropdown if clicked outside
+        document.addEventListener('click', function(event) {
+            if (userMenuButton && userDropdownMenu && !userMenuButton.contains(event.target) && !userDropdownMenu.contains(event.target)) {
+                userDropdownMenu.classList.add('hidden');
+            }
+        });
+
+
+        // --- ElevenLabs API Functions ---
+        async function fetchElevenLabsVoices() {
+            if (ELEVENLABS_API_KEY === "YOUR_ELEVENLABS_API_KEY") {
+                console.warn("ElevenLabs API Key not set. TTS functionality will be limited.");
+                voiceSelect.innerHTML = '<option value="">API Key Missing</option>';
+                elevenLabsVoices = [{ voice_id: "sample_voice_1", name: "Sample Voice Bella (API Key Missing)"}, { voice_id: "sample_voice_2", name: "Sample Voice Adam (API Key Missing)"}];
+                renderVoiceOptions(); // Render sample voices
+                return;
+            }
+            showLoading(true);
+            try {
+                const response = await fetch('https://api.elevenlabs.io/v1/voices', {
+                    headers: { 'xi-api-key': ELEVENLABS_API_KEY }
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`ElevenLabs API error: ${response.status} - ${errorData.detail?.message || 'Unknown error'}`);
+                }
+                const data = await response.json();
+                elevenLabsVoices = data.voices || [];
+                renderVoiceOptions();
+            } catch (error) {
+                console.error('Error fetching ElevenLabs voices:', error);
+                showMessage('error', ttsError, `Failed to load voices: ${error.message}. Using sample voices.`);
+                elevenLabsVoices = [{ voice_id: "sample_voice_1", name: "Sample Voice Bella (Error Loading)"}, { voice_id: "sample_voice_2", name: "Sample Voice Adam (Error Loading)"}];
+                renderVoiceOptions();
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        function renderVoiceOptions(filter = "") {
+            voiceSelect.innerHTML = ''; // Clear existing options
+            if (!elevenLabsVoices || elevenLabsVoices.length === 0) {
+                 voiceSelect.innerHTML = '<option value="">No voices available</option>';
+                 return;
+            }
+            const filteredVoices = elevenLabsVoices.filter(voice => voice.name.toLowerCase().includes(filter.toLowerCase()));
+
+            if (filteredVoices.length === 0 && filter) {
+                 voiceSelect.innerHTML = '<option value="">No voices match your search</option>';
+                 return;
+            }
+             if (filteredVoices.length === 0 && !filter) {
+                 voiceSelect.innerHTML = '<option value="">No voices loaded</option>';
+                 return;
+            }
+
+            filteredVoices.forEach(voice => {
+                const option = document.createElement('option');
+                option.value = voice.voice_id;
+                option.textContent = voice.name + (voice.labels && Object.keys(voice.labels).length > 0 ? ` (${Object.entries(voice.labels).map(([k,v]) => `${k}: ${v}`).join(', ')})` : '');
+                voiceSelect.appendChild(option);
+            });
+        }
+
+        if (voiceSearch) {
+            voiceSearch.addEventListener('input', (e) => {
+                renderVoiceOptions(e.target.value);
+            });
+        }
+
+
+        if (generateVoiceButton) {
+            generateVoiceButton.addEventListener('click', async () => {
+                const text = ttsText.value.trim();
+                const voiceId = voiceSelect.value;
+                const modelId = modelSelect.value;
+
+                if (!text) {
+                    showMessage('error', ttsError, "Please enter some text to synthesize.");
+                    return;
+                }
+                if (!voiceId) {
+                    showMessage('error', ttsError, "Please select a voice.");
+                    return;
+                }
+                 if (ELEVENLABS_API_KEY === "YOUR_ELEVENLABS_API_KEY") {
+                    showMessage('error', ttsError, "ElevenLabs API Key is not configured. Cannot generate voice.");
+                    // Mock audio for UI testing without API key
+                    const mockAudioUrl = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"; // A placeholder MP3
+                    audioPlayer.src = mockAudioUrl;
+                    audioPlayerContainer.classList.remove('hidden');
+                    currentAudioBlob = null; // No actual blob for mock
+                    downloadVoiceButton.onclick = () => { window.open(mockAudioUrl, '_blank'); };
+                    saveTTSHistory(text, voiceId, modelId, "mock_url (API key missing)");
+                    return;
+                }
+
+                showLoading(true);
+                ttsError.textContent = '';
+                audioPlayerContainer.classList.add('hidden');
+
+                try {
+                    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'audio/mpeg',
+                            'Content-Type': 'application/json',
+                            'xi-api-key': ELEVENLABS_API_KEY
+                        },
+                        body: JSON.stringify({
+                            text: text,
+                            model_id: modelId,
+                            voice_settings: { stability: 0.5, similarity_boost: 0.75 }
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.text(); // Error might not be JSON
+                        console.error("ElevenLabs TTS API Error Response:", errorData);
+                        let errorMessage = `ElevenLabs API error: ${response.status}.`;
+                        try {
+                            const parsedError = JSON.parse(errorData);
+                            if (parsedError.detail && parsedError.detail.message) {
+                                errorMessage += ` ${parsedError.detail.message}`;
+                            } else if (typeof parsedError.detail === 'string') {
+                                errorMessage += ` ${parsedError.detail}`;
+                            }
+                        } catch (e) {
+                            // If parsing fails, use the raw text if it's short enough
+                            errorMessage += (errorData.length < 100 ? ` ${errorData}` : " Check console for details.");
+                        }
+                        throw new Error(errorMessage);
+                    }
+
+                    currentAudioBlob = await response.blob();
+                    const audioUrl = URL.createObjectURL(currentAudioBlob);
+                    audioPlayer.src = audioUrl;
+                    audioPlayerContainer.classList.remove('hidden');
+                    
+                    await saveTTSHistory(text, voiceId, modelId, audioUrl);
+
+                } catch (error) {
+                    console.error('Error generating speech:', error);
+                    showMessage('error', ttsError, `Speech generation failed: ${error.message}`);
+                } finally {
+                    showLoading(false);
+                }
+            });
+        }
+        
+        if (downloadVoiceButton) {
+            downloadVoiceButton.addEventListener('click', () => {
+                if (currentAudioBlob) {
+                    const url = URL.createObjectURL(currentAudioBlob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = `speech_${Date.now()}.mp3`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    a.remove();
+                } else if (audioPlayer.src && audioPlayer.src.startsWith("https://www.soundhelix.com")) { // Mock download
+                    window.open(audioPlayer.src, '_blank');
+                } else {
+                   showMessage('error', ttsError, "No audio generated or audio is not downloadable.");
+                }
+            });
+        }
+
+        // --- TTS History ---
+        async function saveTTSHistory(text, voiceId, modelId, audioUrlIdentifier) {
+            if (!currentUserId) return;
+            try {
+                const historyColRef = collection(db, `/artifacts/${APP_ID}/users/${currentUserId}/ttsHistory`);
+                await addDoc(historyColRef, {
+                    text: text,
+                    voiceId: voiceId,
+                    voiceName: elevenLabsVoices.find(v => v.voice_id === voiceId)?.name || 'Unknown Voice',
+                    modelId: modelId,
+                    timestamp: Timestamp.now(),
+                    // audioUrl: audioUrlIdentifier // Storing blob URL is temporary, consider storing metadata or a flag
+                });
+                loadTTSHistory(); // Refresh history
+            } catch (error) {
+                console.error("Error saving TTS history:", error);
+                showMessage('error', ttsError, "Failed to save history.");
+            }
+        }
+
+        let unsubscribeTTSHistory = null;
+        function loadTTSHistory() {
+            if (!currentUserId) return;
+            if (unsubscribeTTSHistory) unsubscribeTTSHistory(); // Unsubscribe from previous listener
+
+            const historyColRef = collection(db, `/artifacts/${APP_ID}/users/${currentUserId}/ttsHistory`);
+            const q = query(historyColRef, orderBy("timestamp", "desc"), limit(10));
+
+            unsubscribeTTSHistory = onSnapshot(q, (querySnapshot) => {
+                ttsHistoryList.innerHTML = '';
+                if (querySnapshot.empty) {
+                    ttsHistoryList.innerHTML = '<p class="text-gray-400">No history yet.</p>';
+                    return;
+                }
+                querySnapshot.forEach((docSnap) => {
+                    const item = docSnap.data();
+                    const div = document.createElement('div');
+                    div.className = 'p-3 bg-gray-700 rounded-md text-sm';
+                    div.innerHTML = `
+                        <p class="font-semibold truncate" title="${item.text}">${item.text.substring(0,50)}${item.text.length > 50 ? '...' : ''}</p>
+                        <p class="text-xs text-gray-400">Voice: ${item.voiceName || item.voiceId} | Model: ${item.modelId}</p>
+                        <p class="text-xs text-gray-500">${new Date(item.timestamp.toDate()).toLocaleString()}</p>
+                    `;
+                    ttsHistoryList.appendChild(div);
+                });
+            }, (error) => {
+                console.error("Error loading TTS history:", error);
+                ttsHistoryList.innerHTML = '<p class="text-red-500">Error loading history.</p>';
+            });
+        }
+
+
+        // --- Admin Panel Logic ---
+        if (goToAdminPanel) {
+            goToAdminPanel.addEventListener('click', (e) => {
+                e.preventDefault();
+                userDropdownMenu.classList.add('hidden');
+                showModal(
+                    "Admin Access", 
+                    "Please enter the admin password to proceed.", 
+                    true, // Show password input
+                    () => { // Confirm callback
+                        showPage('adminPanelPage');
+                        loadAdminData();
+                    }
+                );
+            });
+        }
+
+        if (backToUserPanel) {
+            backToUserPanel.addEventListener('click', () => showPage('userPanelPage'));
+        }
+
+        async function getIpInfo() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                if (!response.ok) throw new Error('Failed to fetch IP');
+                return await response.json();
+            } catch (error) {
+                console.error("Error fetching IP:", error);
+                return { ip: "Unavailable" };
+            }
+        }
+        
+        let allUsersForAdmin = []; // Cache for admin user list
+        let unsubscribeAdminUserList = null;
+
+        async function loadAdminData() {
+            showLoading(true);
+            // Fetch admin's IP and device name
+            const ipInfo = await getIpInfo();
+            adminIpAddress.textContent = ipInfo.ip || "Unavailable";
+            adminDeviceName.textContent = navigator.userAgent || "Unavailable";
+            
+            // Load users for admin panel
+            if (unsubscribeAdminUserList) unsubscribeAdminUserList(); // Detach previous listener
+
+            const usersColRef = collection(db, `/artifacts/${APP_ID}/public/data/app_users`);
+            unsubscribeAdminUserList = onSnapshot(usersColRef, (querySnapshot) => {
+                allUsersForAdmin = [];
+                querySnapshot.forEach((docSnap) => {
+                    allUsersForAdmin.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                renderAdminUserList();
+                updateAdminAnalytics(); // Update analytics based on current user list
+                showLoading(false);
+            }, (error) => {
+                console.error("Error fetching users for admin:", error);
+                adminUserList.innerHTML = '<p class="text-red-500">Error loading users.</p>';
+                showLoading(false);
+            });
+        }
+
+        function renderAdminUserList(filter = "") {
+            adminUserList.innerHTML = '';
+            const filteredUsers = allUsersForAdmin.filter(user => user.email.toLowerCase().includes(filter.toLowerCase()));
+
+            if (filteredUsers.length === 0) {
+                adminUserList.innerHTML = '<p class="text-gray-400">No users found.</p>';
+                return;
+            }
+
+            filteredUsers.forEach(user => {
+                const div = document.createElement('div');
+                div.className = 'p-3 bg-gray-700 rounded-md flex justify-between items-center';
+                const expiryDate = user.expiryDate ? new Date(user.expiryDate.toDate()).toLocaleDateString() : 'No Expiry';
+                const statusClass = user.isActive ? 'text-green-400' : 'text-red-400';
+                const statusText = user.isActive ? 'Active' : 'Inactive';
+
+                div.innerHTML = `
+                    <div>
+                        <p class="font-semibold">${user.email}</p>
+                        <p class="text-xs text-gray-400">UID: ${user.uid.substring(0,10)}...</p>
+                        <p class="text-xs text-gray-400">Status: <span class="${statusClass}">${statusText}</span> | Expires: ${expiryDate}</p>
+                        <p class="text-xs text-gray-400">Last Login: ${user.lastLogin ? new Date(user.lastLogin.toDate()).toLocaleString() : 'N/A'}</p>
+                         <p class="text-xs text-gray-400">IP: ${user.ipAddress || 'N/A'} | Agent: ${(user.userAgent || 'N/A').substring(0,30)}...</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button data-uid="${user.uid}" class="toggle-status-btn btn-secondary px-3 py-1 rounded-md text-xs">${user.isActive ? 'Deactivate' : 'Activate'}</button>
+                        <button data-uid="${user.uid}" class="delete-user-btn bg-red-600 hover:bg-red-700 px-3 py-1 rounded-md text-xs text-white">Delete</button>
+                    </div>
+                `;
+                adminUserList.appendChild(div);
+            });
+
+            // Add event listeners for new buttons
+            document.querySelectorAll('.toggle-status-btn').forEach(button => {
+                button.addEventListener('click', async (e) => {
+                    const userIdToToggle = e.target.dataset.uid;
+                    const userToUpdate = allUsersForAdmin.find(u => u.uid === userIdToToggle);
+                    if (userToUpdate) {
+                        showLoading(true);
+                        try {
+                            const userDocRef = doc(db, `/artifacts/${APP_ID}/public/data/app_users/${userIdToToggle}`);
+                            await updateDoc(userDocRef, { isActive: !userToUpdate.isActive });
+                            // Firestore listener will update the UI automatically
+                            showMessage('success', adminCreateUserSuccess, `User ${userToUpdate.email} status updated.`);
+                        } catch (error) {
+                            console.error("Error toggling user status:", error);
+                            showMessage('error', adminCreateUserError, `Failed to update status: ${error.message}`);
+                        }
+                        showLoading(false);
+                    }
+                });
+            });
+            document.querySelectorAll('.delete-user-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const userIdToDelete = e.target.dataset.uid;
+                    const userEmailToDelete = allUsersForAdmin.find(u => u.uid === userIdToDelete)?.email || 'this user';
+                     showModal(
+                        "Confirm Deletion",
+                        `Are you sure you want to delete user ${userEmailToDelete}? This will delete their data and auth record. This action cannot be undone.`,
+                        false,
+                        async () => { // Confirm callback
+                            showLoading(true);
+                            try {
+                                // Note: Deleting Firebase Auth user from client-side is not directly possible without admin SDK.
+                                // This will delete Firestore record and associated history.
+                                // For full deletion, admin needs to delete user from Firebase Console's Authentication tab.
+                                const userDocRef = doc(db, `/artifacts/${APP_ID}/public/data/app_users/${userIdToDelete}`);
+                                await deleteDoc(userDocRef);
+
+                                // Delete TTS history for the user
+                                const historyColRef = collection(db, `/artifacts/${APP_ID}/users/${userIdToDelete}/ttsHistory`);
+                                const historySnapshot = await getDocs(historyColRef);
+                                const batch = writeBatch(db);
+                                historySnapshot.forEach(docSnap => batch.delete(docSnap.ref));
+                                await batch.commit();
+                                
+                                showMessage('success', adminCreateUserSuccess, `User ${userEmailToDelete} Firestore data deleted. Remember to delete from Firebase Auth manually if needed.`);
+                                // Firestore listener will update the list
+                            } catch (error) {
+                                console.error("Error deleting user data:", error);
+                                showMessage('error', adminCreateUserError, `Failed to delete user data: ${error.message}`);
+                            }
+                            showLoading(false);
+                        }
+                    );
+                });
+            });
+        }
+        
+        if (adminUserSearch) {
+            adminUserSearch.addEventListener('input', (e) => {
+                renderAdminUserList(e.target.value);
+            });
+        }
+
+        if (adminCreateUserForm) {
+            adminCreateUserForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                showLoading(true);
+                adminCreateUserError.textContent = '';
+                adminCreateUserSuccess.textContent = '';
+                const email = adminNewUserEmail.value;
+                const password = adminNewUserPassword.value;
+                const expiryDays = parseInt(adminUserExpiry.value);
+
+                try {
+                    // IMPORTANT: This creates a new user in Firebase Auth. The admin is essentially signing them up.
+                    // This is generally not how admins create users (usually done via Admin SDK on a backend).
+                    // This approach requires the admin to know/set an initial password for the user.
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    const newUser = userCredential.user;
+                    
+                    let expiryDate = null;
+                    if (expiryDays > 0) {
+                        expiryDate = Timestamp.fromDate(new Date(Date.now() + expiryDays * 24 * 60 * 60 * 1000));
+                    }
+                    const ipInfo = await getIpInfo(); // Get IP for the new user record (though it's admin's IP here)
+
+                    const newUserDocRef = doc(db, `/artifacts/${APP_ID}/public/data/app_users/${newUser.uid}`);
+                    await setDoc(newUserDocRef, {
+                        email: newUser.email,
+                        uid: newUser.uid,
+                        createdAt: Timestamp.now(),
+                        isActive: true,
+                        expiryDate: expiryDate,
+                        lastLogin: null, // New user, no login yet
+                        ipAddress: null, // Will be set on their first login
+                        userAgent: null // Will be set on their first login
+                    });
+                    
+                    showMessage('success', adminCreateUserSuccess, `User ${email} created successfully. Initial password: ${password}`);
+                    adminCreateUserForm.reset();
+                    // Firestore listener will update the user list
+                } catch (error) {
+                    console.error("Error creating user by admin:", error);
+                    showMessage('error', adminCreateUserError, `Failed to create user: ${error.message}`);
+                }
+                showLoading(false);
+            });
+        }
+
+        async function updateAdminAnalytics() {
+            analyticsTotalUsers.textContent = allUsersForAdmin.length;
+            
+            // Mock TTS generations count (sum of history items for all users)
+            // This is a heavy operation client-side for many users.
+            // In a real app, this would be pre-calculated or done server-side.
+            let totalGenerations = 0;
+            try {
+                // This is simplified. For actual count, you'd iterate through each user's history.
+                // For this example, let's assume we can query a common collection if history was public.
+                // Since history is /users/{userId}/ttsHistory, this is harder client-side for an admin.
+                // For now, we'll show a mock value or count from a small subset if feasible.
+                // Let's try to get a count for a few users if possible, or just mock it.
+                // For this demo, let's just set a mock value as iterating all subcollections is complex client-side.
+                // If ttsHistory was `/artifacts/${APP_ID}/public/data/tts_history_all/{historyId}` with a userId field, it'd be easier.
+                // With current structure: `/artifacts/${APP_ID}/users/${userId}/ttsHistory`
+                // We can iterate over `allUsersForAdmin` and sum up their history counts.
+                // This can be slow if there are many users.
+                
+                let tempTotalGenerations = 0;
+                for (const user of allUsersForAdmin) {
+                    const historyColRef = collection(db, `/artifacts/${APP_ID}/users/${user.uid}/ttsHistory`);
+                    const snapshot = await getDocs(query(historyColRef)); // No limit for total count
+                    tempTotalGenerations += snapshot.size;
+                }
+                totalGenerations = tempTotalGenerations;
+
+            } catch(err) {
+                console.warn("Could not accurately calculate total generations for admin analytics:", err);
+                totalGenerations = "N/A"; // Or a mock number
+            }
+            analyticsTotalGenerations.textContent = totalGenerations;
+        }
+
+
+        // --- Initial Load ---
+        initialAuth(); // Start the authentication process
+
     </script>
-
 </body>
 </html>
