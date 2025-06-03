@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Menu } from '@headlessui/react';
-import { BellIcon, UserCircleIcon } from '@heroicons/react/24/outline';
+import { BellIcon, UserCircleIcon, PlayIcon } from '@heroicons/react/24/outline';
 
 function App() {
+  const [selectedGeneration, setSelectedGeneration] = useState<number | null>(null);
+
   const generations = [
     {
       id: 1,
@@ -62,26 +64,42 @@ function App() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-800">Generation History</h2>
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-indigo-500 to-purple-600">
+              <h2 className="text-xl font-semibold text-white">Generation History</h2>
             </div>
-            <div className="divide-y divide-gray-200">
+            <div className="divide-y divide-gray-100">
               {generations.map((gen) => (
-                <div key={gen.id} className="p-6 hover:bg-gray-50 transition-colors duration-150 ease-in-out">
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <p className="text-lg font-medium text-gray-900">{gen.text}</p>
-                      <div className="mt-2 flex items-center text-sm text-gray-500">
-                        <span className="mr-4">Voice: {gen.voice}</span>
-                        <span className="mr-4">Model: {gen.model}</span>
-                        <span>{gen.timestamp}</span>
+                <div 
+                  key={gen.id} 
+                  className={`p-6 transition-all duration-200 ease-in-out ${
+                    selectedGeneration === gen.id 
+                      ? 'bg-indigo-50 border-l-4 border-indigo-500' 
+                      : 'hover:bg-gray-50'
+                  }`}
+                  onClick={() => setSelectedGeneration(gen.id)}
+                >
+                  <div className="flex justify-between items-center">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-lg font-medium text-gray-900 mb-1">{gen.text}</p>
+                      <div className="flex flex-wrap gap-3 text-sm text-gray-500">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-gray-100">
+                          {gen.voice}
+                        </span>
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-gray-100">
+                          {gen.model}
+                        </span>
+                        <span className="text-gray-400">{gen.timestamp}</span>
                       </div>
                     </div>
-                    <button className="ml-4 p-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100">
-                      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                      </svg>
+                    <button 
+                      className="ml-4 p-3 text-indigo-600 hover:text-indigo-700 rounded-full hover:bg-indigo-50 transition-colors duration-200"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // Play audio logic here
+                      }}
+                    >
+                      <PlayIcon className="h-6 w-6" />
                     </button>
                   </div>
                 </div>
