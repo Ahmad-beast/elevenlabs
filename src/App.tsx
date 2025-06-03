@@ -3,6 +3,37 @@ import { Menu } from '@headlessui/react';
 import { BellIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 
 function App() {
+  const generations = [
+    {
+      id: 1,
+      text: "گر پرے بیٹی مے مے کی نا تکرار کے",
+      voice: "Sarah",
+      model: "eleven_multilingual_v2",
+      timestamp: "6/2/2025, 1:19:31 AM"
+    },
+    {
+      id: 2,
+      text: "گر پرے بیٹی مے مے کی نا تکرار کے",
+      voice: "Aaliyah",
+      model: "eleven_multilingual_v2",
+      timestamp: "6/2/2025, 1:18:24 AM"
+    },
+    {
+      id: 3,
+      text: "کت روز بھوکی کتی چھاتی میں گھسیتے د",
+      voice: "Ahmed",
+      model: "eleven_multilingual_v2",
+      timestamp: "5/31/2025, 9:23:39 PM"
+    },
+    {
+      id: 4,
+      text: "As-salamu alaykum sheraz kia",
+      voice: "Aaliyah",
+      model: "eleven_multilingual_v2",
+      timestamp: "5/31/2025, 9:23:39 PM"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation */}
@@ -31,26 +62,31 @@ function App() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {/* Cards */}
-            {[1, 2, 3].map((item) => (
-              <div
-                key={item}
-                className="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow duration-300"
-              >
-                <div className="px-4 py-5 sm:p-6">
-                  <h3 className="text-lg font-medium text-gray-900">Card {item}</h3>
-                  <p className="mt-2 text-sm text-gray-500">
-                    This is a sample card with some content. Click to learn more about this item.
-                  </p>
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h2 className="text-xl font-semibold text-gray-800">Generation History</h2>
+            </div>
+            <div className="divide-y divide-gray-200">
+              {generations.map((gen) => (
+                <div key={gen.id} className="p-6 hover:bg-gray-50 transition-colors duration-150 ease-in-out">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <p className="text-lg font-medium text-gray-900">{gen.text}</p>
+                      <div className="mt-2 flex items-center text-sm text-gray-500">
+                        <span className="mr-4">Voice: {gen.voice}</span>
+                        <span className="mr-4">Model: {gen.model}</span>
+                        <span>{gen.timestamp}</span>
+                      </div>
+                    </div>
+                    <button className="ml-4 p-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100">
+                      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-                <div className="bg-gray-50 px-4 py-4 sm:px-6">
-                  <button className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                    Learn more →
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </main>
